@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<BorderPane fx:id="root_MainMenu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fhtw.cartridgescaping.MainController">
+   <center>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="btn_playGame" mnemonicParsing="false" onAction="#OpenPlayConfiguration" text="Play Game" />
+            <Button fx:id="btn_Settings" mnemonicParsing="false" onAction="#OpenSettings" text="Settings" />
+            <Button fx:id="btn_Credits" mnemonicParsing="false" onAction="#ShowCredits" text="Credits" />
+         </children>
+      </VBox>
+   </center>
+   <bottom>
+      <ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <buttons>
+          <Button fx:id="btn_ExitMain" mnemonicParsing="false" onAction="#ExitGame" text="Exit Game" />
+        </buttons>
+      </ButtonBar>
+   </bottom>
+   <top>
+      <Text fx:id="txt_GameTitle" strokeType="OUTSIDE" strokeWidth="0.0" text="Cartridge Scaping" textAlignment="CENTER" BorderPane.alignment="CENTER">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Text>
+   </top>
+</BorderPane>
