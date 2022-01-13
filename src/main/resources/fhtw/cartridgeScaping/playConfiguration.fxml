@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Text?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="fhtw.cartridgeScaping.PlayConfigurationController"
+            prefHeight="800.0" prefWidth="600.0">
+    <top>
+    <Text BorderPane.alignment="TOP_CENTER" text="Cartridge Scaping - The Game" />
+    </top>
+    <center>
+        <VBox BorderPane.alignment="CENTER">
+            <TextField text="IP Address" visible="false"/>
+
+            <Button text="Play" onAction="#onPlay"/>
+
+            <Button text="Abort" onAction="#onAbort"/>
+        </VBox>
+    </center>
+
+</BorderPane>

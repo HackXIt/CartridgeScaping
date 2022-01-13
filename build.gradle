@@ -20,8 +20,8 @@ tasks.withType(JavaCompile) {
 }
 
 application {
-    mainModule = 'fhtw.cartridgescaping'
-    mainClass = 'fhtw.cartridgescaping.GameClient'
+    mainModule = 'fhtw.cartridgeScaping'
+    mainClass = 'fhtw.cartridgeScaping.CartridgeScapingApp'
 }
 
 javafx {
