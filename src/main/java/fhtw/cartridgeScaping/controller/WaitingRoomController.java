@@ -1,10 +1,20 @@
-package fhtw.cartridgeScaping;
+package fhtw.cartridgeScaping.controller;
 
+import fhtw.cartridgeScaping.View;
+import fhtw.cartridgeScaping.ViewManager;
 import javafx.event.ActionEvent;
 
 import java.io.IOException;
 
-public class LoadingController {
+/**
+ * INFO Header of WaitingRoomController.java
+ *
+ * @author Nikolaus Rieder (c)2022
+ * @type Class
+ * @path src/main/java/fhtw/cartridgeScaping/controller
+ * @project CartridgeScaping
+ */
+public class WaitingRoomController {
     public void onReady(ActionEvent actionEvent) throws IOException {
         ViewManager.switchTo(View.GAMEPLAY);
     }

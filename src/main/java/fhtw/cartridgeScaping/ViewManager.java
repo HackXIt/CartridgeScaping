@@ -10,6 +10,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * INFO Header of ViewManager.java
+ *
+ * @author Nikolaus Rieder (c)2022
+ * @type Class
+ * @path src/main/java/fhtw/cartridgeScaping
+ * @project CartridgeScaping
+ */
 public class ViewManager {
 
     private static Scene scene;
@@ -42,6 +50,7 @@ public class ViewManager {
             scene.setRoot(root);
         } catch (IOException e) {
             System.err.println("Failed to load requested view. Falling back to main menu.");
+            e.printStackTrace();
             loadError = true;
         }
         if(loadError) {

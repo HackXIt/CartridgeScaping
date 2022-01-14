@@ -5,6 +5,14 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+/**
+ * INFO Header of CartridgeScapingApp.java
+ *
+ * @author Nikolaus Rieder (c)2022
+ * @type Class
+ * @path src/main/java/fhtw/cartridgeScaping
+ * @project CartridgeScaping
+ */
 public class CartridgeScapingApp extends Application {
     @Override
     public void start(Stage stage) throws Exception {
