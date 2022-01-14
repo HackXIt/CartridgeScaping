@@ -1,17 +1,102 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="fhtw.cartridgeScaping.LoadingController"
-            prefHeight="400.0" prefWidth="600.0">
+<!-- NOTE Simplified Loading Screen (For early development)
+<VBox prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fhtw.cartridgeScaping.LoadingController">
+   <HBox prefHeight="100.0" prefWidth="200.0">
+      <children>
+         <ProgressIndicator progress="0.0" />
+         <VBox prefHeight="200.0" prefWidth="100.0">
+            <children>
+               <ProgressBar prefWidth="200.0" progress="0.0" />
+               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="<RandomMessages>" />
+            </children>
+         </VBox>
+      </children>
+   </HBox>
 
-    <Button text="Ready" visible="false" onAction="#onReady" />
-    <Button text="Abort" onAction="#onGameAbort" />
+    <Button onAction="#onReady" text="Ready" />
+    <Button onAction="#onGameAbort" text="Abort" />
 
-</AnchorPane>
+</VBox>
+-->
+<!--NOTE Loading Screen which is built like the gameplay -->
+
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fhtw.cartridgeScaping.LoadingController">
+    <center>
+        <VBox prefHeight="800.0" prefWidth="600.0">
+            <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Chat" />
+                <TextArea prefHeight="200.0" prefWidth="200.0" />
+                <TextField />
+            </children>
+
+        </VBox>
+    </center>
+    <bottom>
+        <HBox prefHeight="100.0" prefWidth="200.0" spacing="20.0" BorderPane.alignment="CENTER">
+            <children>
+                <ToolBar prefHeight="40.0" prefWidth="200.0">
+                    <items>
+                        <Button mnemonicParsing="false" text="Game Settings" />
+
+                        <Button onAction="#onQuitGameplay" text="Abort" />
+                    </items>
+                </ToolBar>
+                <Separator orientation="VERTICAL" prefHeight="200.0" />
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                      <Text fx:id="StatusMessage" strokeType="OUTSIDE" strokeWidth="0.0" text="Waiting Room" />
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Button mnemonicParsing="false" text="Ready" />
+                        <ProgressBar progress="0.0" />
+                     </children>
+                  </HBox>
+                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </VBox>
+                <Separator orientation="VERTICAL" prefHeight="200.0" />
+                <VBox prefHeight="200.0" prefWidth="100.0">
+                    <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="PlayerList" />
+                        <ListView fx:id="PlayerList" prefHeight="200.0" prefWidth="200.0" />
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+    </bottom>
+    <right>
+        <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+            <children>
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Game settings" />
+            </children>
+        </VBox>
+    </right>
+    <top>
+        <MenuBar BorderPane.alignment="CENTER">
+            <menus>
+                <Menu mnemonicParsing="false" text="?">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="!" />
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+    </top>
+</BorderPane>
