@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Text?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="fhtw.cartridgeScaping.CreditsController"
+            fx:controller="fhtw.cartridgeScaping.controller.MainMenuController"
             prefHeight="800.0" prefWidth="600.0">
     <top>
         <Text BorderPane.alignment="TOP_CENTER"  text="Cartridge Scaping - The Game" />
@@ -19,7 +19,7 @@
             <TextArea text="Created by Nikolaus Rieder (c) 2021-2022"/>
         <!--    TODO Improve Credits UI (More text, Links, Donation, Scrolling, Easter Eggs, etc.)-->
 
-            <Button text="Back" onAction="#onBack"/>
+            <Button text="Back" onAction="#onCreditsBack"/>
         </VBox>
     </center>
 
