@@ -1,2 +1,6 @@
-package fhtw.cartridgeScaping.model;public class DialogModel {
+package fhtw.cartridgeScaping.model;
+
+public class HostDialogModel {
+    private int port;
+    private String host;
 }

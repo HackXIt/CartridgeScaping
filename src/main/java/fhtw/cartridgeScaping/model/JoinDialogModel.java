@@ -1,2 +1,4 @@
-package fhtw.cartridgeScaping.model;public class JoinDialogModel {
+package fhtw.cartridgeScaping.model;
+
+public class JoinDialogModel {
 }
