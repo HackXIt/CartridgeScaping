@@ -9,7 +9,6 @@ import javafx.stage.Stage;
 /**
  * NOTE Global TODOs for the Application
  * TODO Add Logger for handling all logMessages and print them to file by default
- * TODO Add "Developer Mode" option for more detailed log output (e.g. StackTraces)
  */
 
 /**
