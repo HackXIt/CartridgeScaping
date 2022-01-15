@@ -18,9 +18,9 @@
         <VBox BorderPane.alignment="CENTER">
             <TextField text="IP Address" visible="false"/>
 
-            <Button text="Play" onAction="#onPlay"/>
+            <Button text="Play" onAction="#onStartPlay"/>
 
-            <Button text="Abort" onAction="#onAbort"/>
+            <Button text="Abort" onAction="#onAbortPlay"/>
         </VBox>
     </center>
 

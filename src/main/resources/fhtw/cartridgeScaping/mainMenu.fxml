@@ -6,13 +6,17 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="800.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fhtw.cartridgeScaping.controller.MainMenuController">
+<BorderPane prefHeight="800.0"
+            prefWidth="600.0"
+            xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="fhtw.cartridgeScaping.controller.MainMenuController">
     <top>
         <Text text="Cartridge Scaping - The Game" BorderPane.alignment="TOP_CENTER" />
     </top>
     <center>
         <VBox BorderPane.alignment="CENTER">
-            <Button onAction="#onPlayOpenConfiguration" text="Play game" />
+            <Button onAction="#openPlayConfiguration" text="Play game" />
 
             <Button onAction="#openApplicationSettings" text="Game settings" />
 
