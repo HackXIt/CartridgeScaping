@@ -1,16 +1,18 @@
 package fhtw.cartridgeScaping.gameplay;
 
-public class KeyLock extends Item implements Key {
+import java.util.concurrent.locks.Lock;
+
+public class Key extends Item implements Keyable {
     private Lockable lock;
 
-    public KeyLock(ItemDescription itemDesc, Lockable lock) {
+    public Key(ItemDescription itemDesc, Lockable lock) {
         super(itemDesc);
         this.lock = lock;
     }
 
-    public KeyLock(Item item, Lockable lock) {
-        super(item);
-        this.lock = lock;
+    public Key(Key key) {
+        super(key);
+        this.lock = (Lockable) key.getKey();
     }
 
     @Override
