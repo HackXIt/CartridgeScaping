@@ -8,6 +8,7 @@ import fhtw.cartridgeScaping.model.SettingsModel;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 
 import java.io.IOException;
 
@@ -49,9 +50,15 @@ public class MainMenuController {
         ViewManager.switchTo(View.CONFIGURATION);
     }
     @FXML
-    public void onStartPlay(ActionEvent actionEvent) throws IOException {
-        ViewManager.switchTo(View.WAITING);
+    public void onHost() {
+        ViewManager.openDialog(View.HOST);
     }
+
+    @FXML
+    public void onJoin() {
+        ViewManager.openDialog(View.JOIN);
+    }
+
     @FXML
     public void onAbortPlay(ActionEvent actionEvent) throws IOException{
         ViewManager.switchTo(View.MAIN);

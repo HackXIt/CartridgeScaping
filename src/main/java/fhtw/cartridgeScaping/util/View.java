@@ -14,7 +14,9 @@ public enum View {
     SETTINGS("appSettings.fxml", true),
     WAITING("waitingRoom.fxml", false),
     GAMEPLAY("gameplayView.fxml", false),
-    CREDITS("gameCredits.fxml", true);
+    CREDITS("gameCredits.fxml", true),
+    HOST("hostingDialog.fxml", true),
+    JOIN("joinDialog.fxml", true);
 
     private String fileName;
     private boolean hasCache;
