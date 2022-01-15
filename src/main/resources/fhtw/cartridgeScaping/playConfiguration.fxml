@@ -7,19 +7,18 @@
 <?import javafx.scene.layout.*?>
 
 <?import javafx.scene.text.Text?>
-<BorderPane xmlns="http://javafx.com/javafx"
+<BorderPane prefHeight="800.0" prefWidth="600.0"
+            xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="fhtw.cartridgeScaping.controller.MainMenuController"
-            prefHeight="800.0" prefWidth="600.0">
+>
     <top>
     <Text BorderPane.alignment="TOP_CENTER" text="Cartridge Scaping - The Game" />
     </top>
     <center>
         <VBox BorderPane.alignment="CENTER">
-            <TextField text="IP Address" visible="false"/>
-
-            <Button text="Play" onAction="#onStartPlay"/>
-
+            <Button text="Host..." onAction="#onHost"/>
+            <Button text="Join..." onAction="#onJoin"/>
             <Button text="Abort" onAction="#onAbortPlay"/>
         </VBox>
     </center>
