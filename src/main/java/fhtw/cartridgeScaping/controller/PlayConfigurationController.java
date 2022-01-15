@@ -1,6 +1,6 @@
 package fhtw.cartridgeScaping.controller;
 
-import fhtw.cartridgeScaping.View;
+import fhtw.cartridgeScaping.util.View;
 import fhtw.cartridgeScaping.ViewManager;
 import javafx.event.ActionEvent;
 

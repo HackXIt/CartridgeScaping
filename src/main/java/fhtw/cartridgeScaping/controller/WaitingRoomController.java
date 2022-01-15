@@ -1,6 +1,6 @@
 package fhtw.cartridgeScaping.controller;
 
-import fhtw.cartridgeScaping.View;
+import fhtw.cartridgeScaping.util.View;
 import fhtw.cartridgeScaping.ViewManager;
 import javafx.event.ActionEvent;
 
@@ -16,6 +16,7 @@ import java.io.IOException;
  */
 public class WaitingRoomController {
     public void onReady(ActionEvent actionEvent) throws IOException {
+        // TODO onReady() Increase Progress-Bar by Player count
         ViewManager.switchTo(View.GAMEPLAY);
     }
 
