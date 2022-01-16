@@ -31,7 +31,7 @@ javafx {
 
 dependencies {
 
-    testImplementation('org.testng:testng:7.4.0')
+    testImplementation('org.testng:testng:7.5')
 }
 
 test {

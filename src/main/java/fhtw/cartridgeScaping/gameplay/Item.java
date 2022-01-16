@@ -1,5 +1,6 @@
 package fhtw.cartridgeScaping.gameplay;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 public class Item {

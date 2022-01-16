@@ -3,12 +3,14 @@ package fhtw.cartridgeScaping;
 import fhtw.cartridgeScaping.util.View;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 /**
  * NOTE Global TODOs for the Application
  * TODO Add Logger for handling all logMessages and print them to file by default
+ * TODO Generate Cartridge from File
+ * TODO Implement networking package (Host & Client functionality)
+ * TODO Implement console package (Commands & chat functionality)
  */
 
 /**
@@ -20,7 +22,6 @@ import javafx.stage.Stage;
  * @project CartridgeScaping
  */
 public class CartridgeScapingApp extends Application {
-    private static Scene root;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -28,8 +29,9 @@ public class CartridgeScapingApp extends Application {
         ViewManager.setup();
         ViewManager.enableDeveloperMode(true);
 //        ViewManager.switchTo(View.MAIN);
-        root = new Scene(ViewManager.getLoader().load());
+        Scene root = new Scene(ViewManager.getLoader().load());
         ViewManager.setScene(root);
+        ViewManager.setMainWindow(stage);
         stage.setScene(root);
         if(ViewManager.isDeveloperMode()) {
             try {

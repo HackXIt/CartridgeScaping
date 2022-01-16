@@ -51,12 +51,12 @@ public class MainMenuController {
     }
     @FXML
     public void onHost() {
-        ViewManager.openDialog(View.HOST);
+        ViewManager.openDialog(View.HOST, "Host game...");
     }
 
     @FXML
     public void onJoin() {
-        ViewManager.openDialog(View.JOIN);
+        ViewManager.openDialog(View.JOIN, "Join game...");
     }
 
     @FXML
