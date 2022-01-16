@@ -1,4 +1,10 @@
-package fhtw.cartridgeScaping.gameplay;
+package fhtw.cartridgeScaping.gameplay.rooms;
+
+import fhtw.cartridgeScaping.gameplay.Player;
+import fhtw.cartridgeScaping.gameplay.items.Item;
+import fhtw.cartridgeScaping.gameplay.text.DoorDescription;
+import fhtw.cartridgeScaping.gameplay.text.RoomDescription;
+import fhtw.cartridgeScaping.gameplay.util.Direction;
 
 import java.util.HashMap;
 
@@ -109,7 +115,11 @@ public class Room {
         return hasItems;
     }
 
-//    NOTE Utility Methods ----------------------------------------
+    public HashMap<String, Player> getPlayers() {
+        return players;
+    }
+
+    //    NOTE Utility Methods ----------------------------------------
 
     public boolean addItem(Item item) {
         if(item != null) {
@@ -150,6 +160,8 @@ public class Room {
     public boolean addPlayer(Player player) {
         if(player != null && !players.containsKey(player.getPlayerName())) {
             players.put(player.getPlayerName(), player);
+            // TODO RoomMessage upon player entering room (Prints arrival of player to other players)
+            // TODO PlayerMessage upon player entering room (Prints room description to Player)
             System.out.printf("Player '%s' entered '%s'.", player.getPlayerName(), roomDescription.getName());
             return true;
         } else {
@@ -161,6 +173,8 @@ public class Room {
     public boolean removePlayer(Player player) {
         if(player != null && players.containsKey(player.getPlayerName())) {
             players.remove(player.getPlayerName());
+            // TODO RoomMessage upon player leaving room (Prints departure of player to other players)
+            // TODO PlayerMessage upon player leaving room (Prints leave message to Player)
             System.out.printf("Player '%s' has left '%s'.", player.getPlayerName(), roomDescription.getName());
             return true;
         } else {

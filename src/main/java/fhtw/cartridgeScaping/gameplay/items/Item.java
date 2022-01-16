@@ -1,27 +1,23 @@
-package fhtw.cartridgeScaping.gameplay;
+package fhtw.cartridgeScaping.gameplay.items;
 
-import java.io.Serializable;
-import java.util.Objects;
+import fhtw.cartridgeScaping.gameplay.Player;
+import fhtw.cartridgeScaping.gameplay.rooms.Room;
+import fhtw.cartridgeScaping.gameplay.text.ItemDescription;
 
 public class Item {
     protected ItemDescription itemDesc;
-    protected int id;
+    protected Player itemHolder;
+    protected boolean isHeld;
 
     public Item(ItemDescription itemDesc) {
         this.itemDesc = itemDesc;
-        this.id = Objects.hash(itemDesc.getName(),
-                itemDesc.getShortDescription(),
-                itemDesc.getLongDescription(),
-                itemDesc.getDetailedDescription());
     }
 
     public Item(Item item) {
         // TODO Implement deep-copy of Item
         this.itemDesc = (ItemDescription) item.getItemDesc().cloneDescription();
-        this.id = Objects.hash(itemDesc.getName(),
-                itemDesc.getShortDescription(),
-                itemDesc.getLongDescription(),
-                itemDesc.getDetailedDescription());
+        this.itemHolder = item.itemHolder;
+        this.isHeld = item.isHeld;
     }
 
     public String getName() {
@@ -37,7 +33,11 @@ public class Item {
     }
 
     public int getId() {
-        return id;
+        return this.hashCode();
+    }
+
+    public boolean isHeld() {
+        return isHeld;
     }
 
     public Item cloneItem() {
@@ -45,12 +45,21 @@ public class Item {
     }
 
     public void drop(Room room) {
-        room.addItem(this);
+        if(isHeld()) {
+            room.addItem(this);
+            itemHolder.dropItem(this);
+            itemHolder = null;
+            isHeld = false;
+        }
+
     }
 
     public void pickup(Room room, Player player) {
-        room.removeItem(this.getName());
-        player.addItem(this);
+        if(!isHeld()) {
+            room.removeItem(this.getName());
+            player.addItem(this);
+            itemHolder = player;
+        }
     }
 
     @Override

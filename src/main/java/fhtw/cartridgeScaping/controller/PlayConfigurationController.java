@@ -1,8 +1,9 @@
 package fhtw.cartridgeScaping.controller;
 
+import fhtw.cartridgeScaping.model.PlayConfigurationModel;
 import fhtw.cartridgeScaping.util.View;
-import fhtw.cartridgeScaping.ViewManager;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 
 import java.io.IOException;
 
@@ -23,12 +24,40 @@ But as of now, this is not necessary.
  * @path src/main/java/fhtw/cartridgeScaping
  * @project CartridgeScaping
  */
-public class PlayConfigurationController {
-    public void onStartPlay(ActionEvent actionEvent) throws IOException {
-        ViewManager.switchTo(View.WAITING);
+public class PlayConfigurationController extends Controller {
+    private PlayConfigurationModel playConfigurationModel;
+
+    public PlayConfigurationController() {
+        super();
+        playConfigurationModel = new PlayConfigurationModel();
     }
 
-    public void onAbortPlay(ActionEvent actionEvent) throws IOException{
-        ViewManager.switchTo(View.MAIN);
+    //    NOTE Controls for playConfiguration.fxml ----
+    @FXML
+    public void onHost() {
+        this.openDialog(
+                "Failed to open hostingDialog.",
+                "Successfully opened hostingDialog.",
+                View.HOST,
+                "Host game..."
+        );
+    }
+
+    @FXML
+    public void onJoin() {
+        this.openDialog(
+                "Failed to open joinDialog.",
+                "Successfully opened joinDialog.",
+                View.JOIN,
+                "Join game..."
+        );
+    }
+
+    @FXML
+    public void onAbortPlay() {
+        this.switchView(
+                "Failed to load & switch view to Main.",
+                "Successfully loaded & switched view to Main.",
+                View.MAIN);
     }
 }

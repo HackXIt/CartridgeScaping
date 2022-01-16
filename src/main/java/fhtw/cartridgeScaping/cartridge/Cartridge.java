@@ -1,14 +1,11 @@
 package fhtw.cartridgeScaping.cartridge;
 
-import fhtw.cartridgeScaping.gameplay.Item;
-import fhtw.cartridgeScaping.gameplay.Room;
-import fhtw.cartridgeScaping.gameplay.Secret;
+import fhtw.cartridgeScaping.gameplay.items.Item;
+import fhtw.cartridgeScaping.gameplay.rooms.Room;
+import fhtw.cartridgeScaping.gameplay.items.Secret;
 
-import java.io.File;
 import java.nio.file.Path;
-import java.nio.file.Files;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Vector;
 
 // Data structure for cartridge

@@ -1,10 +1,8 @@
 package fhtw.cartridgeScaping.controller;
 
+import fhtw.cartridgeScaping.model.GameplayModel;
 import fhtw.cartridgeScaping.util.View;
-import fhtw.cartridgeScaping.ViewManager;
 import javafx.event.ActionEvent;
-
-import java.io.IOException;
 
 /**
  * INFO Header of GameplayController.java
@@ -14,8 +12,20 @@ import java.io.IOException;
  * @path src/main/java/fhtw/cartridgeScaping/controller
  * @project CartridgeScaping
  */
-public class GameplayController {
-    public void onQuitGameplay(ActionEvent actionEvent) throws IOException {
-        ViewManager.switchTo(View.MAIN);
+public class GameplayController  extends Controller{
+    private final GameplayModel model;
+
+    public GameplayController() {
+        super();
+        this.model = new GameplayModel();
+    }
+
+    //    NOTE Controls for gameplayView.fxml ----
+    public void onQuitGameplay(ActionEvent actionEvent) {
+        // TODO RoomMessage to notify that player has left the game.
+        this.switchView(
+                "Failed to load & switch view to Main.",
+                "Successfully loaded & switched view to Main.",
+                View.MAIN);
     }
 }

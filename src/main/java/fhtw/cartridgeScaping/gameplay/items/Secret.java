@@ -1,6 +1,8 @@
-package fhtw.cartridgeScaping.gameplay;
+package fhtw.cartridgeScaping.gameplay.items;
 
-public class Secret extends Item{
+import fhtw.cartridgeScaping.gameplay.text.ItemDescription;
+
+public class Secret extends Item {
     public Secret(ItemDescription itemDesc) {
         super(itemDesc);
     }

@@ -27,6 +27,8 @@ public class CartridgeModel {
     }
 
     public IOResult<Cartridge> load(Path file) {
-        return (IOResult<Cartridge>) IOResult.failure("Not implemented", new UnsupportedOperationException());
+        IOResult<Cartridge> io = new IOResult<>();
+        return io.failure("load() not implemented.",
+                new UnsupportedOperationException("Loading of cartridge is not yet implemented."));
     }
 }

@@ -8,6 +8,10 @@ package fhtw.cartridgeScaping.model;
  * @path src/main/java/fhtw/cartridgeScaping/model
  * @project CartridgeScaping
  */
-public class GameplayModel {
+public class GameplayModel extends Model{
 //    TODO Implement GameplayModel
+
+    public GameplayModel() {
+        super();
+    }
 }

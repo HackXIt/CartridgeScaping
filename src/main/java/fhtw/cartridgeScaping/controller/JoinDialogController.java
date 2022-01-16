@@ -1,16 +1,32 @@
 package fhtw.cartridgeScaping.controller;
 
+import fhtw.cartridgeScaping.cartridge.CartridgeController;
 import fhtw.cartridgeScaping.cartridge.CartridgeModel;
 
-public class JoinDialogController implements DialogController{
-    private CartridgeModel model;
+public class JoinDialogController extends CartridgeController implements DialogController{
 
-    public JoinDialogController(CartridgeModel model) {
-        this.model = model;
+    public JoinDialogController() {
+        super();
     }
 
     @Override
     public void consumeDialog() {
         // TODO Join game upon consuming dialog
+    }
+
+
+    @Override
+    public void onLoad() throws UnsupportedOperationException{
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void onSave() throws UnsupportedOperationException{
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void onApply() {
+        throw new UnsupportedOperationException();
     }
 }

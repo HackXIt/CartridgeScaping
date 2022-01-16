@@ -1,4 +1,8 @@
-package fhtw.cartridgeScaping.gameplay;
+package fhtw.cartridgeScaping.gameplay.rooms;
+
+import fhtw.cartridgeScaping.gameplay.text.DoorDescription;
+import fhtw.cartridgeScaping.gameplay.util.Keyable;
+import fhtw.cartridgeScaping.gameplay.util.Lockable;
 
 public class LockDoor extends Door implements Lockable {
     private Keyable keyable;

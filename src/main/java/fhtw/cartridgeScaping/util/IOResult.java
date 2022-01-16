@@ -8,6 +8,9 @@ package fhtw.cartridgeScaping.util;
  * TODO Improve log-message-handling to IOResult.failure() (Currently using stderr)
  */
 
+import fhtw.cartridgeScaping.cartridge.Cartridge;
+import fhtw.cartridgeScaping.controller.ViewManager;
+
 /**
  * INFO Header of IOResult.java
  *
@@ -22,18 +25,29 @@ public class IOResult<T> {
     private T data;
     private Exception exception;
 
-    public IOResult(boolean ok, T data) {
-        this.ok = ok;
-        this.data = data;
+    public IOResult() {
+        this.ok = false;
     }
 
     public IOResult(boolean ok, T data, Exception exception) {
-        this(ok, data);
+        this.ok = ok;
+        this.data = data;
         this.exception = exception;
+    }
+
+    public IOResult(IOResult<T> ioResult) {
+        // TODO check if making a shallow copy is a good idea for IOResult
+        this.ok = ioResult.isOk();
+        this.data = ioResult.getData();
+        this.exception = ioResult.getException();
     }
 
     public boolean isOk() {
         return ok;
+    }
+
+    public void setOk(boolean ok) {
+        this.ok = ok;
     }
 
     public boolean hasData() {
@@ -44,17 +58,42 @@ public class IOResult<T> {
         return data;
     }
 
+    public void setData(T data) {
+        this.data = data;
+    }
+
     public Exception getException() {
         return exception;
     }
 
-    public static IOResult<?> success(String logMessage, Object data) {
-        System.out.println(logMessage);
-        return new IOResult<>(true, data);
+    public boolean handleIoResult(String messageOnError,
+                                String messageOnSuccess) {
+        if(this.isOk()) {
+            System.out.println(messageOnSuccess);
+        } else {
+            System.err.printf("%s\n", messageOnError);
+            if(ViewManager.isDeveloperMode()) {
+                if(this.getException() != null) {
+                    this.getException().printStackTrace();
+                }
+            }
+        }
+        return this.isOk();
     }
 
-    public static IOResult<?> failure(String logMessage, Exception e) {
-        System.err.println(logMessage);
-        return new IOResult<>(false, null, e);
+    public IOResult<T> success(String fileName, T data) {
+        this.data = data;
+        this.ok = true;
+        this.exception = null;
+        System.out.println(String.format("%s:", fileName));
+        return this;
+    }
+
+    public IOResult<T> failure(String fileName, Exception e) {
+        this.data = null;
+        this.ok = false;
+        this.exception = e;
+        System.err.println(String.format("%s:", fileName));
+        return this;
     }
 }

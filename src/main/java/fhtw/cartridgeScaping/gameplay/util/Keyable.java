@@ -1,4 +1,4 @@
-package fhtw.cartridgeScaping.gameplay;
+package fhtw.cartridgeScaping.gameplay.util;
 
 public interface Keyable {
     boolean unlock(Lockable lock);

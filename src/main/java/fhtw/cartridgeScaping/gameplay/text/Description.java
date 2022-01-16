@@ -1,4 +1,4 @@
-package fhtw.cartridgeScaping.gameplay;
+package fhtw.cartridgeScaping.gameplay.text;
 
 public class Description {
     protected String name;

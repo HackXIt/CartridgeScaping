@@ -8,9 +8,10 @@ package fhtw.cartridgeScaping.model;
  * @path src/main/java/fhtw/cartridgeScaping/model
  * @project CartridgeScaping
  */
-public class EasterEggModel {
+public class EasterEggModel extends Model {
 //    TODO Implement EasterEggModel
 
     public EasterEggModel() {
+        super();
     }
 }

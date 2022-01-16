@@ -1,5 +1,6 @@
 package fhtw.cartridgeScaping;
 
+import fhtw.cartridgeScaping.controller.ViewManager;
 import fhtw.cartridgeScaping.util.View;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -25,11 +26,8 @@ public class CartridgeScapingApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-//        root = new Scene(new Pane());
-        ViewManager.setup();
         ViewManager.enableDeveloperMode(true);
-//        ViewManager.switchTo(View.MAIN);
-        Scene root = new Scene(ViewManager.getLoader().load());
+        Scene root = new Scene(ViewManager.getLoader(View.MAIN).load());
         ViewManager.setScene(root);
         ViewManager.setMainWindow(stage);
         stage.setScene(root);

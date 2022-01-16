@@ -1,6 +1,6 @@
-package fhtw.cartridgeScaping.gameplay;
+package fhtw.cartridgeScaping.gameplay.rooms;
 
-import java.lang.reflect.Array;
+import fhtw.cartridgeScaping.gameplay.text.DoorDescription;
 
 public class Door {
     protected DoorDescription doorDescription;

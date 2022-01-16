@@ -1,6 +1,8 @@
-package fhtw.cartridgeScaping.gameplay;
+package fhtw.cartridgeScaping.gameplay.items;
 
-import java.util.concurrent.locks.Lock;
+import fhtw.cartridgeScaping.gameplay.text.ItemDescription;
+import fhtw.cartridgeScaping.gameplay.util.Keyable;
+import fhtw.cartridgeScaping.gameplay.util.Lockable;
 
 public class Key extends Item implements Keyable {
     private Lockable lock;

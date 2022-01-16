@@ -1,4 +1,4 @@
-package fhtw.cartridgeScaping.gameplay;
+package fhtw.cartridgeScaping.gameplay.util;
 
 public enum Direction {
     NORTH(0, 1, "north", "You can go north."),
@@ -10,6 +10,8 @@ public enum Direction {
     private int dy;
     private String dirName;
     private String dirDesc;
+
+    private static String[] possibleDirections = {"north", "east", "south", "west"};
 
     Direction(int dx, int dy, String dirName, String dirDesc) {
         this.dx = dx;
@@ -24,5 +26,19 @@ public enum Direction {
 
     public String getDirDesc() {
         return dirDesc;
+    }
+
+    public static Direction getDirection(String direction) throws IllegalStateException{
+        return switch(direction) {
+            case "north" -> NORTH;
+            case "east" -> EAST;
+            case "south" -> SOUTH;
+            case "west" -> WEST;
+            default -> throw new IllegalStateException("Unexpected value");
+        };
+    }
+
+    public static String[] getPossibleDirections() {
+        return possibleDirections;
     }
 }

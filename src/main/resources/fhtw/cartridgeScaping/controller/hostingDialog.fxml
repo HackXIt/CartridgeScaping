@@ -25,7 +25,7 @@
            <TextField GridPane.columnIndex="1" fx:id="fieldHostPort"/>
            <Button text="Load Cartridge..." GridPane.columnIndex="1" GridPane.rowIndex="1"
                    fx:id="btnLoadCartridge"
-                   onAction="#onLoadCartridge"
+                   onAction="#onLoad"
            />
            <Text GridPane.columnIndex="1" GridPane.rowIndex="2"
                  fx:id="status" visible="false"

@@ -57,7 +57,7 @@
             </ToolBar>
             <Separator orientation="VERTICAL" prefHeight="200.0"/>
             <VBox prefHeight="200.0" prefWidth="100.0">
-                <Text fx:id="StatusMessage" strokeType="OUTSIDE" strokeWidth="0.0" text="Waiting Room"/>
+                <Text fx:id="status" strokeType="OUTSIDE" strokeWidth="0.0" text="Waiting Room"/>
                 <HBox prefHeight="100.0" prefWidth="200.0">
                     <Button mnemonicParsing="false" text="Ready" onAction="#onReady"/>
                     <ProgressBar progress="0.0"/>
@@ -67,13 +67,13 @@
             <Separator orientation="VERTICAL" prefHeight="200.0"/>
             <VBox prefHeight="200.0" prefWidth="100.0">
                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="PlayerList"/>
-                <ListView fx:id="PlayerList" prefHeight="200.0" prefWidth="200.0"/>
+                <ListView fx:id="playerList" prefHeight="200.0" prefWidth="200.0"/>
             </VBox>
         </HBox>
     </bottom>
     <right>
         <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Game settings"/>
+            <Button text="Game settings" onAction="#onGameSettings"/>
         </VBox>
     </right>
     <top>

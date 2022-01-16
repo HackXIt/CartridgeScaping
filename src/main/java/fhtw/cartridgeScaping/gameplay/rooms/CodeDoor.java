@@ -1,5 +1,10 @@
-package fhtw.cartridgeScaping.gameplay;
+package fhtw.cartridgeScaping.gameplay.rooms;
 
+import fhtw.cartridgeScaping.gameplay.text.DoorDescription;
+import fhtw.cartridgeScaping.gameplay.util.Keyable;
+import fhtw.cartridgeScaping.gameplay.util.Lockable;
+
+// TODO Refactor this class - as mentioned in KeyCode
 public final class CodeDoor extends Door implements Lockable {
     private int code;
     private int unlockAttempts = 0;

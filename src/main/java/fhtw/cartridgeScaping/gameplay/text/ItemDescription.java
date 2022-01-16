@@ -1,4 +1,4 @@
-package fhtw.cartridgeScaping.gameplay;
+package fhtw.cartridgeScaping.gameplay.text;
 
 public class ItemDescription extends Description{
     private String roomDesc; // NOTE Description of item placed in room

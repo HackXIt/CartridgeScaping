@@ -1,9 +1,9 @@
 package fhtw.cartridgeScaping.controller;
 
-import fhtw.cartridgeScaping.ViewManager;
 import fhtw.cartridgeScaping.cartridge.Cartridge;
-import fhtw.cartridgeScaping.cartridge.CartridgeModel;
+import fhtw.cartridgeScaping.cartridge.CartridgeController;
 import fhtw.cartridgeScaping.util.IOResult;
+import fhtw.cartridgeScaping.util.View;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -12,9 +12,7 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 
-public class HostDialogController implements DialogController {
-    private CartridgeModel model;
-
+public class HostDialogController extends CartridgeController implements DialogController {
     @FXML
     private TextField fieldHostPort;
 
@@ -24,27 +22,43 @@ public class HostDialogController implements DialogController {
     @FXML
     private Text status;
 
-    public HostDialogController(CartridgeModel model) {
-        this.model = new CartridgeModel();
+    public HostDialogController() {
+        super();
     }
 
     @Override
     public void consumeDialog() {
         // TODO Host game upon consuming dialog
+        // NOTE Since CartridgeModel is not implemented, Game is loaded via here no matter what happens.
+        if(ViewManager.isDeveloperMode()) {
+            System.out.println("DEVELOPER - Switching to GameplayMode");
+            this.switchView("Failed to load & switch view to WaitingRoom.",
+                    "Successfully loaded & switched view to WaitingRoom",
+                    View.WAITING);
+        }
     }
 
-    @FXML
-    public void onLoadCartridge() {
+    @Override
+    public void onLoad() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(new File("./"));
         File file = fileChooser.showOpenDialog(ViewManager.getMainWindow());
         if (file != null) {
-            IOResult<Cartridge> io = model.load(file.toPath());
-            if(io.isOk()) {
-                // TODO switch view and host game with model
-            } else {
-                // TODO handle failure of onLoadCartridge()
-            }
+            this.loadCartridge(
+                    "Successfully loaded Cartridge.",
+                    "Failed to load Cartridge.",
+                    file.toPath()
+            );
         }
+    }
+
+    @Override
+    public void onSave() throws UnsupportedOperationException{
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void onApply() throws UnsupportedOperationException{
+        throw new UnsupportedOperationException();
     }
 }

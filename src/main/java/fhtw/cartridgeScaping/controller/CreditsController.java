@@ -1,19 +1,10 @@
 package fhtw.cartridgeScaping.controller;
 
 import fhtw.cartridgeScaping.util.View;
-import fhtw.cartridgeScaping.ViewManager;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 
 import java.io.IOException;
-
-/* NOTE CreditsController currently deprecated
-The CreditsController is unnecessary and the control will be handled by MainMenuController
-
-If the gameCredits.fxml View ever requires additional control (= meaning more code),
-this will become the controller for that View again, simply for readability.
-
-But as of now, this is not necessary.
- */
 
 /**
  * INFO Header of CreditsController.java
@@ -23,8 +14,18 @@ But as of now, this is not necessary.
  * @path src/main/java/fhtw/cartridgeScaping/controller
  * @project CartridgeScaping
  */
-public class CreditsController {
-    public void onCreditsBack(ActionEvent actionEvent) throws IOException {
-        ViewManager.switchTo(View.MAIN);
+public class CreditsController extends Controller{
+
+    public CreditsController() {
+        super();
+    }
+
+    //    NOTE Controls for gameCredits.fxml ----
+    @FXML
+    public void onCreditsBack() {
+        this.switchView(
+                "Failed to load & switch view to Main.",
+                "Successfully loaded & switched view to Main.",
+                View.MAIN);
     }
 }

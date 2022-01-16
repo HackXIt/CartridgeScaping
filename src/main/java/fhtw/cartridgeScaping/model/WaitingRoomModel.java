@@ -8,6 +8,7 @@ package fhtw.cartridgeScaping.model;
  * @path src/main/java/fhtw/cartridgeScaping/model
  * @project CartridgeScaping
  */
-public class WaitingRoomModel {
+public class WaitingRoomModel extends Model{
 //    TODO Implement WaitingRoomModel
+
 }

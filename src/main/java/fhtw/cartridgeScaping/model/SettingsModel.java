@@ -8,18 +8,33 @@ package fhtw.cartridgeScaping.model;
  * @path src/main/java/fhtw/cartridgeScaping/model
  * @project CartridgeScaping
  */
-public class SettingsModel {
+public class SettingsModel extends Model{
     private int window_width;
     private int window_height;
     private boolean fullscreen;
+    private boolean blinkingCursor;
 
-    public static int default_width = 800;
-    public static int default_height = 600;
+    public static int default_width;
+    public static int default_height;
+    public static boolean default_fullscreen;
+    public static boolean default_blinkingCursor;
+    static {
+        default_width = 800;
+        default_height = 600;
+        default_fullscreen = false;
+        default_blinkingCursor = true;
+    }
 
-    public SettingsModel(int window_width, int window_height, boolean fullscreen) {
+    public SettingsModel() {
+        super();
+    }
+
+    public SettingsModel(int window_width, int window_height, boolean fullscreen, boolean blinkingCursor) {
+        this();
         this.window_width = window_width;
         this.window_height = window_height;
         this.fullscreen = fullscreen;
+        this.blinkingCursor = blinkingCursor;
     }
 
     public int getWindow_width() {
@@ -53,5 +68,13 @@ public class SettingsModel {
     public void setFullscreen(boolean fullscreen) {
         // TODO Implement fullscreen mode
         this.fullscreen = fullscreen;
+    }
+
+    public boolean isBlinkingCursor() {
+        return blinkingCursor;
+    }
+
+    public void setBlinkingCursor(boolean blinkingCursor) {
+        this.blinkingCursor = blinkingCursor;
     }
 }

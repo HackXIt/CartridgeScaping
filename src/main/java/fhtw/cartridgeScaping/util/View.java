@@ -18,6 +18,8 @@ public enum View {
     HOST("hostingDialog.fxml", true),
     JOIN("joinDialog.fxml", true);
 
+//    TODO Add static log messages to View to make switchView and openDialog less annoying
+
     private String fileName;
     private boolean hasCache;
 
@@ -25,9 +27,11 @@ public enum View {
         this.fileName = fileName;
         this.hasCache = hasCache;
     }
-
-
     public String getFileName() {
         return fileName;
+    }
+
+    public boolean hasCache() {
+        return hasCache;
     }
 }
