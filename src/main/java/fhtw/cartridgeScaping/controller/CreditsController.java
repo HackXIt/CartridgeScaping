@@ -1,5 +1,6 @@
 package fhtw.cartridgeScaping.controller;
 
+import fhtw.cartridgeScaping.model.Model;
 import fhtw.cartridgeScaping.util.View;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,6 +19,11 @@ public class CreditsController extends Controller{
 
     public CreditsController() {
         super();
+    }
+
+    @Override
+    public Model getModel() {
+        return null;
     }
 
     //    NOTE Controls for gameCredits.fxml ----

@@ -1,6 +1,7 @@
 package fhtw.cartridgeScaping.controller;
 
 import fhtw.cartridgeScaping.model.GameplayModel;
+import fhtw.cartridgeScaping.model.Model;
 import fhtw.cartridgeScaping.util.View;
 import javafx.event.ActionEvent;
 
@@ -12,13 +13,19 @@ import javafx.event.ActionEvent;
  * @path src/main/java/fhtw/cartridgeScaping/controller
  * @project CartridgeScaping
  */
-public class GameplayController  extends Controller{
+public class GameplayController extends Controller{
     private final GameplayModel model;
 
     public GameplayController() {
         super();
         this.model = new GameplayModel();
     }
+
+    @Override
+    public GameplayModel getModel() {
+        return model;
+    }
+
 
     //    NOTE Controls for gameplayView.fxml ----
     public void onQuitGameplay(ActionEvent actionEvent) {

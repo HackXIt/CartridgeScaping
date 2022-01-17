@@ -23,16 +23,14 @@ public class HelpManager {
                 "Drop item in the current room.",
                 "Drop the <item>",
                 "This command will drop the given item in the current that you are in."));
-        // TODO Improve direction helpText (Currently creating helpText per Direction, which isn't very readable)
-        for (String direction: Direction.getPossibleDirections()
-             ) {
-            String cmd = "go " + direction;
-            helpTexts.put(cmd, new HelpText(
-                    cmd,
-                    String.format("Type '%s' to go in direction %s.", cmd, direction),
-                    String.format("Go in %s", direction)
-            ));
-        }
+        // DONE Improve direction helpText (Currently creating helpText per Direction, which isn't very readable)
+        helpTexts.put(Direction.getPossibleDirectionsAsSyntax(), new HelpText(
+                "go west",
+                "Type 'go <direction>' to go in specified direction.",
+                "Go in direction",
+                "This command allows you to walk or move in the specified direction." +
+                        "The syntax shows all usable directions in the game, but your room might not have all of those."
+        ));
     }
 
     public static HelpText getHelpText(String command) {

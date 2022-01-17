@@ -1,13 +1,15 @@
 package fhtw.cartridgeScaping.gameplay.items;
 
+import fhtw.cartridgeScaping.gameplay.GameObject;
 import fhtw.cartridgeScaping.gameplay.Player;
 import fhtw.cartridgeScaping.gameplay.rooms.Room;
 import fhtw.cartridgeScaping.gameplay.text.ItemDescription;
+import fhtw.cartridgeScaping.gameplay.util.Inspectable;
+import fhtw.cartridgeScaping.gameplay.util.InventoryItem;
+import fhtw.cartridgeScaping.gameplay.util.Lookable;
 
-public class Item {
+public class Item extends GameObject implements InventoryItem {
     protected ItemDescription itemDesc;
-    protected Player itemHolder;
-    protected boolean isHeld;
 
     public Item(ItemDescription itemDesc) {
         this.itemDesc = itemDesc;
@@ -44,26 +46,34 @@ public class Item {
         return new Item(this);
     }
 
-    public void drop(Room room) {
-        if(isHeld()) {
+    @Override
+    public String toString() {
+        StringBuilder strBuilder = new StringBuilder(itemDesc.toString());
+        strBuilder.append(isHeld() ? itemDesc.getInventoryDescription() : itemDesc.getRoomDesc());
+        return strBuilder.toString();
+    }
+
+    @Override
+    public String lookAt() {
+        return toString();
+    }
+
+    public void dropItem(Room room) {
+        if(isHeld) {
             room.addItem(this);
             itemHolder.dropItem(this);
             itemHolder = null;
             isHeld = false;
         }
-
-    }
-
-    public void pickup(Room room, Player player) {
-        if(!isHeld()) {
-            room.removeItem(this.getName());
-            player.addItem(this);
-            itemHolder = player;
-        }
     }
 
     @Override
-    public String toString() {
-        return itemDesc.toString();
+    public String inspect() {
+        return itemDesc.getDetailedDescription();
+    }
+
+    @Override
+    public void drop(Room room) {
+
     }
 }

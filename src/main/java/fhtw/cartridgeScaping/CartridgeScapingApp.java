@@ -1,6 +1,7 @@
 package fhtw.cartridgeScaping;
 
 import fhtw.cartridgeScaping.controller.ViewManager;
+import fhtw.cartridgeScaping.networking.NetworkManager;
 import fhtw.cartridgeScaping.util.View;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -23,6 +24,7 @@ import javafx.stage.Stage;
  * @project CartridgeScaping
  */
 public class CartridgeScapingApp extends Application {
+    private NetworkManager networkManager;
 
     @Override
     public void start(Stage stage) throws Exception {

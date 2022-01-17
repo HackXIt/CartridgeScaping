@@ -3,6 +3,7 @@ package fhtw.cartridgeScaping.gameplay.text;
 public class DoorDescription extends Description{
     private String insideDescription;
     private String outsideDescription;
+    private String detailedDescription;
 
     private boolean isInside;
 
@@ -14,8 +15,13 @@ public class DoorDescription extends Description{
         super(name, shortDescription);
     }
 
-    public DoorDescription(String name, String shortDescription, String longDescription) {
-        super(name, shortDescription, longDescription);
+    public DoorDescription(Description description) {
+        super(description);
+    }
+
+    public DoorDescription(Description description, String detailedDescription) {
+        super(description);
+        this.detailedDescription = detailedDescription;
     }
 
     public String getInsideDescription() {
@@ -32,6 +38,14 @@ public class DoorDescription extends Description{
 
     public void setOutsideDescription(String outsideDescription) {
         this.outsideDescription = outsideDescription;
+    }
+
+    public String getDetailedDescription() {
+        return detailedDescription;
+    }
+
+    public void setDetailedDescription(String detailedDescription) {
+        this.detailedDescription = detailedDescription;
     }
 
     public boolean isInside() {

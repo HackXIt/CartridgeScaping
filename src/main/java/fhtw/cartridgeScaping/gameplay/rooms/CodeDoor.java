@@ -17,9 +17,9 @@ public final class CodeDoor extends Door implements Lockable {
     }
 
     @Override
-    public boolean attemptUnlock(Keyable code) {
+    public boolean attemptUnlock(Keyable keyable) {
         if(isLocked) {
-            if (this.code != (Integer) code.getKey()) {
+            if (this.code == (Integer) keyable.getKey()) {
                 isLocked = false;
                 // TODO RoomMessage upon successfully unlocking door.
                 return true;

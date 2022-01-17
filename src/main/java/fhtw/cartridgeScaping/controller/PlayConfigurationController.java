@@ -1,11 +1,20 @@
 package fhtw.cartridgeScaping.controller;
 
+import fhtw.cartridgeScaping.gameplay.Player;
+import fhtw.cartridgeScaping.gameplay.text.PlayerDescription;
+import fhtw.cartridgeScaping.networking.NetworkManager;
 import fhtw.cartridgeScaping.model.PlayConfigurationModel;
 import fhtw.cartridgeScaping.util.View;
-import javafx.event.ActionEvent;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 
-import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 /* NOTE PlayConfigurationController currently deprecated
 The PlayConfigurationController is unnecessary and the control will be handled by MainMenuController
@@ -24,33 +33,102 @@ But as of now, this is not necessary.
  * @path src/main/java/fhtw/cartridgeScaping
  * @project CartridgeScaping
  */
-public class PlayConfigurationController extends Controller {
-    private PlayConfigurationModel playConfigurationModel;
+public class PlayConfigurationController extends Controller implements Initializable {
+    private final PlayConfigurationModel model;
+    private final SimpleStringProperty playerName = new SimpleStringProperty();
+    private final SimpleStringProperty shortDescription = new SimpleStringProperty();
+    private final SimpleStringProperty longDescription = new SimpleStringProperty();
+    private final SimpleStringProperty status = new SimpleStringProperty();
 
     public PlayConfigurationController() {
         super();
-        playConfigurationModel = new PlayConfigurationModel();
+        model = new PlayConfigurationModel();
+    }
+
+    @FXML
+    private TextField fieldPlayerName;
+    @FXML
+    private TextArea areaShortDescription;
+    @FXML
+    private TextArea areaLongDescription;
+    @FXML
+    private Text statusText;
+
+    @Override
+    public PlayConfigurationModel getModel() {
+        return model;
+    }
+
+    public String getPlayerName() {
+        return playerName.get();
+    }
+
+    public SimpleStringProperty playerNameProperty() {
+        return playerName;
+    }
+
+    public String getShortDescription() {
+        return shortDescription.get();
+    }
+
+    public SimpleStringProperty shortDescriptionProperty() {
+        return shortDescription;
+    }
+
+    public String getLongDescription() {
+        return longDescription.get();
+    }
+
+    public SimpleStringProperty longDescriptionProperty() {
+        return longDescription;
+    }
+
+    public String getStatus() {
+        return status.get();
+    }
+
+    public SimpleStringProperty statusProperty() {
+        return status;
+    }
+
+    private boolean checkInput() {
+        if(playerName.get() != null && !playerName.get().isEmpty() && playerName.get().length() >= 3) {
+            NetworkManager.setSelf(new Player(new PlayerDescription(
+                    playerName.get(),
+                    shortDescription.get() != null ? shortDescription.get() : "",
+                    longDescription.get() != null ? longDescription.get() : ""
+            )));
+            return true;
+        } else {
+            statusText.setVisible(true);
+            statusText.setText("Failed: A player name is essential. Please enter a valid name.");
+            return false;
+        }
     }
 
     //    NOTE Controls for playConfiguration.fxml ----
     @FXML
     public void onHost() {
-        this.openDialog(
-                "Failed to open hostingDialog.",
-                "Successfully opened hostingDialog.",
-                View.HOST,
-                "Host game..."
-        );
+        if (checkInput()){
+            this.openDialog(
+                    "Failed to open hostingDialog.",
+                    "Successfully opened hostingDialog.",
+                    View.HOST,
+                    "Host game..."
+            );
+        }
     }
 
     @FXML
     public void onJoin() {
-        this.openDialog(
-                "Failed to open joinDialog.",
-                "Successfully opened joinDialog.",
-                View.JOIN,
-                "Join game..."
-        );
+        if (checkInput()) {
+            this.openDialog(
+                    "Failed to open joinDialog.",
+                    "Successfully opened joinDialog.",
+                    View.JOIN,
+                    "Join game..."
+            );
+        }
     }
 
     @FXML
@@ -59,5 +137,13 @@ public class PlayConfigurationController extends Controller {
                 "Failed to load & switch view to Main.",
                 "Successfully loaded & switched view to Main.",
                 View.MAIN);
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        Bindings.bindBidirectional(fieldPlayerName.textProperty(), playerNameProperty());
+        Bindings.bindBidirectional(areaShortDescription.textProperty(), shortDescriptionProperty());
+        Bindings.bindBidirectional(areaLongDescription.textProperty(), longDescriptionProperty());
+        Bindings.bindBidirectional(statusText.textProperty(), statusProperty());
     }
 }

@@ -1,5 +1,6 @@
 package fhtw.cartridgeScaping.controller;
 
+import fhtw.cartridgeScaping.model.Model;
 import fhtw.cartridgeScaping.model.SettingsModel;
 import fhtw.cartridgeScaping.util.View;
 import javafx.beans.binding.Bindings;
@@ -30,7 +31,6 @@ But as of now, this is not necessary.
  */
 public class AppSettingsController extends Controller implements Initializable {
     private final SettingsModel model = ViewManager.getApplicationSettings();
-    private final SimpleBooleanProperty developerMode = new SimpleBooleanProperty();
     private final SimpleBooleanProperty blinkingCursor = new SimpleBooleanProperty();
 
     @FXML
@@ -42,13 +42,9 @@ public class AppSettingsController extends Controller implements Initializable {
         super();
     }
 
-
-    public boolean isDeveloperMode() {
-        return developerMode.get();
-    }
-
-    public SimpleBooleanProperty developerModeProperty() {
-        return developerMode;
+    @Override
+    public SettingsModel getModel() {
+        return null;
     }
 
     public boolean isBlinkingCursor() {
@@ -61,7 +57,6 @@ public class AppSettingsController extends Controller implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Bindings.bindBidirectional(boxDevMode.selectedProperty(), developerModeProperty());
         Bindings.bindBidirectional(boxBlinkingCursor.selectedProperty(), blinkingCursorProperty());
     }
 
@@ -76,7 +71,7 @@ public class AppSettingsController extends Controller implements Initializable {
     }
 
     public void onDevModeToggle() {
-        ViewManager.enableDeveloperMode(developerModeProperty().get());
+        ViewManager.enableDeveloperMode(boxDevMode.selectedProperty().get());
         if(ViewManager.isDeveloperMode()) {
             System.out.println("Enabled DeveloperMode.");
         } else {

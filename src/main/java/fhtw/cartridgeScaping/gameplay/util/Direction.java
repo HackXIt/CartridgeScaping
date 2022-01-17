@@ -41,4 +41,8 @@ public enum Direction {
     public static String[] getPossibleDirections() {
         return possibleDirections;
     }
+
+    public static String getPossibleDirectionsAsSyntax() {
+        return "go <" + String.join(",", possibleDirections) + ">";
+    }
 }

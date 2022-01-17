@@ -1,5 +1,6 @@
 package fhtw.cartridgeScaping.controller;
 
+import fhtw.cartridgeScaping.gameplay.Player;
 import fhtw.cartridgeScaping.model.SettingsModel;
 import fhtw.cartridgeScaping.util.IOResult;
 import fhtw.cartridgeScaping.util.View;
@@ -9,13 +10,16 @@ import javafx.scene.Scene;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Consumer;
 
 /**
  * INFO Header of ViewManager.java
@@ -80,6 +84,20 @@ public class ViewManager {
 
     public static boolean isDeveloperMode() {
         return developerMode;
+    }
+
+    public static void handleInputException(Exception e, Consumer<String> statusAction) {
+        if(developerMode) {
+            e.printStackTrace();
+        } else {
+            System.out.println("test");
+            switch (e.getClass().getName()) {
+                case "UnknownHostException" -> statusAction.accept("IP address is invalid.");
+                case "NumberFormatException" -> statusAction.accept("Port is invalid.");
+                default -> System.out.printf("Obj: %s\nName: %s\nClass: %s",
+                        e, e.getClass().getName(), e.getClass());
+            }
+        }
     }
 
     private static void loadAndShowDialog(String dialogTitle,

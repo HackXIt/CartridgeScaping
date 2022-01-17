@@ -14,10 +14,10 @@ public class AdvancedCommand<T> extends Command{
         super(action, commandText);
     }
 
-    public AdvancedCommand(Consumer<T> consumer, T consumable, CommandText commandText) {
+    public AdvancedCommand(Consumer<T> consumer, T staticConsumable, CommandText commandText) {
         super(null, commandText);
         this.consumer = consumer;
-        this.staticConsumable = consumable;
+        this.staticConsumable = staticConsumable;
     }
 
     @Override

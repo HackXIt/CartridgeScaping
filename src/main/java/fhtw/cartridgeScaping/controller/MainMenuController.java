@@ -1,5 +1,6 @@
 package fhtw.cartridgeScaping.controller;
 
+import fhtw.cartridgeScaping.model.Model;
 import fhtw.cartridgeScaping.util.View;
 import fhtw.cartridgeScaping.model.EasterEggModel;
 import javafx.application.Platform;
@@ -14,11 +15,16 @@ import javafx.fxml.FXML;
  * @project CartridgeScaping
  */
 public class MainMenuController extends Controller{
-    private final EasterEggModel easterEggModel;
+    private final EasterEggModel model;
 
     public MainMenuController() {
         super();
-        this.easterEggModel = new EasterEggModel();
+        this.model = new EasterEggModel();
+    }
+
+    @Override
+    public EasterEggModel getModel() {
+        return model;
     }
 
     //    NOTE Controls for mainMenu.fxml ----

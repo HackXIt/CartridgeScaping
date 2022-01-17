@@ -12,7 +12,6 @@ public class LockDoor extends Door implements Lockable {
         this.keyable = keyable;
         isLocked = true;
     }
-
     @Override
     public boolean attemptUnlock(Keyable keyable) {
         if(isLocked) {

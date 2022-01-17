@@ -4,6 +4,7 @@ public class Description {
     protected String name;
     protected String shortDescription;
     protected String longDescription;
+    protected String detailedDescription;
 
     public Description(String name) {
         this.name = name;
@@ -19,10 +20,18 @@ public class Description {
         this.longDescription = longDescription;
     }
 
+    public Description(String name, String shortDescription, String longDescription, String detailedDescription) {
+        this.name = name;
+        this.shortDescription = shortDescription;
+        this.longDescription = longDescription;
+        this.detailedDescription = detailedDescription;
+    }
+
     public Description(Description description) {
         this.name = description.getName();
         this.shortDescription = description.getShortDescription();
         this.longDescription = description.getLongDescription();
+        this.detailedDescription = description.getDetailedDescription();
     }
 
     public String getName() {
@@ -47,6 +56,14 @@ public class Description {
 
     public void setLongDescription(String longDescription) {
         this.longDescription = longDescription;
+    }
+
+    public String getDetailedDescription() {
+        return detailedDescription;
+    }
+
+    public void setDetailedDescription(String detailedDescription) {
+        this.detailedDescription = detailedDescription;
     }
 
     public Description cloneDescription() {

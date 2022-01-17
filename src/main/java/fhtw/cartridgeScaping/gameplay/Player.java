@@ -1,30 +1,25 @@
 package fhtw.cartridgeScaping.gameplay;
 
+import fhtw.cartridgeScaping.controller.ViewManager;
 import fhtw.cartridgeScaping.gameplay.console.CommandManager;
-import fhtw.cartridgeScaping.gameplay.console.HelpManager;
-import fhtw.cartridgeScaping.gameplay.console.HelpText;
 import fhtw.cartridgeScaping.gameplay.items.Item;
 import fhtw.cartridgeScaping.gameplay.rooms.Room;
+import fhtw.cartridgeScaping.gameplay.text.PlayerDescription;
 import fhtw.cartridgeScaping.gameplay.util.Direction;
-import javafx.util.Pair;
+import fhtw.cartridgeScaping.gameplay.util.Inspectable;
+import fhtw.cartridgeScaping.gameplay.util.Lookable;
 
 import java.util.HashMap;
-import java.util.function.Consumer;
 
-public class Player {
-    private String playerName;
+public class Player implements Lookable, Inspectable {
+    private final PlayerDescription playerDescription;
     private final HashMap<Integer, Item> inventory;
     private Room currentRoom;
-    private final HashMap<String, Pair<Consumer<Item>, HelpText>> possibleItemInteractions = new HashMap<>();
     private final CommandManager commandManager;
 
-    public Player(String playerName) {
-        this.playerName = playerName;
+    public Player(PlayerDescription playerDescription) {
+        this.playerDescription = playerDescription;
         this.inventory = new HashMap<>();
-        possibleItemInteractions.put("take",
-                new Pair<>(this::pickupItem, HelpManager.getHelpText("take")));
-        possibleItemInteractions.put("drop",
-                new Pair<>(this::pickupItem, HelpManager.getHelpText("drop")));
         this.commandManager = new CommandManager(this);
     }
 
@@ -35,11 +30,11 @@ public class Player {
 //    }
 
     public String getPlayerName() {
-        return playerName;
+        return playerDescription.getName();
     }
 
     public void setPlayerName(String playerName) {
-        this.playerName = playerName;
+        playerDescription.setName(playerName);
     }
 
     public HashMap<Integer, Item> getInventory() {
@@ -50,12 +45,8 @@ public class Player {
         return currentRoom;
     }
 
-    public HashMap<String, Pair<Consumer<Item>, HelpText>> getPossibleItemInteractions() {
-        return possibleItemInteractions;
-    }
-
-    public void addItem(Item item) {
-        inventory.put(item.getId(), item);
+    public void addItem(GameObject item) {
+        inventory.put(item.hashCode(), (Item) item);
     }
 
     public void pickupItem(Item item) {
@@ -86,5 +77,31 @@ public class Player {
         } else {
             // TODO PlayerMessage notifying that the given direction is not available in currentRoom
         }
+    }
+
+    public void look() {
+        if(ViewManager.isDeveloperMode()) {
+            System.out.println(currentRoom.lookAt());
+        }
+        // TODO LocalMessage upon looking at currentRoom
+    }
+
+    public void lookObject(GameObject object) {
+        if(ViewManager.isDeveloperMode()) {
+            System.out.println(object.lookAt());
+        }
+        // TODO LocalMessage upon looking at object
+        // TODO PlayerMessage upon looking at Player
+    }
+
+    @Override
+    public String inspect() {
+        // TODO Return inspectable text from the playerDescription
+        return null;
+    }
+
+    @Override
+    public String lookAt() {
+        return playerDescription.toString();
     }
 }

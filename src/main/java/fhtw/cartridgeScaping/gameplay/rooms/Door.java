@@ -1,13 +1,18 @@
 package fhtw.cartridgeScaping.gameplay.rooms;
 
+import fhtw.cartridgeScaping.gameplay.GameObject;
 import fhtw.cartridgeScaping.gameplay.text.DoorDescription;
+import fhtw.cartridgeScaping.gameplay.util.Keyable;
+import fhtw.cartridgeScaping.gameplay.util.Lockable;
 
-public class Door {
+public class Door extends GameObject implements Lockable {
     protected DoorDescription doorDescription;
     protected Room roomDestination;
     protected Room roomSource;
     protected boolean isLocked = false;
     protected boolean isOpen = false;
+
+    // TODO Fix constructors in Door
 
     public Door(DoorDescription doorDescription, Room roomDestination, Room roomSource) {
         this.doorDescription = doorDescription;
@@ -46,7 +51,7 @@ public class Door {
         this.doorDescription = doorDescription;
     }
 
-    public boolean attemptUnlock() {
+    public boolean attemptUnlock(Keyable keyable) {
         if(isLocked) {
             isLocked = false;
             return true;
@@ -80,5 +85,15 @@ public class Door {
             // TODO RoomMessage with notification that door is already closed.
             return false;
         }
+    }
+
+    @Override
+    public String lookAt() {
+        return doorDescription.toString();
+    }
+
+    @Override
+    public String inspect() {
+        return doorDescription.getDetailedDescription();
     }
 }

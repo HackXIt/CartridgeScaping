@@ -1,5 +1,6 @@
 package fhtw.cartridgeScaping.gameplay.rooms;
 
+import fhtw.cartridgeScaping.gameplay.GameObject;
 import fhtw.cartridgeScaping.gameplay.Player;
 import fhtw.cartridgeScaping.gameplay.items.Item;
 import fhtw.cartridgeScaping.gameplay.text.DoorDescription;
@@ -8,12 +9,12 @@ import fhtw.cartridgeScaping.gameplay.util.Direction;
 
 import java.util.HashMap;
 
-public class Room {
+public class Room extends GameObject {
     private RoomDescription roomDescription;
     private HashMap<Direction, Room> directions;
-    private HashMap<String, Door> doors;
-    private HashMap<String, Item> items;
-    private HashMap<String, Player> players;
+    private HashMap<Integer, Door> doors;
+    private HashMap<Integer, Item> items;
+    private final HashMap<Integer, Player> players;
 
     private boolean hasDoors = false;
     private boolean hasItems = false;
@@ -36,7 +37,7 @@ public class Room {
 
     public Room(RoomDescription roomDescription,
                 HashMap<Direction, Room> directions,
-                HashMap<String, Door> doors) {
+                HashMap<Integer, Door> doors) {
         this(roomDescription, directions);
         this.doors = doors;
         this.hasDoors = true;
@@ -44,8 +45,8 @@ public class Room {
 
     public Room(RoomDescription roomDescription,
                 HashMap<Direction, Room> directions,
-                HashMap<String, Door> doors,
-                HashMap<String, Item> items) {
+                HashMap<Integer, Door> doors,
+                HashMap<Integer, Item> items) {
         this(roomDescription, directions, doors);
         this.items = items;
         this.hasItems = true;
@@ -56,6 +57,9 @@ public class Room {
         this.directions = room.getDirections();
         this.items = room.hasItems() ? room.getItems() : null;
         this.doors = room.hasDoors() ? room.getDoors() : null;
+        this.hasDoors = room.hasDoors();
+        this.hasItems = room.hasItems();
+        this.players = new HashMap<>();
     }
 
 //    NOTE Member Methods ----------------------------------------
@@ -68,15 +72,15 @@ public class Room {
         this.roomDescription = roomDescription;
     }
 
-    public HashMap<String, Door> getDoors() {
+    public HashMap<Integer, Door> getDoors() {
         return doors;
     }
 
-    public void setDoors(HashMap<String, Door> doors) {
+    public void setDoors(HashMap<Integer, Door> doors) {
         this.doors = doors;
     }
 
-    public HashMap<String, Door> copyDoors() {
+    public HashMap<Integer, Door> copyDoors() {
         // TODO Implement deepCopy for copyDoors()
         return new HashMap<>(doors);
     }
@@ -94,15 +98,15 @@ public class Room {
         return new HashMap<>(directions);
     }
 
-    public HashMap<String, Item> getItems() {
+    public HashMap<Integer, Item> getItems() {
         return items;
     }
 
-    public void setItems(HashMap<String, Item> items) {
+    public void setItems(HashMap<Integer, Item> items) {
         this.items = items;
     }
 
-    public HashMap<String, Item> copyItems() {
+    public HashMap<Integer, Item> copyItems() {
         // TODO Implement deepCopy for copyItems()
         return new HashMap<>(items);
     }
@@ -115,7 +119,7 @@ public class Room {
         return hasItems;
     }
 
-    public HashMap<String, Player> getPlayers() {
+    public HashMap<Integer, Player> getPlayers() {
         return players;
     }
 
@@ -124,7 +128,7 @@ public class Room {
     public boolean addItem(Item item) {
         if(item != null) {
             if (!items.containsKey(item.getName())) {
-                items.put(item.getName(), item);
+                items.put(item.hashCode(), item);
                 // TODO RoomMessage upon successfully executing addItem
                 System.out.printf("Item '%s' was dropped in '%s'.", item.getName(), roomDescription.getName());
                 hasItems = true;
@@ -140,26 +144,26 @@ public class Room {
         }
     }
 
-    public Item removeItem(String name) {
-        if (items.containsKey(name)) {
-            Item item = items.get(name);
-            items.remove(item);
+    public Item removeItem(Integer hashCode) {
+        if (items.containsKey(hashCode)) {
+            Item item = items.get(hashCode);
+            items.remove(hashCode);
             // TODO RoomMessage upon successfully executing removeItem
-            System.out.printf("%s was removed from %s.", name, roomDescription.getName());
+            System.out.printf("%s was removed from %s.", hashCode, roomDescription.getName());
             if(items.isEmpty()) {
                 hasItems = false;
             }
             return item;
         } else {
             // TODO RoomMessage upon failing to removeItem (item is not in room)
-            System.err.printf("%s is not in %s.", name, roomDescription.getName());
+            System.err.printf("%s is not in %s.", hashCode, roomDescription.getName());
             return null;
         }
     }
 
     public boolean addPlayer(Player player) {
         if(player != null && !players.containsKey(player.getPlayerName())) {
-            players.put(player.getPlayerName(), player);
+            players.put(player.hashCode(), player);
             // TODO RoomMessage upon player entering room (Prints arrival of player to other players)
             // TODO PlayerMessage upon player entering room (Prints room description to Player)
             System.out.printf("Player '%s' entered '%s'.", player.getPlayerName(), roomDescription.getName());
@@ -172,7 +176,7 @@ public class Room {
 
     public boolean removePlayer(Player player) {
         if(player != null && players.containsKey(player.getPlayerName())) {
-            players.remove(player.getPlayerName());
+            players.remove(player.hashCode());
             // TODO RoomMessage upon player leaving room (Prints departure of player to other players)
             // TODO PlayerMessage upon player leaving room (Prints leave message to Player)
             System.out.printf("Player '%s' has left '%s'.", player.getPlayerName(), roomDescription.getName());
@@ -185,8 +189,8 @@ public class Room {
 
     public boolean addDoor(Door door) {
         // FIXME Adding doors to Room currently doesn't edit Door object (Necessary for inside/outside)
-        if(door != null && !doors.containsKey(door.getDoorDescription().getName())) {
-            doors.put(door.getDoorDescription().getName(), door);
+        if(door != null && !doors.containsKey(door.hashCode())) {
+            doors.put(door.hashCode(), door);
             System.out.printf("Door '%s' was added to '%s'.",
                     door.getDoorDescription().getName(),
                     roomDescription.getName());
@@ -199,8 +203,8 @@ public class Room {
     }
 
     public boolean removeDoor(Door door) {
-        if(door != null && doors.containsKey(door.getDoorDescription().getName())) {
-            doors.remove(door.getDoorDescription().getName());
+        if(door != null && doors.containsKey(door.hashCode())) {
+            doors.remove(door.hashCode());
             System.out.printf("Door '%s' was removed from '%s'.",
                     door.getDoorDescription().getName(),
                     roomDescription.getName());
@@ -276,5 +280,15 @@ public class Room {
             strBuilder.append(k.getDirDesc());
         });
         return strBuilder.toString();
+    }
+
+    @Override
+    public String lookAt() {
+        return toString();
+    }
+
+    @Override
+    public String inspect() {
+        return null;
     }
 }
