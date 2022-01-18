@@ -1,10 +1,9 @@
 package fhtw.cartridgeScaping;
 
 import fhtw.cartridgeScaping.controller.ViewManager;
+import fhtw.cartridgeScaping.gameplay.Player;
 import fhtw.cartridgeScaping.networking.NetworkManager;
-import fhtw.cartridgeScaping.util.View;
 import javafx.application.Application;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
@@ -27,21 +26,12 @@ public class CartridgeScapingApp extends Application {
     private NetworkManager networkManager;
 
     @Override
-    public void start(Stage stage) throws Exception {
-        ViewManager.enableDeveloperMode(true);
-        Scene root = new Scene(ViewManager.getLoader(View.MAIN).load());
-        ViewManager.setScene(root);
-        ViewManager.setMainWindow(stage);
-        stage.setScene(root);
-        if(ViewManager.isDeveloperMode()) {
-            try {
-                stage.show();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            stage.show();
-        }
+    public void start(Stage primaryStage) throws Exception {
+        ViewManager.getInstance().toggleDeveloperMode(true);
+        ViewManager.getInstance().setPrimaryStage(primaryStage);
+        primaryStage.setScene(ViewManager.getInstance().init());
+        Player.getInstance().getCommandManager().init();
+        primaryStage.show();
     }
 
     public static void main(String[] args) {

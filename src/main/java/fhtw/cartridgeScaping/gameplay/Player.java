@@ -9,32 +9,52 @@ import fhtw.cartridgeScaping.gameplay.util.Direction;
 import fhtw.cartridgeScaping.gameplay.util.Inspectable;
 import fhtw.cartridgeScaping.gameplay.util.Lookable;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class Player implements Lookable, Inspectable {
-    private final PlayerDescription playerDescription;
-    private final HashMap<Integer, Item> inventory;
-    private Room currentRoom;
-    private final CommandManager commandManager;
+public class Player implements Lookable, Inspectable, Serializable {
+    private static Player singleton_instance;
+    private final PlayerDescription playerDescription = new PlayerDescription();
+    private final int currentRoomId = 0;
+    private transient Room currentRoom;
+    private transient final HashMap<Integer, Item> inventory = new HashMap<>();
+    private transient final CommandManager commandManager = new CommandManager();
 
-    public Player(PlayerDescription playerDescription) {
-        this.playerDescription = playerDescription;
-        this.inventory = new HashMap<>();
-        this.commandManager = new CommandManager(this);
+    private Player() {
+
     }
 
-    // NOTE Kept for later when there's possible cache of playerInventory
-//    public Player(String playerName, HashMap<Integer, Item> inventory) {
-//        this.playerName = playerName;
-//        this.inventory = inventory;
-//    }
+    public static Player getInstance() {
+        if(singleton_instance == null) {
+            singleton_instance = new Player();
+        }
+        return singleton_instance;
+    }
 
-    public String getPlayerName() {
+    public String getName() {
         return playerDescription.getName();
     }
 
-    public void setPlayerName(String playerName) {
+    public void setName(String playerName) {
         playerDescription.setName(playerName);
+    }
+
+    public String getShortDescription() {return playerDescription.getShortDescription();}
+
+    public void setShortDescription(String shortDescription) {
+        playerDescription.setShortDescription(shortDescription);
+    }
+
+    public String getLongDescription() {
+        return playerDescription.getLongDescription();
+    }
+
+    public void setLongDescription(String longDescription) {
+        playerDescription.setLongDescription(longDescription);
+    }
+
+    public String getDetailedDescription() {
+        return playerDescription.getDetailedDescription();
     }
 
     public HashMap<Integer, Item> getInventory() {
@@ -45,13 +65,17 @@ public class Player implements Lookable, Inspectable {
         return currentRoom;
     }
 
+    public CommandManager getCommandManager() {
+        return commandManager;
+    }
+
     public void addItem(GameObject item) {
         inventory.put(item.hashCode(), (Item) item);
     }
 
     public void pickupItem(Item item) {
         if(!inventory.containsKey(item.hashCode())) {
-            item.pickup(currentRoom, this);
+            item.pickup();
         } else {
             // TODO PlayerMessage notifying the item is already in their possession.
         }
@@ -59,7 +83,7 @@ public class Player implements Lookable, Inspectable {
 
     public void dropItem(Item item) {
         if(inventory.containsKey(item.hashCode())) {
-            item.drop(currentRoom);
+            item.drop();
         } else {
             // TODO PlayerMessage notifying that the item isn't in their possession.
         }
@@ -80,24 +104,25 @@ public class Player implements Lookable, Inspectable {
     }
 
     public void look() {
-        if(ViewManager.isDeveloperMode()) {
-            System.out.println(currentRoom.lookAt());
-        }
+        ViewManager.getInstance().devLog(currentRoom.lookAt());
+        // DONE Implement look in Player
         // TODO LocalMessage upon looking at currentRoom
+        ViewManager.getInstance().getCurrentOutputArea().appendText(currentRoom.lookAt());
     }
 
     public void lookObject(GameObject object) {
-        if(ViewManager.isDeveloperMode()) {
-            System.out.println(object.lookAt());
-        }
-        // TODO LocalMessage upon looking at object
-        // TODO PlayerMessage upon looking at Player
+        ViewManager.getInstance().devLog(
+                String.format("%s looks at %s.", getName(), object.getString())
+        );
+        // DONE Implement lookObject in Player
+        // TODO Send LocalMessage upon looking at object
+        // TODO Send PlayerMessage upon looking at Player
+        ViewManager.getInstance().getCurrentOutputArea().appendText(object.toString());
     }
 
     @Override
     public String inspect() {
-        // TODO Return inspectable text from the playerDescription
-        return null;
+        return getDetailedDescription();
     }
 
     @Override

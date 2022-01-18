@@ -1,13 +1,12 @@
 package fhtw.cartridgeScaping.controller;
 
-import fhtw.cartridgeScaping.model.Model;
 import fhtw.cartridgeScaping.model.SettingsModel;
 import fhtw.cartridgeScaping.util.View;
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.SimpleBooleanProperty;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
+import javafx.scene.text.Text;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -29,60 +28,50 @@ But as of now, this is not necessary.
  * @path src/main/java/fhtw/cartridgeScaping/controller
  * @project CartridgeScaping
  */
-public class AppSettingsController extends Controller implements Initializable {
-    private final SettingsModel model = ViewManager.getApplicationSettings();
-    private final SimpleBooleanProperty blinkingCursor = new SimpleBooleanProperty();
+public class AppSettingsController extends Controller<SettingsModel> implements Initializable {
+    private final SettingsModel model = ViewManager.getInstance().getApplicationSettings();
 
     @FXML
     private CheckBox boxDevMode;
     @FXML
     private CheckBox boxBlinkingCursor;
+    @FXML
+    private Text statusText;
 
     public AppSettingsController() {
         super();
     }
 
     @Override
-    public SettingsModel getModel() {
-        return null;
-    }
-
-    public boolean isBlinkingCursor() {
-        return blinkingCursor.get();
-    }
-
-    public SimpleBooleanProperty blinkingCursorProperty() {
-        return blinkingCursor;
-    }
-
-    @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Bindings.bindBidirectional(boxBlinkingCursor.selectedProperty(), blinkingCursorProperty());
+        ViewManager.getInstance().setCurrentStatusText(statusText);
+        statusText.setVisible(false);
+        boxDevMode.setSelected(ViewManager.getInstance().developerMode());
     }
 
     //    NOTE Controls for appSettings.fxml ----
     @FXML
     public void onApply()  {
         // TODO Implement onApply() in AppSettingsController
+        statusText.setVisible(true);
+        statusText.setText("Success!");
+    }
+
+    public void onDevModeToggle() {
+        ViewManager.getInstance().toggleDeveloperMode(boxDevMode.isSelected());
+    }
+
+    public void onCursorModeToggle() {
+        model.setBlinkingCursor(boxBlinkingCursor.isSelected());
+        ViewManager.getInstance().devLog(
+                String.format("%s blinking cursor.",
+                boxBlinkingCursor.isSelected() ? "Enabled" : "Disabled"));
+    }
+
+    public void onBack() {
         this.switchView(
                 "Failed to load & switch view to Main.",
                 "Successfully loaded & switched view to Main.",
                 View.MAIN);
-    }
-
-    public void onDevModeToggle() {
-        ViewManager.enableDeveloperMode(boxDevMode.selectedProperty().get());
-        if(ViewManager.isDeveloperMode()) {
-            System.out.println("Enabled DeveloperMode.");
-        } else {
-            System.out.println("Disabled DeveloperMode.");
-        }
-    }
-
-    public void onCursorModeToggle() {
-        model.setBlinkingCursor(blinkingCursorProperty().get());
-        if(ViewManager.isDeveloperMode()) {
-            System.out.printf("%s blinking cursor.", blinkingCursorProperty().get() ? "Enabled" : "Disabled");
-        }
     }
 }

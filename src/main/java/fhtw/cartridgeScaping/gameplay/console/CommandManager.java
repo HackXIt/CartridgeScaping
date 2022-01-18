@@ -1,63 +1,65 @@
 package fhtw.cartridgeScaping.gameplay.console;
 
 import fhtw.cartridgeScaping.controller.ViewManager;
-import fhtw.cartridgeScaping.gameplay.GameObject;
 import fhtw.cartridgeScaping.gameplay.Player;
 import fhtw.cartridgeScaping.gameplay.items.Item;
 import fhtw.cartridgeScaping.gameplay.rooms.Room;
-import fhtw.cartridgeScaping.model.GameplayModel;
+import fhtw.cartridgeScaping.networking.NetworkManager;
+import fhtw.cartridgeScaping.util.View;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
 public class CommandManager {
-    private final Player player;
-    private boolean verbose = false;
-    private final HashMap<String, Command> commands;
+    private final HashMap<String, Command> commands = new HashMap<>();
     private final HashMap<String, Runnable> possibleBasicInteractions = new HashMap<>();
     private final HashMap<String, Consumer<Item>> possibleAdvancedInteractions = new HashMap<>();
     private final HashMap<String, Consumer<Room>> possibleDynamicInteractions = new HashMap<>();
 
-    public CommandManager(Player player) {
-        this.player = player;
-        this.commands = this.init();
-        possibleBasicInteractions.put("help", this::printHelp);
-        possibleBasicInteractions.put("exit", this::exit);
-        possibleBasicInteractions.put("look", player::look);
-        possibleAdvancedInteractions.put("take", player::pickupItem);
-        possibleAdvancedInteractions.put("drop", player::dropItem);
-        possibleDynamicInteractions.put("look <object>", player::lookObject);
+    public CommandManager() {
     }
 
     private void printHelp() {
         commands.forEach((k,v) -> {
-            if(ViewManager.isDeveloperMode()) {
-                System.out.println(v.getCommandText().getHelp(verbose));
-            } else {
-                // TODO Send printHelp() to game client textArea
-            }
+            ViewManager.getInstance().devLog(
+                    v.getCommandText().getHelp(
+                            ViewManager.getInstance().getApplicationSettings().isVerbose()));
+            ViewManager.getInstance().getCurrentOutputArea().appendText(
+                    v.getCommandText().getHelp(ViewManager.getInstance().getApplicationSettings().isVerbose())
+            );
         });
     }
 
     private void exit() {
-//        Platform.exit();
-//        TODO exit() code in CommandManager - Refactor for returning to main menu instead of quitting
+        // TODO Add yes/no prompt to exit command
+        NetworkManager.getInstance().connection().closeConnection();
+        ViewManager.getInstance().switchTo(View.MAIN);
     }
 
-    public HashMap<String, Runnable> getPossibleBasicInteractions() {
-        return possibleBasicInteractions;
-    }
-    public HashMap<String, Consumer<Item>> getPossibleAdvancedInteractions() {
-        return possibleAdvancedInteractions;
-    }
+//    NOTE getter for possibleInteractions - might be useful in the future
+//    public HashMap<String, Runnable> getPossibleBasicInteractions() {
+//        return possibleBasicInteractions;
+//    }
+//    public HashMap<String, Consumer<Item>> getPossibleAdvancedInteractions() {
+//        return possibleAdvancedInteractions;
+//    }
+//    public HashMap<String, Consumer<Room>> getPossibleDynamicInteractions() {
+//        return possibleDynamicInteractions;
+//    }
 
     public void setVerbose(boolean verbose) {
-        this.verbose = verbose;
+        ViewManager.getInstance().getApplicationSettings().setVerbose(verbose);
     }
 
-    private HashMap<String, Command> init() {
-        HashMap<String, Command> commands = new HashMap<>();
+    public void init() {
+        possibleBasicInteractions.put("help", this::printHelp);
+        possibleBasicInteractions.put("exit", this::exit);
+        possibleBasicInteractions.put("look", Player.getInstance()::look);
+        possibleAdvancedInteractions.put("take", Player.getInstance()::pickupItem);
+        possibleAdvancedInteractions.put("drop", Player.getInstance()::dropItem);
+        possibleDynamicInteractions.put("look <object>", Player.getInstance()::lookObject);
+
         // NOTE This will add commands which are always available (like exit or help)
         /* NOTE Loop explanation:
          Iterates over all possible generic interactions which consist of String & Action Pairs
@@ -83,7 +85,7 @@ public class CommandManager {
          */
         // NOTE Dynamic version with only one go command for all possible directions
         commands.put("go", new DynamicCommand<>(
-                player::walk,
+                Player.getInstance()::walk,
                 CommandText.createCommandText("go")
         ));
         // NOTE This will add commands related to interactions with items
@@ -100,6 +102,9 @@ public class CommandManager {
                     entry.getValue(),
                     CommandText.createCommandText(cmd)));
         }
-        return commands;
+    }
+
+    public Command parseInput(String input) {
+        return commands.getOrDefault(input, null);
     }
 }

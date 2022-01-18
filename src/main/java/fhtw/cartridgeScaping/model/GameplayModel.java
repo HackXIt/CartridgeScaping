@@ -1,5 +1,7 @@
 package fhtw.cartridgeScaping.model;
 
+import fhtw.cartridgeScaping.messages.MessageHandler;
+
 /**
  * INFO Header of GameplayModel.java
  *
@@ -8,10 +10,14 @@ package fhtw.cartridgeScaping.model;
  * @path src/main/java/fhtw/cartridgeScaping/model
  * @project CartridgeScaping
  */
-public class GameplayModel extends Model{
-//    TODO Implement GameplayModel
+public class GameplayModel extends Model {
+    private final MessageHandler messageHandler = new MessageHandler();
 
     public GameplayModel() {
         super();
+    }
+
+    public MessageHandler messageHandler() {
+        return messageHandler;
     }
 }

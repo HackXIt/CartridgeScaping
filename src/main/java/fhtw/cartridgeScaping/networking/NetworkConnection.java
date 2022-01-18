@@ -4,6 +4,8 @@ package fhtw.cartridgeScaping.networking;
 ... useful to have abstraction layer for which to communicate with the rest of the program
  */
 
+import fhtw.cartridgeScaping.controller.ViewManager;
+
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
@@ -15,8 +17,8 @@ public abstract class NetworkConnection {
     /* NOTE Explanation of attributes for NetworkConnection
     TODO Explanation of attributes for NetworkConnection
      */
-    private Consumer<Serializable> onReceiveCallback;
-    private ConnectionThread connectionThread = new ConnectionThread();
+    private final Consumer<Serializable> onReceiveCallback;
+    private final ConnectionThread connectionThread = new ConnectionThread();
 
     public NetworkConnection(Consumer<Serializable> onReceiveCallback) {
         this.onReceiveCallback = onReceiveCallback;
@@ -30,21 +32,40 @@ public abstract class NetworkConnection {
     */
 
     /* Attributes for both client & server */
-    protected abstract boolean isServer();
-    protected abstract String getLinkLocalAddress();
-    protected abstract int getPort();
+    public abstract boolean isServer();
+    public abstract String getLinkLocalAddress();
+    public abstract int getPort();
 
     //region Networking
-    public void startConnection() throws Exception {
-        connectionThread.start(); // Spawns new Thread - starts executing try()-block on the Thread
+    public boolean startConnection() {
+        try {
+            connectionThread.start();
+            return true;
+        } catch (Exception e) {
+            ViewManager.getInstance().errorLog("Failed to start connection.", e);
+            return false;
+        }
+
     }
 
-    public void send(Serializable data) throws Exception {
-        connectionThread.out.writeObject(data);
+    public boolean send(Serializable data) {
+        try {
+            connectionThread.out.writeObject(data);
+            return true;
+        } catch (Exception e) {
+            ViewManager.getInstance().errorLog("Failed to send message.", e);
+            return false;
+        }
     }
 
-    public void closeConnection() throws Exception {
-        connectionThread.socket.close();
+    public boolean closeConnection() {
+        try {
+            connectionThread.socket.close();
+            return true;
+        } catch (Exception e) {
+            ViewManager.getInstance().errorLog("Failed to close connection.", e);
+            return false;
+        }
     }
     //endregion
 
@@ -77,7 +98,8 @@ public abstract class NetworkConnection {
                             onReceiveCallback.accept(data);
                         }
             } catch (Exception e) {
-                onReceiveCallback.accept("Connection closed");
+                ViewManager.getInstance().errorLog("ConnectionThread - Error during execution of run().", e);
+                onReceiveCallback.accept("Connection closed.\n");
             }
         }
     }

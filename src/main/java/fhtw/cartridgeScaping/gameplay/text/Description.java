@@ -1,10 +1,14 @@
 package fhtw.cartridgeScaping.gameplay.text;
 
-public class Description {
+import java.io.Serializable;
+
+public class Description implements Serializable {
     protected String name;
     protected String shortDescription;
     protected String longDescription;
     protected String detailedDescription;
+
+    public Description() { }
 
     public Description(String name) {
         this.name = name;

@@ -39,4 +39,6 @@ module CartridgeScaping {
     exports fhtw.cartridgeScaping.gameplay.text;
     opens fhtw.cartridgeScaping.gameplay.util to javafx.fxml;
     exports fhtw.cartridgeScaping.gameplay.util;
+    exports fhtw.cartridgeScaping.messages;
+    opens fhtw.cartridgeScaping.messages to javafx.fxml;
 }

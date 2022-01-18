@@ -8,7 +8,6 @@ package fhtw.cartridgeScaping.util;
  * TODO Improve log-message-handling to IOResult.failure() (Currently using stderr)
  */
 
-import fhtw.cartridgeScaping.cartridge.Cartridge;
 import fhtw.cartridgeScaping.controller.ViewManager;
 
 /**
@@ -29,18 +28,12 @@ public class IOResult<T> {
         this.ok = false;
     }
 
-    public IOResult(boolean ok, T data, Exception exception) {
-        this.ok = ok;
-        this.data = data;
-        this.exception = exception;
-    }
-
-    public IOResult(IOResult<T> ioResult) {
-        // TODO check if making a shallow copy is a good idea for IOResult
-        this.ok = ioResult.isOk();
-        this.data = ioResult.getData();
-        this.exception = ioResult.getException();
-    }
+//    INFO Constructor with all attributes currently not needed
+//    public IOResult(boolean ok, T data, Exception exception) {
+//        this.ok = ok;
+//        this.data = data;
+//        this.exception = exception;
+//    }
 
     public boolean isOk() {
         return ok;
@@ -69,14 +62,9 @@ public class IOResult<T> {
     public boolean handleIoResult(String messageOnError,
                                 String messageOnSuccess) {
         if(this.isOk()) {
-            System.out.println(messageOnSuccess);
+            ViewManager.getInstance().devLog(messageOnSuccess);
         } else {
-            System.err.printf("%s\n", messageOnError);
-            if(ViewManager.isDeveloperMode()) {
-                if(this.getException() != null) {
-                    this.getException().printStackTrace();
-                }
-            }
+            ViewManager.getInstance().errorLog(messageOnError, this.getException());
         }
         return this.isOk();
     }

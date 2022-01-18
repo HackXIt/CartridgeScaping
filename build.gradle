@@ -3,7 +3,6 @@ plugins {
     id 'application'
     id 'org.openjfx.javafxplugin' version('0.0.10')
     id 'org.beryx.jlink' version('2.24.1')
-    id 'org.javamodularity.moduleplugin' version('1.8.8')
 }
 
 group('fhtw')
@@ -35,6 +34,24 @@ tasks.named('wrapper') {
     distributionUrl = 'https://services.gradle.org/distributions/gradle-7.3.3-all.zip'
 }
 
+//apply plugin: 'gradle-one-jar'
+//
+//task awesomeFunJar(type: OneJar) {
+//    mainClass = 'fhtw.cartridgeScaping.CartridgeScapingApp'
+//}
+
+//task deployJar(type: Jar, dependsOn: jar) {
+//    baseName = project.name + '-deploy'
+//    deps = configurations.runtime + configurations.archives.allArtifactFiles
+//    depClasses = { deps.collect { it.isDirectory() ? it : zipTree(it) } }
+//    from(depClasses) {
+//        exclude 'META-INF/MANIFEST.MF'
+//    }
+//    manifest {
+//        attributes 'Main-Class': 'fhtw.cartridgeScaping.cartridgeScapingApp'
+//    }
+//}
+
 application {
     mainModule = 'fhtw.cartridgeScaping'
     mainClass = 'fhtw.cartridgeScaping.CartridgeScapingApp'
@@ -47,7 +64,24 @@ javafx {
 
 dependencies {
     testImplementation('org.testng:testng:7.5')
+    implementation 'commons-io:commons-io:2.11.0'
 }
+
+
+//tasks.named<org.gradle.jvm.tasks.Jar>("releaseSourcesJar") {
+//    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+//}
+//
+//tasks.register('uberJar', Jar) {
+//    archiveClassifier = 'uber'
+//
+//    from sourceSets.main.output
+//
+//    dependsOn configurations.runtimeClasspath
+//    from {
+//        configurations.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect { zipTree(it) }
+//    }
+//}
 
 test {
     useTestNG()

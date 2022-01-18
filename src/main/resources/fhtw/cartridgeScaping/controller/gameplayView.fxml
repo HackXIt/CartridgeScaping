@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
@@ -20,92 +21,83 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-
 <BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fhtw.cartridgeScaping.controller.GameplayController">
    <center>
-      <VBox prefHeight="600.0" prefWidth="800.0">
-         <children>
-            <TextArea prefHeight="200.0" prefWidth="200.0" />
-            <TextField />
-         </children>
-      
-      </VBox>
+       <VBox prefHeight="600.0" prefWidth="800.0" spacing="5.0">
+
+           <TextArea fx:id="outputArea" editable="false" prefHeight="200.0" prefWidth="200.0" wrapText="true" VBox.vgrow="ALWAYS" />
+           <TextField fx:id="inputField" onAction="#onInput" promptText="Enter command..." />
+         <BorderPane.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </BorderPane.margin>
+       </VBox>
    </center>
    <bottom>
-      <HBox prefHeight="100.0" prefWidth="200.0" spacing="20.0" BorderPane.alignment="CENTER">
-         <children>
-            <ToolBar prefHeight="40.0" prefWidth="200.0">
-              <items>
-                  <Button mnemonicParsing="false" text="Game Settings" />
-               
-                   <Button onAction="#onQuitGameplay" text="Quit Game" />
-              </items>
-            </ToolBar>
-            <Separator orientation="VERTICAL" prefHeight="200.0" />
-            <Text fx:id="StatusMessage" strokeType="OUTSIDE" strokeWidth="0.0" text="Playing &lt;Game&gt;" />
-            <TextArea prefHeight="200.0" prefWidth="200.0" />
-            <Separator orientation="VERTICAL" prefHeight="200.0" />
-            <VBox prefHeight="200.0" prefWidth="100.0">
-               <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="PlayerList" />
-                  <ListView fx:id="PlayerList" prefHeight="200.0" prefWidth="200.0" />
-               </children>
-            </VBox>
-         </children>
-      </HBox>
+       <HBox prefHeight="100.0" prefWidth="200.0" spacing="20.0" BorderPane.alignment="CENTER">
+           <ToolBar prefHeight="40.0" prefWidth="200.0">
+               <Button fx:id="settingsButtons" mnemonicParsing="false" onAction="#onOpenSettings" text="Game Settings">
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding></Button>
+
+               <Button fx:id="quitGameButton" onAction="#onQuitGameplay" text="Quit Game" />
+            <HBox.margin>
+               <Insets />
+            </HBox.margin>
+           </ToolBar>
+           <Separator orientation="VERTICAL" prefHeight="200.0" />
+           <Text fx:id="statusText" strokeType="OUTSIDE" strokeWidth="0.0" text="Playing..." />
+           <TextArea editable="false" prefHeight="200.0" prefWidth="200.0" wrapText="true">
+            <HBox.margin>
+               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </HBox.margin></TextArea>
+           <Separator orientation="VERTICAL" prefHeight="200.0" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="PlayerList" />
+            <ListView fx:id="playerListView" prefHeight="200.0" prefWidth="200.0" />
+         <BorderPane.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </BorderPane.margin>
+       </HBox>
    </bottom>
    <right>
-      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
-         <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="CurrentSelectedItem Visual" />
-            <TitledPane animated="false" text="&lt;ItemName&gt;">
-               <content>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-               </content>
-            </TitledPane>
-            <Separator prefWidth="200.0" />
-            <TitledPane animated="false" text="Minimap">
-               <content>
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
-                     <children>
-                        <GridPane>
-                          <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                          </columnConstraints>
-                          <rowConstraints>
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
-                        </GridPane>
-                     </children>
-                  </AnchorPane>
-               </content>
-            </TitledPane>
-            <Separator prefWidth="200.0" />
-            <TitledPane animated="false" text="Inventory">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <ListView prefHeight="200.0" prefWidth="200.0" />
-                     </children>
-                  </AnchorPane>
-              </content>
-            </TitledPane>
-            <Separator prefWidth="200.0" />
-         </children>
-      </VBox>
+       <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0" BorderPane.alignment="CENTER">
+           <BorderPane.margin>
+               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+           </BorderPane.margin>
+           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="CurrentSelectedItem Visual"/>
+           <TitledPane animated="false" text="&lt;ItemName&gt;">
+               <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true"/>
+           </TitledPane>
+           <Separator prefWidth="200.0"/>
+           <TitledPane animated="false" text="Minimap">
+               <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                   <GridPane>
+                       <columnConstraints>
+                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                       </columnConstraints>
+                       <rowConstraints>
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                       </rowConstraints>
+                   </GridPane>
+               </AnchorPane>
+           </TitledPane>
+           <Separator prefWidth="200.0"/>
+           <TitledPane animated="false" text="Inventory">
+               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                   <ListView prefHeight="200.0" prefWidth="200.0"/>
+               </AnchorPane>
+           </TitledPane>
+           <Separator prefWidth="200.0"/>
+       </VBox>
    </right>
    <top>
-      <MenuBar BorderPane.alignment="CENTER">
-        <menus>
-          <Menu mnemonicParsing="false" text="?">
-            <items>
-              <MenuItem mnemonicParsing="false" text="!" />
-            </items>
-          </Menu>
-        </menus>
-      </MenuBar>
+       <MenuBar BorderPane.alignment="CENTER">
+           <Menu mnemonicParsing="false" text="?">
+               <MenuItem mnemonicParsing="false" text="!"/>
+           </Menu>
+       </MenuBar>
    </top>
 </BorderPane>

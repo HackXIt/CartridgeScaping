@@ -4,11 +4,9 @@ import fhtw.cartridgeScaping.gameplay.GameObject;
 import fhtw.cartridgeScaping.gameplay.Player;
 import fhtw.cartridgeScaping.gameplay.rooms.Room;
 import fhtw.cartridgeScaping.gameplay.text.ItemDescription;
-import fhtw.cartridgeScaping.gameplay.util.Inspectable;
 import fhtw.cartridgeScaping.gameplay.util.InventoryItem;
-import fhtw.cartridgeScaping.gameplay.util.Lookable;
 
-public class Item extends GameObject implements InventoryItem {
+public class Item extends GameObject {
     protected ItemDescription itemDesc;
 
     public Item(ItemDescription itemDesc) {
@@ -70,10 +68,5 @@ public class Item extends GameObject implements InventoryItem {
     @Override
     public String inspect() {
         return itemDesc.getDetailedDescription();
-    }
-
-    @Override
-    public void drop(Room room) {
-
     }
 }

@@ -1,56 +1,64 @@
 package fhtw.cartridgeScaping.networking;
 
-import fhtw.cartridgeScaping.gameplay.Player;
+import fhtw.cartridgeScaping.controller.ViewManager;
 
 import java.net.InetAddress;
+import java.util.Formatter;
 
 public class NetworkManager {
-    private static Player self;
-    private static InetAddress selfIp;
-    private static int selfPort;
-    private static boolean selfReady;
-    private static NetworkConnection selfConnection;
+    private static NetworkManager singleton_instance;
+    private InetAddress targetIp;
+    private int port;
+    private NetworkConnection connection;
+    private boolean isHost;
+    // TODO Implement usage of formatter in Messages
+    private Formatter messageFormatter = new Formatter();
 
-    public static Player getSelf() {
-        return self;
-    }
-    public static void setSelf(Player self) {
-        NetworkManager.self = self;
-    }
+    private NetworkManager() { }
 
-    public static InetAddress getSelfIp() {
-        return selfIp;
-    }
-
-    public static void setSelfIp(InetAddress selfIp) {
-        NetworkManager.selfIp = selfIp;
+    public static NetworkManager getInstance() {
+        if(singleton_instance == null) {
+            singleton_instance = new NetworkManager();
+        }
+        return singleton_instance;
     }
 
-    public static int getSelfPort() {
-        return selfPort;
+    public InetAddress getTargetIp() {
+        return targetIp;
     }
 
-    public static void setSelfPort(int selfPort) {
-        NetworkManager.selfPort = selfPort;
+    public void setTargetIp(InetAddress targetIp) {
+        this.targetIp = targetIp;
     }
 
-    public static boolean isSelfReady() {
-        return selfReady;
+    public int getPort() {
+        return port;
     }
 
-    public static void setSelfReady(boolean selfReady) {
-        NetworkManager.selfReady = selfReady;
+    public void setPort(int port) {
+        this.port = port;
     }
 
-    public static NetworkConnection getSelfConnection() {
-        return selfConnection;
+    public NetworkConnection connection() {
+        return connection;
     }
 
-    public static void setSelfConnection(NetworkConnection selfConnection) {
-        NetworkManager.selfConnection = selfConnection;
+    public void setConnection(NetworkConnection connection) {
+        this.connection = connection;
+        this.isHost = connection.isServer();
     }
 
-    public static void callback() {
-        System.out.println("Callback triggered!");
+    public boolean isHost() {
+        return isHost;
+    }
+
+    public void callback() {
+        ViewManager.getInstance().devLog("Callback triggered!");
+        // TODO Implement callback which actually does something and takes parameters
+        // TODO Also implement this in multithreading (tasks and whatnot)
+    }
+
+    public void connectGame() {
+        // TODO Implement network implementation for starting game
     }
 }

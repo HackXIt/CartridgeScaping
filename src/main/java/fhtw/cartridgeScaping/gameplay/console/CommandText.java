@@ -19,9 +19,7 @@ public record CommandText(String name, String argument, boolean hasArgument) {
             strBuilder.append("\nUsage:\n");
             strBuilder.append(helpText.usage());
         }
-        if (ViewManager.isDeveloperMode()) {
-            System.out.printf("%s", strBuilder);
-        }
+        ViewManager.getInstance().devLog(String.format("%s", strBuilder));
         return strBuilder.toString();
     }
 

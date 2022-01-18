@@ -5,17 +5,20 @@ import fhtw.cartridgeScaping.util.IOResult;
 import fhtw.cartridgeScaping.util.View;
 import javafx.fxml.FXMLLoader;
 
-public abstract class Controller {
+public abstract class Controller<T> {
+    protected T model;
     public Controller() {
         // NOTE Global controller initialization (if something applies to all of them)
     }
 
-    public abstract Model getModel();
+    public T getModel() {
+        return model;
+    }
 
     public void switchView(String messageOnError,
                            String messageOnSuccess,
                            View view) {
-        IOResult<FXMLLoader> io = ViewManager.switchTo(view);
+        IOResult<FXMLLoader> io = ViewManager.getInstance().switchTo(view);
         io.handleIoResult(messageOnError, messageOnSuccess);
     }
 
@@ -23,7 +26,7 @@ public abstract class Controller {
                            String messageOnSuccess,
                            View view,
                            String dialogTitle) {
-        IOResult<FXMLLoader> io = ViewManager.openDialog(view, dialogTitle);
+        IOResult<FXMLLoader> io = ViewManager.getInstance().openDialog(view, dialogTitle);
         io.handleIoResult(messageOnError, messageOnSuccess);
     }
 }

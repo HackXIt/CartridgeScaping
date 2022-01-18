@@ -1,8 +1,6 @@
 package fhtw.cartridgeScaping.controller;
 
 import fhtw.cartridgeScaping.gameplay.Player;
-import fhtw.cartridgeScaping.gameplay.text.PlayerDescription;
-import fhtw.cartridgeScaping.networking.NetworkManager;
 import fhtw.cartridgeScaping.model.PlayConfigurationModel;
 import fhtw.cartridgeScaping.util.View;
 import javafx.beans.binding.Bindings;
@@ -33,7 +31,9 @@ But as of now, this is not necessary.
  * @path src/main/java/fhtw/cartridgeScaping
  * @project CartridgeScaping
  */
-public class PlayConfigurationController extends Controller implements Initializable {
+public class PlayConfigurationController
+        extends Controller
+        implements Initializable {
     private final PlayConfigurationModel model;
     private final SimpleStringProperty playerName = new SimpleStringProperty();
     private final SimpleStringProperty shortDescription = new SimpleStringProperty();
@@ -93,15 +93,18 @@ public class PlayConfigurationController extends Controller implements Initializ
 
     private boolean checkInput() {
         if(playerName.get() != null && !playerName.get().isEmpty() && playerName.get().length() >= 3) {
-            NetworkManager.setSelf(new Player(new PlayerDescription(
-                    playerName.get(),
-                    shortDescription.get() != null ? shortDescription.get() : "",
+            Player.getInstance().setName(playerName.get());
+            Player.getInstance().setShortDescription(
+                    shortDescription.get() != null ? shortDescription.get() : ""
+            );
+            Player.getInstance().setLongDescription(
                     longDescription.get() != null ? longDescription.get() : ""
-            )));
+            );
             return true;
         } else {
             statusText.setVisible(true);
             statusText.setText("Failed: A player name is essential. Please enter a valid name.");
+            // TODO Reset visibility of statusText after some time via multithreaded task
             return false;
         }
     }
@@ -141,6 +144,7 @@ public class PlayConfigurationController extends Controller implements Initializ
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        ViewManager.getInstance().setCurrentStatusText(statusText);
         Bindings.bindBidirectional(fieldPlayerName.textProperty(), playerNameProperty());
         Bindings.bindBidirectional(areaShortDescription.textProperty(), shortDescriptionProperty());
         Bindings.bindBidirectional(areaLongDescription.textProperty(), longDescriptionProperty());

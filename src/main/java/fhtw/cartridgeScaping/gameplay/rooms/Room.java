@@ -1,5 +1,6 @@
 package fhtw.cartridgeScaping.gameplay.rooms;
 
+import fhtw.cartridgeScaping.controller.ViewManager;
 import fhtw.cartridgeScaping.gameplay.GameObject;
 import fhtw.cartridgeScaping.gameplay.Player;
 import fhtw.cartridgeScaping.gameplay.items.Item;
@@ -126,63 +127,70 @@ public class Room extends GameObject {
     //    NOTE Utility Methods ----------------------------------------
 
     public boolean addItem(Item item) {
-        if(item != null) {
-            if (!items.containsKey(item.getName())) {
-                items.put(item.hashCode(), item);
-                // TODO RoomMessage upon successfully executing addItem
-                System.out.printf("Item '%s' was dropped in '%s'.", item.getName(), roomDescription.getName());
-                hasItems = true;
-                return true;
-            } else {
-                // TODO RoomMessage upon failing to addItem
-                return false;
-            }
-        } else {
-            // TODO ServerMessage upon trying addItem with null
-            // NOTE Maybe also need to handle something else, because why is item null?
+        try {
+            items.put(item.hashCode(), item);
+            // TODO RoomMessage upon successfully executing addItem
+            System.out.printf("Item '%s' was dropped in '%s'.", item.getName(), roomDescription.getName());
+            hasItems = true;
+            return true;
+        } catch (Exception e) {
+            ViewManager.getInstance().errorLog(
+                    String.format("Failed to add item to %s", roomDescription.getName()), e);
             return false;
         }
     }
 
-    public Item removeItem(Integer hashCode) {
-        if (items.containsKey(hashCode)) {
-            Item item = items.get(hashCode);
-            items.remove(hashCode);
+    public boolean removeItem(Item item) {
+        try {
+            items.remove(item.hashCode());
             // TODO RoomMessage upon successfully executing removeItem
-            System.out.printf("%s was removed from %s.", hashCode, roomDescription.getName());
+            ViewManager.getInstance().devLog(
+                    String.format("%s was removed from %s.", item.getName(), roomDescription.getName()));
             if(items.isEmpty()) {
                 hasItems = false;
             }
-            return item;
-        } else {
-            // TODO RoomMessage upon failing to removeItem (item is not in room)
-            System.err.printf("%s is not in %s.", hashCode, roomDescription.getName());
-            return null;
+            return true;
+        } catch (Exception e) {
+            ViewManager.getInstance().errorLog(
+                    String.format("Failed to remove item from %s", roomDescription.getName()), e
+            );
+            return false;
         }
     }
 
     public boolean addPlayer(Player player) {
-        if(player != null && !players.containsKey(player.getPlayerName())) {
+        try {
             players.put(player.hashCode(), player);
-            // TODO RoomMessage upon player entering room (Prints arrival of player to other players)
+            // TODO RoomMessage upon player entering room (Prints arrival of player to other players
             // TODO PlayerMessage upon player entering room (Prints room description to Player)
-            System.out.printf("Player '%s' entered '%s'.", player.getPlayerName(), roomDescription.getName());
+            ViewManager.getInstance().devLog(
+                    String.format("Player '%s' entered '%s'.",
+                            player.getName(), roomDescription.getName()));
             return true;
-        } else {
-            System.err.printf("Player is already inside '%s' or object was 'null'.", roomDescription.getName());
+        } catch (Exception e) {
+            ViewManager.getInstance().errorLog(
+                    String.format("Failed to add '%s' to '%s'.",
+                            player.getName(), roomDescription.getName()), e
+            );
             return false;
         }
     }
 
     public boolean removePlayer(Player player) {
-        if(player != null && players.containsKey(player.getPlayerName())) {
+        try {
             players.remove(player.hashCode());
             // TODO RoomMessage upon player leaving room (Prints departure of player to other players)
             // TODO PlayerMessage upon player leaving room (Prints leave message to Player)
-            System.out.printf("Player '%s' has left '%s'.", player.getPlayerName(), roomDescription.getName());
+            ViewManager.getInstance().devLog(String.format(
+                    "Player '%s' has left '%s'.",
+                    player.getName(), roomDescription.getName()
+            ));
             return true;
-        } else {
-            System.err.printf("Player is not in '%s' or object was 'null'.", roomDescription.getName());
+        } catch (Exception e) {
+            ViewManager.getInstance().errorLog(
+                    String.format("Failed to remove '%s' from '%s'.",
+                            player.getName(), roomDescription.getName()), e
+            );
             return false;
         }
     }
@@ -256,7 +264,7 @@ public class Room extends GameObject {
     }
 
     @Override
-    public String toString() {;
+    public String toString() {
         /**
          * NOTE Room-Example of toString()
          * Cellar - (A dark cellar under the basement)

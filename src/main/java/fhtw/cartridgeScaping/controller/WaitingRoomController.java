@@ -1,5 +1,11 @@
 package fhtw.cartridgeScaping.controller;
 
+import fhtw.cartridgeScaping.gameplay.GameManager;
+import fhtw.cartridgeScaping.gameplay.Player;
+import fhtw.cartridgeScaping.messages.ChatMessage;
+import fhtw.cartridgeScaping.messages.ErrorMessage;
+import fhtw.cartridgeScaping.messages.LocalMessage;
+import fhtw.cartridgeScaping.messages.Message;
 import fhtw.cartridgeScaping.model.WaitingRoomModel;
 import fhtw.cartridgeScaping.networking.NetworkManager;
 import fhtw.cartridgeScaping.util.View;
@@ -7,12 +13,12 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ListView;
-import javafx.scene.control.ProgressBar;
+import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 /**
@@ -23,12 +29,28 @@ import java.util.ResourceBundle;
  * @path src/main/java/fhtw/cartridgeScaping/controller
  * @project CartridgeScaping
  */
-public class WaitingRoomController extends Controller implements DialogController, Initializable {
-    private WaitingRoomModel model;
-    private SimpleDoubleProperty progressBar = new SimpleDoubleProperty();
+public class WaitingRoomController
+        extends Controller<WaitingRoomModel>
+        implements DialogController, Initializable {
+    private final WaitingRoomModel model;
+    private final SimpleDoubleProperty progressBar = new SimpleDoubleProperty();
 
     @FXML
-    private Text status;
+    private TextArea chatArea;
+    @FXML
+    private TextField inputField;
+    @FXML
+    private ToolBar toolbar;
+    @FXML
+    private Button hostStartButton;
+    @FXML
+    private TextArea statusMessages;
+    @FXML
+    private Text gameTitle;
+    @FXML
+    private ImageView cartridgeBoxImage;
+    @FXML
+    private Text statusText;
     @FXML
     private ListView playerList;
     @FXML
@@ -38,7 +60,7 @@ public class WaitingRoomController extends Controller implements DialogControlle
 
     public WaitingRoomController() {
         super();
-        model = new WaitingRoomModel();
+        this.model = new WaitingRoomModel();
     }
 
     public WaitingRoomModel getModel() {
@@ -53,27 +75,43 @@ public class WaitingRoomController extends Controller implements DialogControlle
         return progressBar;
     }
 
-    public void setProgressBar(double progressBar) {
-        this.progressBar.set(progressBar);
+    public void resetProgressBar() {
+        double divider = 1.0 / GameManager.getInstance().getPlayers().size();
+        ArrayList<Player> players = GameManager.getInstance().getPlayers();
+        double progress = 0.0;
+        for (Player player: players) {
+            if(GameManager.getInstance().getPlayerStates().get(player)) {
+                progress += divider;
+            }
+        }
+        this.progressBar.set(progress);
     }
 
     //    NOTE Controls for waitingRoom.fxml ----
     public void onReady() {
         // DONE onReady() Increase Progress-Bar by Player count
-        setProgressBar(getProgressBar() + 0.1);
-        NetworkManager.setSelfReady(readyBox.isSelected());
-        if (ViewManager.isDeveloperMode()) {
-            System.out.printf("Player %s is %s",
-                    NetworkManager.getSelf().getPlayerName(),
-                    NetworkManager.isSelfReady() ? "ready" : "not ready");
-        }
-//        this.switchView(
-//                "Failed to load & switch view to PlayConfiguration.",
-//                "Successfully loaded & switched view to PlayConfiguration.",
-//                View.GAMEPLAY);
+        GameManager.getInstance().setPlayerState(Player.getInstance(), readyBox.isSelected());
+        NetworkManager.getInstance().connection().send(
+                new LocalMessage(String.format("%s is %s",
+                        Player.getInstance().getName(),
+                        readyBox.isSelected()))
+        );
+        resetProgressBar();
+        ViewManager.getInstance().devLog(
+                String.format("Player %s is %s.",
+                        Player.getInstance().getName(),
+                        readyBox.isSelected() ? "ready" : "not ready")
+        );
     }
 
     public void onGameAbort(){
+        try {
+            NetworkManager.getInstance().connection().closeConnection();
+            ViewManager.getInstance().devLog("Closed connection.");
+            System.out.println("Closed connection.");
+        } catch (Exception e) {
+            ViewManager.getInstance().errorLog("Close connection failed", e);
+        }
         this.switchView(
                 "Failed to load & switch view to PlayConfiguration.",
                 "Successfully loaded & switched view to PlayConfiguration.",
@@ -82,11 +120,12 @@ public class WaitingRoomController extends Controller implements DialogControlle
 
     public void onGameSettings() throws UnsupportedOperationException{
         // TODO Open Dialog for game setting in WaitingRoomController
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("Game settings dialog not implemented.");
     }
 
     @Override
     public void consumeDialog() {
+        // TODO Implement Dialog handling for game settings.
     }
 
     @Override
@@ -96,6 +135,38 @@ public class WaitingRoomController extends Controller implements DialogControlle
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        ViewManager.getInstance().setCurrentStatusText(statusText);
+        ViewManager.getInstance().setCurrentInputField(inputField);
+        ViewManager.getInstance().setCurrentOutputArea(chatArea);
         Bindings.bindBidirectional(progBar.progressProperty(), progressBarProperty());
+        hostStartButton.setVisible(NetworkManager.getInstance().isHost());
+        chatArea.setFocusTraversable(false);
+        inputField.requestFocus();
+    }
+
+    public void onToolbarToggle() {
+        // TODO Implement action when toolbar is clicked
+    }
+
+    public void onHostStart() {
+        if(GameManager.getInstance().allReady()) {
+            GameManager.getInstance().startGame();
+            this.switchView(
+                    "Failed to load & switch view to PlayConfiguration.",
+                    "Successfully loaded & switched view to PlayConfiguration.",
+                    View.GAMEPLAY);
+        }
+    }
+
+    public void onInput() {
+        String input = inputField.getText();
+        Message msg = new ChatMessage(Player.getInstance().getName(), input);
+        if(NetworkManager.getInstance().connection().send(msg)) {
+            model.MessageHandler().addMessage(msg, chatArea);
+        } else {
+            model.MessageHandler().addMessage(new ErrorMessage(
+                    input,
+                    "Connection error."), chatArea);
+        }
     }
 }

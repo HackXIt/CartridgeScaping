@@ -1,10 +1,13 @@
 package fhtw.cartridgeScaping.networking;
 
+import fhtw.cartridgeScaping.controller.ViewManager;
+
 import java.io.Serializable;
 import java.net.InetAddress;
 import java.util.function.Consumer;
 
 public class Client extends NetworkConnection{
+    private boolean isServer = false;
     private final InetAddress ip;
     private final int port;
 
@@ -15,17 +18,19 @@ public class Client extends NetworkConnection{
     }
 
     @Override
-    protected boolean isServer() {
-        return false;
+    public boolean isServer() {
+        return isServer;
     }
 
     @Override
-    protected String getLinkLocalAddress() {
+    public String getLinkLocalAddress() {
+        ViewManager.getInstance().devLog(String.format("Requested IP: %s", ip.getHostAddress()));
         return ip.getHostAddress();
     }
 
     @Override
-    protected int getPort() {
+    public int getPort() {
+        ViewManager.getInstance().devLog(String.format("Requested Port: %s", port));
         return port;
     }
     // TODO Implement Client

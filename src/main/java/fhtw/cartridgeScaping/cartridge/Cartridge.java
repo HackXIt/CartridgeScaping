@@ -18,6 +18,9 @@ public class Cartridge {
     private int spawnX = 0;
     private int spawnY = 0;
 
+    public Cartridge() {
+    }
+
     public Cartridge(String fileName,
                      Path filePath,
                      Vector<Vector<Room>> rooms,

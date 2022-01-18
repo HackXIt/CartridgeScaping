@@ -1,24 +1,20 @@
 package fhtw.cartridgeScaping.controller;
 
-import fhtw.cartridgeScaping.gameplay.Player;
 import fhtw.cartridgeScaping.model.SettingsModel;
 import fhtw.cartridgeScaping.util.IOResult;
 import fhtw.cartridgeScaping.util.View;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.DialogPane;
+import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
 import java.io.IOException;
-import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Optional;
-import java.util.Set;
 import java.util.function.Consumer;
 
 /**
@@ -30,63 +26,118 @@ import java.util.function.Consumer;
  * @project CartridgeScaping
  */
 public class ViewManager {
-    private static final HashMap<View, FXMLLoader> loaders;
-    private static final HashMap<View, Parent> cache;
-    private static final SettingsModel applicationSettings;
-    private static Scene scene;
-    private static Window mainWindow;
-    private static boolean developerMode;
-    static {
+    private static ViewManager singleton_instance;
+    private final HashMap<View, FXMLLoader> loaders;
+    private final HashMap<View, Parent> cache;
+    private final SettingsModel applicationSettings;
+    private Scene scene;
+    private Window primaryStage;
+    private boolean developerMode;
+    private TextArea currentOutputArea;
+    private TextField currentInputField;
+    private Text currentStatusText;
+
+    private ViewManager() {
         cache = new HashMap<>();
         loaders = new HashMap<>();
-        loaders.put(View.MAIN, new FXMLLoader(ViewManager.class.getResource(View.MAIN.getFileName())));
-        loaders.get(View.MAIN).setControllerFactory(c -> new MainMenuController());
-//        TODO Set default value of developerMode to false upon release!
-        developerMode = true;
-        applicationSettings = new SettingsModel(
-                SettingsModel.default_width,
-                SettingsModel.default_height,
-                SettingsModel.default_fullscreen,
-                SettingsModel.default_blinkingCursor);
+        developerMode = false;
+        applicationSettings = new SettingsModel();
     }
 
-    public static void setup() {
-
+    public static ViewManager getInstance() {
+        if(singleton_instance == null) {
+            singleton_instance = new ViewManager();
+        }
+        return singleton_instance;
     }
 
-    public static void setScene(Scene scene) {
-        ViewManager.scene = scene;
+    public Scene init() {
+        try {
+            FXMLLoader loader = new FXMLLoader(ViewManager.class.getResource(View.MAIN.getFileName()));
+            loader.setControllerFactory(c -> new MainMenuController());
+            scene = new Scene(loader.load());
+            return scene;
+        } catch (Exception e) {
+            System.err.println("Loading application view during initialization failed - closing application.");
+            if(developerMode) {
+                e.printStackTrace();
+            }
+            Platform.exit();
+            return null;
+        }
     }
 
-    public static Scene getScene() {
+    public Scene getScene() {
         return scene;
     }
 
-    public static SettingsModel getApplicationSettings() {
+    public SettingsModel getApplicationSettings() {
         return applicationSettings;
     }
 
-    public static void setMainWindow(Stage stage) {
-        ViewManager.mainWindow = stage;
+    public void setPrimaryStage(Stage stage) {
+        this.primaryStage = stage;
     }
 
-    public static Window getMainWindow() {
-        return ViewManager.mainWindow;
+    public Window getPrimaryStage() {
+        return this.primaryStage;
     }
 
-    public static FXMLLoader getLoader(View view) {
+    public FXMLLoader getLoader(View view) {
         return loaders.get(view);
     }
 
-    public static void enableDeveloperMode(boolean devMode) {
-        ViewManager.developerMode = devMode;
+    public void toggleDeveloperMode(boolean devMode) {
+        if (devMode) {
+            System.out.println("Enabled developer mode.");
+        } else {
+            System.out.println("Disabled developer mode.");
+        }
+        this.developerMode = devMode;
     }
 
-    public static boolean isDeveloperMode() {
+    public boolean developerMode() {
         return developerMode;
     }
 
-    public static void handleInputException(Exception e, Consumer<String> statusAction) {
+    public TextArea getCurrentOutputArea() {
+        return currentOutputArea;
+    }
+
+    public void setCurrentOutputArea(TextArea currentOutputArea) {
+        this.currentOutputArea = currentOutputArea;
+    }
+
+    public TextField getCurrentInputField() {
+        return currentInputField;
+    }
+
+    public void setCurrentInputField(TextField currentInputField) {
+        this.currentInputField = currentInputField;
+    }
+
+    public Text getCurrentStatusText() {
+        return currentStatusText;
+    }
+
+    public void setCurrentStatusText(Text currentStatusText) {
+        this.currentStatusText = currentStatusText;
+    }
+
+    public void devLog(String log) {
+        if(developerMode) {
+            System.out.println(log);
+        }
+    }
+
+    public void errorLog(String error, Exception e) {
+        System.err.println(error);
+        if(developerMode) {
+            e.printStackTrace();
+        }
+    }
+
+    public void handleInputException(Exception e, Consumer<String> statusAction) {
         if(developerMode) {
             e.printStackTrace();
         } else {
@@ -100,7 +151,7 @@ public class ViewManager {
         }
     }
 
-    private static void loadAndShowDialog(String dialogTitle,
+    private void loadAndShowDialog(String dialogTitle,
                                           FXMLLoader dialogLoader,
                                           DialogPane dialogPane) {
         DialogController dialogController = dialogLoader.getController();
@@ -120,7 +171,7 @@ public class ViewManager {
         }
     }
 
-    public static IOResult<FXMLLoader> openDialog(View view, String dialogTitle) {
+    public IOResult<FXMLLoader> openDialog(View view, String dialogTitle) {
         IOResult<FXMLLoader> io = new IOResult<>();
         if(scene == null) {
             System.err.println("No scene was set");
@@ -141,7 +192,7 @@ public class ViewManager {
         }
     }
 
-    public static IOResult<FXMLLoader> switchTo(View view) {
+    public IOResult<FXMLLoader> switchTo(View view) {
         IOResult<FXMLLoader> io = new IOResult<>();
         if(scene == null) {
             System.err.println("No scene was set");
@@ -151,10 +202,14 @@ public class ViewManager {
         try {
             Parent rootPane;
             if(cache.containsKey(view)) {
-                System.out.println("Loading from cache...");
+                if(developerMode) {
+                    System.out.printf("\nLoading %s from cache...\n", view.getFileName());
+                }
                 rootPane = cache.get(view);
             } else {
-                System.out.println("Loading from filesystem...");
+                if(developerMode) {
+                    System.out.printf("\nLoading %s from filesystem...\n", view.getFileName());
+                }
                 if(!loaders.containsKey(view)) {
                     loaders.put(view, new FXMLLoader(ViewManager.class.getResource(view.getFileName())));
                     rootPane = loaders.get(view).load();

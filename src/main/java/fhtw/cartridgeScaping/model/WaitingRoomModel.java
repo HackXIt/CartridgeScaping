@@ -1,8 +1,9 @@
 package fhtw.cartridgeScaping.model;
 
 import fhtw.cartridgeScaping.gameplay.Player;
+import fhtw.cartridgeScaping.messages.MessageHandler;
 
-import java.net.Inet4Address;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -14,49 +15,33 @@ import java.util.HashMap;
  * @path src/main/java/fhtw/cartridgeScaping/model
  * @project CartridgeScaping
  */
-public class WaitingRoomModel extends Model{
+public class WaitingRoomModel extends Model {
     private final ArrayList<Player> players = new ArrayList<>();
-    private final HashMap<Player, Inet4Address> playerIps = new HashMap<>();
+    private final HashMap<Player, InetAddress> playerIps = new HashMap<>();
     private final HashMap<Player, Boolean> playerStates = new HashMap<>();
-    private Player host;
-    private Inet4Address hostIp;
-    private boolean allReady;
+    private final MessageHandler messageHandler = new MessageHandler();
 
-    public HashMap<Player, Inet4Address> getPlayerIps() {
+    public WaitingRoomModel() {
+    }
+
+    public MessageHandler MessageHandler() {
+        return messageHandler;
+    }
+
+    public HashMap<Player, InetAddress> getPlayerIps() {
         return playerIps;
     }
-    public void addPlayer(Player player, Inet4Address address) {
+    public void addPlayer(Player player, InetAddress address) {
         players.add(player);
         playerIps.put(player, address);
         playerStates.put(player, false);
     }
 
-    public Player getHost() {
-        return host;
-    }
-
-    public void setHost(Player host, Inet4Address hostIp) {
-        this.host = host;
-        this.hostIp = hostIp;
-        players.add(host);
-        playerIps.put(host, hostIp);
-    }
-
-    public Inet4Address getHostIp() {
-        return hostIp;
+    public ArrayList<Player> getPlayers() {
+        return players;
     }
 
     public boolean allReady() {
-        return allReady;
-    }
-
-    public void setAllReady(boolean allReady) {
-        this.allReady = allReady;
-    }
-
-    public void setPlayerState(Player player, boolean state) {
-        if(players.contains(player)) {
-            playerStates.replace(player, state);
-        }
+        return !playerStates.containsValue(false);
     }
 }

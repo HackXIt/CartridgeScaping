@@ -5,6 +5,7 @@ import java.net.Inet4Address;
 import java.util.function.Consumer;
 
 public class Server extends NetworkConnection {
+    private boolean isServer = true;
     private int port;
 
     public Server(int port, Consumer<Serializable> onReceiveCallback) {
@@ -13,17 +14,17 @@ public class Server extends NetworkConnection {
     }
 
     @Override
-    protected boolean isServer() {
-        return true;
+    public boolean isServer() {
+        return isServer;
     }
 
     @Override
-    protected String getLinkLocalAddress() {
+    public String getLinkLocalAddress() {
         return null;
     }
 
     @Override
-    protected int getPort() {
+    public int getPort() {
         return port;
     }
     // TODO Implement Server
