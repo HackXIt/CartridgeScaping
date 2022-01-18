@@ -11,7 +11,7 @@ public class MessageHandler {
 
     public void addMessage(Serializable msg) {
         addMessage((Message) msg);
-        ViewManager.getInstance().getCurrentOutputArea().appendText("\n" + msg.toString() + "\n");
+        ViewManager.getInstance().getCurrentOutputArea().appendText(msg.toString() + "\n");
     }
 
     public void addMessage(Message msg) {
