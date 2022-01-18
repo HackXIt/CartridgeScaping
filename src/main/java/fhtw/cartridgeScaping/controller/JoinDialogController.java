@@ -36,12 +36,15 @@ public class JoinDialogController
         if(verifyInput()) {
             NetworkManager.getInstance().setConnection(
                     NetworkFactory.createClient(
-                    data -> {
-                        Platform.runLater(NetworkManager.getInstance()::callback);
-                    },
+                            data -> {
+                                Platform.runLater(() -> {
+                                    NetworkManager.getInstance().callback(data);
+                                });
+                            },
                     NetworkManager.getInstance().getTargetIp(),
                     NetworkManager.getInstance().getPort())
             );
+            NetworkManager.getInstance().connection().startConnection();
             this.switchView("Failed to load & switch view to WaitingRoom.",
                     "Successfully loaded & switched view to WaitingRoom",
                     View.WAITING);
@@ -51,8 +54,14 @@ public class JoinDialogController
     @Override
     public boolean verifyInput() {
         try {
-            NetworkManager.getInstance().setPort(Integer.parseInt(fieldPort.getText()));
-            NetworkManager.getInstance().setTargetIp(Inet4Address.getByName(fieldIp.getText()));
+            if(ViewManager.getInstance().developerMode()) {
+                // NOTE Overriding default behaviour for developer mode (always use same port & localHost)
+                NetworkManager.getInstance().setPort(55555);
+                NetworkManager.getInstance().setTargetIp(Inet4Address.getLocalHost());
+            } else {
+                NetworkManager.getInstance().setPort(Integer.parseInt(fieldPort.getText()));
+                NetworkManager.getInstance().setTargetIp(Inet4Address.getByName(fieldIp.getText()));
+            }
             return true;
         } catch (UnknownHostException | NumberFormatException e) {
             ViewManager.getInstance().handleInputException(e, statusText::setText);

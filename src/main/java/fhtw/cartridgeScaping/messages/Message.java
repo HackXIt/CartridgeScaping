@@ -1,15 +1,14 @@
 package fhtw.cartridgeScaping.messages;
 
-import fhtw.cartridgeScaping.gameplay.Player;
-import fhtw.cartridgeScaping.gameplay.console.Command;
-
 import java.io.*;
 
 public abstract class Message implements Serializable {
+    MessageType type;
     String input;
 
-    public Message(String input) {
+    public Message(String input, MessageType type) {
         this.input = input;
+        this.type = type;
     }
 
     protected void writeObject(ObjectOutputStream out) throws IOException {

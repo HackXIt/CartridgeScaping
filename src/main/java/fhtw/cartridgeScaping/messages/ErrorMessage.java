@@ -1,12 +1,10 @@
 package fhtw.cartridgeScaping.messages;
 
-import fhtw.cartridgeScaping.gameplay.Player;
-
 public class ErrorMessage extends Message{
     private final String error;
 
     public ErrorMessage(String input, String error) {
-        super(input);
+        super(input, MessageType.CHAT);
         this.error = error;
     }
 

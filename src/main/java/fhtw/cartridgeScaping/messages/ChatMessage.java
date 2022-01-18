@@ -1,11 +1,9 @@
 package fhtw.cartridgeScaping.messages;
 
-import fhtw.cartridgeScaping.gameplay.Player;
-
 public class ChatMessage extends Message{
     String playerName;
     public ChatMessage(String playerName, String input) {
-        super(input);
+        super(input, MessageType.CHAT);
         this.playerName = playerName;
     }
 

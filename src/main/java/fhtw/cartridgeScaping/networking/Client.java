@@ -23,7 +23,7 @@ public class Client extends NetworkConnection{
     }
 
     @Override
-    public String getLinkLocalAddress() {
+    public String getIp() {
         ViewManager.getInstance().devLog(String.format("Requested IP: %s", ip.getHostAddress()));
         return ip.getHostAddress();
     }

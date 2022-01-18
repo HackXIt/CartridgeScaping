@@ -19,7 +19,7 @@ public class Server extends NetworkConnection {
     }
 
     @Override
-    public String getLinkLocalAddress() {
+    public String getIp() {
         return null;
     }
 

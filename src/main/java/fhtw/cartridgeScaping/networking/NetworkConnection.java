@@ -33,7 +33,7 @@ public abstract class NetworkConnection {
 
     /* Attributes for both client & server */
     public abstract boolean isServer();
-    public abstract String getLinkLocalAddress();
+    public abstract String getIp();
     public abstract int getPort();
 
     //region Networking
@@ -85,8 +85,8 @@ public abstract class NetworkConnection {
         public void run() {
             try (
                     // NOTE When using 0 as Port number, the next free port is automatically chosen.
-                    ServerSocket server = isServer() ? new ServerSocket(0) : null;
-                    Socket socket = isServer() ? server.accept() : new Socket(getLinkLocalAddress(), getPort());
+                    ServerSocket server = isServer() ? new ServerSocket(getPort()) : null;
+                    Socket socket = isServer() ? server.accept() : new Socket(getIp(), getPort());
                     ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
                     ObjectInputStream in = new ObjectInputStream(socket.getInputStream())) {
                         this.socket = socket;

@@ -59,10 +59,13 @@ public class HostDialogController
         if(verifyInput()) {
             NetworkManager.getInstance().setConnection(NetworkFactory.createServer(
                     data -> {
-                        Platform.runLater(NetworkManager.getInstance()::callback);
+                        Platform.runLater(() -> {
+                            NetworkManager.getInstance().callback(data);
+                        });
                     },
                     NetworkManager.getInstance().getPort())
             );
+            NetworkManager.getInstance().connection().startConnection();
             this.switchView("Failed to load & switch view to WaitingRoom.",
                     "Successfully loaded & switched view to WaitingRoom",
                     View.WAITING);
@@ -73,8 +76,14 @@ public class HostDialogController
     public boolean verifyInput() {
         ViewManager.getInstance().devLog("Verifying input...");
         try {
-            NetworkManager.getInstance().setPort(Integer.parseInt(getHostPort()));
-            NetworkManager.getInstance().setTargetIp(Inet4Address.getLocalHost());
+            if(ViewManager.getInstance().developerMode()) {
+                // NOTE Overriding default behaviour for developer mode (always use same port & localHost)
+                NetworkManager.getInstance().setPort(55555);
+                NetworkManager.getInstance().setTargetIp(Inet4Address.getLocalHost());
+            } else {
+                NetworkManager.getInstance().setPort(Integer.parseInt(getHostPort()));
+                NetworkManager.getInstance().setTargetIp(Inet4Address.getLocalHost());
+            }
             return true;
         } catch (UnknownHostException | NumberFormatException e) {
             ViewManager.getInstance().handleInputException(e, statusText::setText);

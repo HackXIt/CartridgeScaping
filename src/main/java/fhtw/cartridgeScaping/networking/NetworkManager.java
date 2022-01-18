@@ -1,9 +1,12 @@
 package fhtw.cartridgeScaping.networking;
 
 import fhtw.cartridgeScaping.controller.ViewManager;
+import fhtw.cartridgeScaping.messages.Message;
 
+import java.io.Serializable;
 import java.net.InetAddress;
 import java.util.Formatter;
+import java.util.function.Consumer;
 
 public class NetworkManager {
     private static NetworkManager singleton_instance;
@@ -11,6 +14,7 @@ public class NetworkManager {
     private int port;
     private NetworkConnection connection;
     private boolean isHost;
+    private Consumer<Serializable> currentCallback;
     // TODO Implement usage of formatter in Messages
     private Formatter messageFormatter = new Formatter();
 
@@ -52,9 +56,13 @@ public class NetworkManager {
         return isHost;
     }
 
-    public void callback() {
+    public void setCallback(Consumer<Serializable> callback) {
+        this.currentCallback = callback;
+    }
+
+    public void callback(Serializable data) {
         ViewManager.getInstance().devLog("Callback triggered!");
-        // TODO Implement callback which actually does something and takes parameters
+        currentCallback.accept(data);
         // TODO Also implement this in multithreading (tasks and whatnot)
     }
 

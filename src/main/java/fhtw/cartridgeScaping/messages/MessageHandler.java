@@ -1,11 +1,18 @@
 package fhtw.cartridgeScaping.messages;
 
+import fhtw.cartridgeScaping.controller.ViewManager;
 import javafx.scene.control.TextArea;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class MessageHandler {
     private ArrayList<Message> messages = new ArrayList<>();
+
+    public void addMessage(Serializable msg) {
+        addMessage((Message) msg);
+        ViewManager.getInstance().getCurrentOutputArea().appendText("\n" + msg.toString() + "\n");
+    }
 
     public void addMessage(Message msg) {
         messages.add(msg);
@@ -13,7 +20,7 @@ public class MessageHandler {
 
     public void addMessage(Message msg, TextArea output) {
         addMessage(msg);
-        output.appendText(msg.toString());
+        output.appendText(msg.toString() + "\n");
     }
 
     public void removeMessage(Message msg) {

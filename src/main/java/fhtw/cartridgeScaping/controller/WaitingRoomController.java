@@ -91,16 +91,16 @@ public class WaitingRoomController
     public void onReady() {
         // DONE onReady() Increase Progress-Bar by Player count
         GameManager.getInstance().setPlayerState(Player.getInstance(), readyBox.isSelected());
-        NetworkManager.getInstance().connection().send(
-                new LocalMessage(String.format("%s is %s",
-                        Player.getInstance().getName(),
-                        readyBox.isSelected()))
-        );
         resetProgressBar();
         ViewManager.getInstance().devLog(
                 String.format("Player %s is %s.",
                         Player.getInstance().getName(),
                         readyBox.isSelected() ? "ready" : "not ready")
+        );
+        NetworkManager.getInstance().connection().send(
+                new LocalMessage(String.format("Player %s is %s",
+                        Player.getInstance().getName(),
+                        readyBox.isSelected()))
         );
     }
 
@@ -138,6 +138,9 @@ public class WaitingRoomController
         ViewManager.getInstance().setCurrentStatusText(statusText);
         ViewManager.getInstance().setCurrentInputField(inputField);
         ViewManager.getInstance().setCurrentOutputArea(chatArea);
+        NetworkManager.getInstance().setCallback(
+                model.MessageHandler()::addMessage
+        );
         Bindings.bindBidirectional(progBar.progressProperty(), progressBarProperty());
         hostStartButton.setVisible(NetworkManager.getInstance().isHost());
         chatArea.setFocusTraversable(false);
@@ -168,5 +171,6 @@ public class WaitingRoomController
                     input,
                     "Connection error."), chatArea);
         }
+        inputField.clear();
     }
 }
