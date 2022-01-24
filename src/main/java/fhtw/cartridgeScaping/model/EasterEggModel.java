@@ -9,6 +9,7 @@ package fhtw.cartridgeScaping.model;
  * @project CartridgeScaping
  */
 public class EasterEggModel extends Model {
+    // NOTE This model is meant for implementation of special features... who knows what it will be..
 //    TODO Implement EasterEggModel
 
     public EasterEggModel() {

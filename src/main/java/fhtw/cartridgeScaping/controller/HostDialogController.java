@@ -48,14 +48,6 @@ public class HostDialogController
     @Override
     public void consumeDialog() {
         ViewManager.getInstance().devLog("Consuming dialog...");
-        // TODO Host game upon consuming dialog
-        // NOTE Since CartridgeModel is not implemented, Game is loaded via here no matter what happens.
-//        if(ViewManager.isDeveloperMode()) {
-//            System.out.println("DEVELOPER - Switching to GameplayMode");
-//            this.switchView("Failed to load & switch view to WaitingRoom.",
-//                    "Successfully loaded & switched view to WaitingRoom",
-//                    View.WAITING);
-//        }
         if(verifyInput()) {
             NetworkManager.getInstance().setConnection(NetworkFactory.createServer(
                     data -> {
@@ -68,7 +60,7 @@ public class HostDialogController
             NetworkManager.getInstance().connection().startConnection();
             this.switchView("Failed to load & switch view to WaitingRoom.",
                     "Successfully loaded & switched view to WaitingRoom",
-                    View.WAITING);
+                    View.Waiting);
         }
     }
 
@@ -95,6 +87,7 @@ public class HostDialogController
 
     @Override
     public void onLoad() {
+        // TODO Complete implementation of onLoad in HostDialogController
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(new File("./"));
         File file = fileChooser.showOpenDialog(ViewManager.getInstance().getPrimaryStage());

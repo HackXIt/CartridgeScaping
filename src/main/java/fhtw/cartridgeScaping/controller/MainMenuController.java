@@ -1,6 +1,5 @@
 package fhtw.cartridgeScaping.controller;
 
-import fhtw.cartridgeScaping.model.Model;
 import fhtw.cartridgeScaping.util.View;
 import fhtw.cartridgeScaping.model.EasterEggModel;
 import javafx.application.Platform;
@@ -33,21 +32,21 @@ public class MainMenuController extends Controller{
         this.switchView(
                 "Failed to load & switch view to PlayConfiguration.",
                 "Successfully loaded & switched view to PlayConfiguration.",
-                View.CONFIGURATION);
+                View.Configuration);
     }
     @FXML
     public void openApplicationSettings() {
         this.switchView(
                 "Failed to load & switch view to ApplicationSettings.",
                 "Successfully loaded & switched view to ApplicationSettings.",
-                View.SETTINGS);
+                View.AppSettings);
     }
     @FXML
     public void showCredits()  {
         this.switchView(
                 "Failed to load & switch view to Credits.",
                 "Successfully loaded & switched view to Credits.",
-                View.CREDITS);
+                View.Credits);
     }
     @FXML
     public void onExit() {

@@ -1,35 +1,33 @@
 package fhtw.cartridgeScaping.gameplay.items;
 
 import fhtw.cartridgeScaping.gameplay.GameObject;
-import fhtw.cartridgeScaping.gameplay.Player;
 import fhtw.cartridgeScaping.gameplay.rooms.Room;
 import fhtw.cartridgeScaping.gameplay.text.ItemDescription;
-import fhtw.cartridgeScaping.gameplay.util.InventoryItem;
 
 public class Item extends GameObject {
-    protected ItemDescription itemDesc;
+    protected ItemDescription itemDescription;
 
-    public Item(ItemDescription itemDesc) {
-        this.itemDesc = itemDesc;
+    public Item(ItemDescription itemDescription) {
+        this.itemDescription = itemDescription;
     }
 
     public Item(Item item) {
         // TODO Implement deep-copy of Item
-        this.itemDesc = (ItemDescription) item.getItemDesc().cloneDescription();
+        this.itemDescription = (ItemDescription) item.getItemDescription().cloneDescription();
         this.itemHolder = item.itemHolder;
         this.isHeld = item.isHeld;
     }
 
     public String getName() {
-        return itemDesc.getName();
+        return itemDescription.getName();
     }
 
     public String getRoomDesc() {
-        return itemDesc.getRoomDesc();
+        return itemDescription.getRoomDesc();
     }
 
-    public ItemDescription getItemDesc() {
-        return itemDesc;
+    public ItemDescription getItemDescription() {
+        return itemDescription;
     }
 
     public int getId() {
@@ -46,8 +44,8 @@ public class Item extends GameObject {
 
     @Override
     public String toString() {
-        StringBuilder strBuilder = new StringBuilder(itemDesc.toString());
-        strBuilder.append(isHeld() ? itemDesc.getInventoryDescription() : itemDesc.getRoomDesc());
+        StringBuilder strBuilder = new StringBuilder(itemDescription.toString());
+        strBuilder.append(isHeld() ? itemDescription.getInventoryDescription() : itemDescription.getRoomDesc());
         return strBuilder.toString();
     }
 
@@ -67,6 +65,6 @@ public class Item extends GameObject {
 
     @Override
     public String inspect() {
-        return itemDesc.getDetailedDescription();
+        return itemDescription.getDetailedDescription();
     }
 }

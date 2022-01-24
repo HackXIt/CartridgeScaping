@@ -3,15 +3,20 @@ package fhtw.cartridgeScaping.gameplay;
 import fhtw.cartridgeScaping.gameplay.items.Item;
 import fhtw.cartridgeScaping.gameplay.util.Inspectable;
 import fhtw.cartridgeScaping.gameplay.util.Lookable;
+import javafx.scene.image.Image;
 
 public abstract class GameObject implements Lookable, Inspectable {
-    protected Player itemHolder;
-    protected boolean isHeld;
+    protected Player itemHolder = null;
+    protected boolean isHeld = false;
     protected boolean canBeHeld;
-    protected String objectString = super.toString();
+    protected Image objectImage = null;
 
-    public String getString() {
-        return objectString;
+    public Image getObjectImage() {
+        return objectImage;
+    }
+
+    public void setObjectImage(Image objectImage) {
+        this.objectImage = objectImage;
     }
 
     public abstract String lookAt();

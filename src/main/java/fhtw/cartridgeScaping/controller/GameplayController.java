@@ -3,7 +3,6 @@ package fhtw.cartridgeScaping.controller;
 import fhtw.cartridgeScaping.gameplay.Player;
 import fhtw.cartridgeScaping.gameplay.console.Command;
 import fhtw.cartridgeScaping.model.GameplayModel;
-import fhtw.cartridgeScaping.networking.*;
 import fhtw.cartridgeScaping.util.View;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -57,15 +56,24 @@ public class GameplayController extends Controller implements Initializable {
         this.switchView(
                 "Failed to load & switch view to Main.",
                 "Successfully loaded & switched view to Main.",
-                View.MAIN);
+                View.Main);
     }
 
     public void onOpenSettings() {
+        this.openDialog(
+                "Failed to open settings dialog.",
+                "Successfully opened settings dialog.",
+                View.SettingsDialog,
+                "Settings...");
     }
 
     public void onInput() {
         String input = inputField.getText();
-        Player.getInstance().getCommandManager().parseInput(input).execute();
+        Command cmd = Player.getInstance().getCommandManager().parseInput(input);
+        if(cmd != null) {
+            cmd.execute();
+        }
+        inputField.clear();
         // TODO Send messages on gameplay input
     }
 

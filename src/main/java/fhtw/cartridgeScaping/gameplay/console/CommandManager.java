@@ -21,20 +21,19 @@ public class CommandManager {
     }
 
     private void printHelp() {
+        // k = String of command
+        // v = Command object
         commands.forEach((k,v) -> {
             ViewManager.getInstance().devLog(
-                    v.getCommandText().getHelp(
-                            ViewManager.getInstance().getApplicationSettings().isVerbose()));
-            ViewManager.getInstance().getCurrentOutputArea().appendText(
-                    v.getCommandText().getHelp(ViewManager.getInstance().getApplicationSettings().isVerbose())
-            );
+                    v.getCommandText().getHelp());
+            ViewManager.getInstance().getCurrentOutputArea().appendText(v.getCommandText().getHelp());
         });
     }
 
     private void exit() {
         // TODO Add yes/no prompt to exit command
         NetworkManager.getInstance().connection().closeConnection();
-        ViewManager.getInstance().switchTo(View.MAIN);
+        ViewManager.getInstance().switchTo(View.Main);
     }
 
 //    NOTE getter for possibleInteractions - might be useful in the future

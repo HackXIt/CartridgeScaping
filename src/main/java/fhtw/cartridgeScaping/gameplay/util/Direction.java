@@ -6,10 +6,10 @@ public enum Direction {
     SOUTH(0, -1, "south", "You can go south."),
     WEST(-1, 0, "west", "You can go west.");
 
-    private int dx;
-    private int dy;
-    private String dirName;
-    private String dirDesc;
+    private final int dx;
+    private final int dy;
+    private final String dirName;
+    private final String dirDesc;
 
     private static String[] possibleDirections = {"north", "east", "south", "west"};
 

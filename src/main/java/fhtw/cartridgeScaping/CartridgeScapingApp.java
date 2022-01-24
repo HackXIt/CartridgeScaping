@@ -3,6 +3,7 @@ package fhtw.cartridgeScaping;
 import fhtw.cartridgeScaping.controller.ViewManager;
 import fhtw.cartridgeScaping.gameplay.Player;
 import fhtw.cartridgeScaping.networking.NetworkManager;
+import fhtw.cartridgeScaping.util.View;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -32,6 +33,7 @@ public class CartridgeScapingApp extends Application {
         primaryStage.setScene(ViewManager.getInstance().init());
         Player.getInstance().getCommandManager().init();
         primaryStage.show();
+        ViewManager.getInstance().switchTo(View.Gameplay);
     }
 
     public static void main(String[] args) {

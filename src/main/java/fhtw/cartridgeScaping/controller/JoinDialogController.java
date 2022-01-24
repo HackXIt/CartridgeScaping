@@ -18,7 +18,7 @@ import java.util.ResourceBundle;
 public class JoinDialogController
         extends CartridgeController
         implements DialogController, Initializable {
-    // TODO Check fieldPort & fieldIp for correct input upon change
+    // DONE Check fieldPort & fieldIp for correct input upon change
 
     @FXML
     private TextField fieldPort;
@@ -47,7 +47,7 @@ public class JoinDialogController
             NetworkManager.getInstance().connection().startConnection();
             this.switchView("Failed to load & switch view to WaitingRoom.",
                     "Successfully loaded & switched view to WaitingRoom",
-                    View.WAITING);
+                    View.Waiting);
         }
     }
 
@@ -73,6 +73,7 @@ public class JoinDialogController
 
     @Override
     public void onLoad() {
+        // TODO Implement onLoad on JoinDialogController
         throw new UnsupportedOperationException();
     }
 

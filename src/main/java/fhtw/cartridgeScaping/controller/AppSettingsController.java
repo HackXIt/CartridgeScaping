@@ -2,7 +2,6 @@ package fhtw.cartridgeScaping.controller;
 
 import fhtw.cartridgeScaping.model.SettingsModel;
 import fhtw.cartridgeScaping.util.View;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
@@ -30,11 +29,16 @@ But as of now, this is not necessary.
  */
 public class AppSettingsController extends Controller<SettingsModel> implements Initializable {
     private final SettingsModel model = ViewManager.getInstance().getApplicationSettings();
+    protected boolean tempDevMode;
+    protected boolean tempBlinkingCursor;
+    protected boolean tempVerboseMode;
 
     @FXML
-    private CheckBox boxDevMode;
+    protected CheckBox boxDevMode;
     @FXML
-    private CheckBox boxBlinkingCursor;
+    protected CheckBox boxBlinkingCursor;
+    @FXML
+    protected CheckBox boxVerboseMode;
     @FXML
     private Text statusText;
 
@@ -47,31 +51,43 @@ public class AppSettingsController extends Controller<SettingsModel> implements 
         ViewManager.getInstance().setCurrentStatusText(statusText);
         statusText.setVisible(false);
         boxDevMode.setSelected(ViewManager.getInstance().developerMode());
+        boxBlinkingCursor.setSelected(model.isBlinkingCursor());
+        boxVerboseMode.setSelected((model.isVerbose()));
+        tempDevMode = ViewManager.getInstance().developerMode();
+        tempBlinkingCursor = model.isBlinkingCursor();
+        tempVerboseMode = model.isVerbose();
     }
 
     //    NOTE Controls for appSettings.fxml ----
     @FXML
     public void onApply()  {
-        // TODO Implement onApply() in AppSettingsController
+        model.setBlinkingCursor(tempBlinkingCursor);
+        model.setVerbose(tempVerboseMode);
+        ViewManager.getInstance().toggleDeveloperMode(tempDevMode);
+
         statusText.setVisible(true);
         statusText.setText("Success!");
     }
 
     public void onDevModeToggle() {
-        ViewManager.getInstance().toggleDeveloperMode(boxDevMode.isSelected());
+        tempDevMode = boxDevMode.isSelected();
+        ViewManager.getInstance().devLog("Toggled developer mode.");
     }
 
     public void onCursorModeToggle() {
-        model.setBlinkingCursor(boxBlinkingCursor.isSelected());
-        ViewManager.getInstance().devLog(
-                String.format("%s blinking cursor.",
-                boxBlinkingCursor.isSelected() ? "Enabled" : "Disabled"));
+        tempBlinkingCursor = boxBlinkingCursor.isSelected();
+        ViewManager.getInstance().devLog("Toggled blinking cursor.");
+    }
+
+    public void onVerboseModeToggle() {
+        tempVerboseMode = boxVerboseMode.isSelected();
+        ViewManager.getInstance().devLog("Toggled verbose mode.");
     }
 
     public void onBack() {
         this.switchView(
                 "Failed to load & switch view to Main.",
                 "Successfully loaded & switched view to Main.",
-                View.MAIN);
+                View.Main);
     }
 }

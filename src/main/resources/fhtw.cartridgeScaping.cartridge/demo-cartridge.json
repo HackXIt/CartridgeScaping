@@ -1,0 +1,84 @@
+{
+  "BaseRoom": {
+    "roomDescription": {
+      "name": "Cellar",
+      "shortDescription": "A dark cellar under the basement",
+      "longDescription": "The lighting of this cellar is very dim, if noticeable at all. The walls are painted clinically white."
+    },
+    "directions": null,
+    "doors": {
+      "door1": {
+        "doorDescription": {
+          "name": "Wood door",
+          "shortDescription": "A wooden door",
+          "longDescription": "The door is made out of old bark and has deep scratch marks on it.",
+          "detailedDescription": "It appears as if there's remains of human tissue and nails in the grooves of those scratch marks.",
+          "insideDescription": "Blocking your way upstairs is a wooden door",
+          "outsideDescription": "Blocking the way to the cellar is an old wooden door. The wood has been thoroughly treated on this side.",
+          "isInside": true
+        },
+        "roomDestination": "Room1",
+        "roomSource": "BaseRoom",
+        "isLocked": true,
+        "isOpen": false,
+        "keyable": "ironKey"
+      }
+    },
+    "items": {
+      "ironKey": {
+        "itemDescription": {
+          "name": "Iron key",
+          "shortDescription": "A key, made of cast iron.",
+          "longDescription": "The key is made from cast iron, which truly has seen better days.",
+          "roomDesc": "A key is laying on the ground.",
+          "inventoryDescription": "The iron key feels sturdy in your hands."
+        },
+        "canBeHeld": true
+      }
+    },
+    "hasDoors": true,
+    "hasItems": true
+  },
+  "Room1": {
+    "roomDescription": {
+      "name": "Basement",
+      "shortDescription": "Basement of building",
+      "longDescription": "This tiny room has nothing in it."
+    },
+    "directions": {
+      "north": "Room2"
+    },
+    "doors": {
+      "door1": {
+        "doorDescription": {
+          "name": "Wood door",
+          "shortDescription": "A wooden door",
+          "longDescription": "The door is made out of old bark and has deep scratch marks on it.",
+          "detailedDescription": "It appears as if there's remains of human tissue and nails in the grooves of those scratch marks.",
+          "insideDescription": "Blocking your way upstairs is a wooden door",
+          "outsideDescription": "Blocking the way to the cellar is an old wooden door. The wood has been thoroughly treated on this side.",
+          "isInside": false
+        },
+        "roomDestination": "Room1",
+        "roomSource": "BaseRoom",
+        "isLocked": true,
+        "isOpen": false,
+        "keyable": "ironKey"
+      }
+    },
+    "items": {},
+    "hasDoors": true
+  },
+  "Room2": {
+    "roomDescription": {
+      "name": "Outside",
+      "shortDescription": "Outside of building",
+      "longDescription": "The freedom of the world is in front of you."
+    },
+    "directions": {
+      "south": "Room1"
+    },
+    "doors": null,
+    "items": null
+  }
+}

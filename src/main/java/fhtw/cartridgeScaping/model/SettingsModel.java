@@ -1,5 +1,7 @@
 package fhtw.cartridgeScaping.model;
 
+import fhtw.cartridgeScaping.controller.ViewManager;
+
 /**
  * INFO Header of SettingsModel.java
  *
@@ -72,10 +74,16 @@ public class SettingsModel extends Model{
 
     public void setBlinkingCursor(boolean blinkingCursor) {
         this.blinkingCursor = blinkingCursor;
+        ViewManager.getInstance().devLog(
+                String.format("%s blinking cursor.",
+                        blinkingCursor ? "Enabled" : "Disabled"));
     }
 
     public void setVerbose(boolean verbose) {
         this.verbose = verbose;
+        ViewManager.getInstance().devLog(
+                String.format("%s verbose mode.",
+                        verbose ? "Enabled" : "Disabled"));
     }
 
     public boolean isVerbose() {

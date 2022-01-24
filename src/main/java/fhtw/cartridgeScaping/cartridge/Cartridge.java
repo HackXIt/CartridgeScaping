@@ -3,37 +3,24 @@ package fhtw.cartridgeScaping.cartridge;
 import fhtw.cartridgeScaping.gameplay.items.Item;
 import fhtw.cartridgeScaping.gameplay.rooms.Room;
 import fhtw.cartridgeScaping.gameplay.items.Secret;
+import javafx.scene.image.Image;
 
 import java.nio.file.Path;
-import java.util.LinkedList;
+import java.util.HashMap;
 import java.util.Vector;
 
 // Data structure for cartridge
 public class Cartridge {
     private String fileName;
     private Path filePath;
+    private String gameTitle;
+    private Image gameImage;
     private Vector<Vector<Room>> rooms;
-    private LinkedList<Item> items;
-    private LinkedList<Secret> secrets;
+    private HashMap<Integer, Item> items;
+    private HashMap<Integer, Secret> secrets;
     private int spawnX = 0;
     private int spawnY = 0;
 
     public Cartridge() {
-    }
-
-    public Cartridge(String fileName,
-                     Path filePath,
-                     Vector<Vector<Room>> rooms,
-                     LinkedList<Item> items,
-                     LinkedList<Secret> secrets,
-                     int spawnX,
-                     int spawnY) {
-        this.fileName = fileName;
-        this.filePath = filePath;
-        this.rooms = rooms;
-        this.items = items;
-        this.secrets = secrets;
-        this.spawnX = spawnX;
-        this.spawnY = spawnY;
     }
 }

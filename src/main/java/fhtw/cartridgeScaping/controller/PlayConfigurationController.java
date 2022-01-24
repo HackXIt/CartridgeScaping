@@ -116,7 +116,7 @@ public class PlayConfigurationController
             this.openDialog(
                     "Failed to open hostingDialog.",
                     "Successfully opened hostingDialog.",
-                    View.HOST,
+                    View.Host,
                     "Host game..."
             );
         }
@@ -128,7 +128,7 @@ public class PlayConfigurationController
             this.openDialog(
                     "Failed to open joinDialog.",
                     "Successfully opened joinDialog.",
-                    View.JOIN,
+                    View.Join,
                     "Join game..."
             );
         }
@@ -139,7 +139,7 @@ public class PlayConfigurationController
         this.switchView(
                 "Failed to load & switch view to Main.",
                 "Successfully loaded & switched view to Main.",
-                View.MAIN);
+                View.Main);
     }
 
     @Override

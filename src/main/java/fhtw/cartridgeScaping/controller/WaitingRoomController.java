@@ -115,7 +115,7 @@ public class WaitingRoomController
         this.switchView(
                 "Failed to load & switch view to PlayConfiguration.",
                 "Successfully loaded & switched view to PlayConfiguration.",
-                View.MAIN);
+                View.Main);
     }
 
     public void onGameSettings() throws UnsupportedOperationException{
@@ -157,7 +157,7 @@ public class WaitingRoomController
             this.switchView(
                     "Failed to load & switch view to PlayConfiguration.",
                     "Successfully loaded & switched view to PlayConfiguration.",
-                    View.GAMEPLAY);
+                    View.Gameplay);
         }
     }
 

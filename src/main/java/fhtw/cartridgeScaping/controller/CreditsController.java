@@ -2,12 +2,10 @@ package fhtw.cartridgeScaping.controller;
 
 import fhtw.cartridgeScaping.model.Model;
 import fhtw.cartridgeScaping.util.View;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -39,7 +37,7 @@ public class CreditsController extends Controller implements Initializable {
         this.switchView(
                 "Failed to load & switch view to Main.",
                 "Successfully loaded & switched view to Main.",
-                View.MAIN);
+                View.Main);
     }
 
     @Override

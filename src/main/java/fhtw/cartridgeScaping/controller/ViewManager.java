@@ -53,7 +53,7 @@ public class ViewManager {
 
     public Scene init() {
         try {
-            FXMLLoader loader = new FXMLLoader(ViewManager.class.getResource(View.MAIN.getFileName()));
+            FXMLLoader loader = new FXMLLoader(ViewManager.class.getResource(View.Main.getFileName()));
             loader.setControllerFactory(c -> new MainMenuController());
             scene = new Scene(loader.load());
             return scene;
@@ -163,7 +163,7 @@ public class ViewManager {
         Optional<ButtonType> clickedButton = dialog.showAndWait();
 
         if(clickedButton.isPresent()) {
-            if (clickedButton.get() == ButtonType.OK) {
+            if (clickedButton.get() == ButtonType.OK || clickedButton.get() == ButtonType.APPLY) {
                 dialogController.consumeDialog();
             } else {
                 dialog.close();

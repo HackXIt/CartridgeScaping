@@ -9,14 +9,15 @@ package fhtw.cartridgeScaping.util;
  * @project CartridgeScaping
  */
 public enum View {
-    MAIN("mainMenu.fxml", true),
-    CONFIGURATION("playConfiguration.fxml", true),
-    SETTINGS("appSettings.fxml", true),
-    WAITING("waitingRoom.fxml", false),
-    GAMEPLAY("gameplayView.fxml", false),
-    CREDITS("gameCredits.fxml", true),
-    HOST("hostingDialog.fxml", true),
-    JOIN("joinDialog.fxml", true);
+    Main("mainMenu.fxml", true),
+    Configuration("playConfiguration.fxml", true),
+    AppSettings("appSettings.fxml", true),
+    Waiting("waitingRoom.fxml", false),
+    Gameplay("gameplayView.fxml", false),
+    Credits("gameCredits.fxml", true),
+    Host("hostingDialog.fxml", true),
+    Join("joinDialog.fxml", true),
+    SettingsDialog("settingsDialog.fxml", true);
 
 //    TODO Add static log messages to View to make switchView and openDialog less annoying
 
