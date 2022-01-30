@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 /**
  * NOTE Global TODOs for the Application
  * TODO Add Logger for handling all logMessages and print them to file by default
- * TODO Generate Cartridge from File
+ * DONE Generate Cartridge from File
  * TODO Implement networking package (Host & Client functionality)
  * TODO Implement console package (Commands & chat functionality)
  */
@@ -33,7 +33,6 @@ public class CartridgeScapingApp extends Application {
         primaryStage.setScene(ViewManager.getInstance().init());
         Player.getInstance().getCommandManager().init();
         primaryStage.show();
-        ViewManager.getInstance().switchTo(View.Gameplay);
     }
 
     public static void main(String[] args) {

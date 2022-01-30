@@ -1,19 +1,27 @@
 package fhtw.cartridgeScaping.gameplay.items;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import fhtw.cartridgeScaping.gameplay.GameObject;
 import fhtw.cartridgeScaping.gameplay.text.ItemDescription;
+import fhtw.cartridgeScaping.networking.NetworkManager;
 
-public class Item extends GameObject {
+@JsonAutoDetect(setterVisibility = JsonAutoDetect.Visibility.PROTECTED_AND_PUBLIC)
+public class Item extends GameObject<Item> {
     protected ItemDescription itemDescription;
 
-    public Item(ItemDescription itemDescription) {
-        this.itemDescription = itemDescription;
+    public Item(boolean canBeHeld) {
+        super(canBeHeld);
     }
 
-    public Item(Item item) {
-        // TODO Implement deep-copy of Item
-        this.itemDescription = (ItemDescription) item.getItemDescription().cloneDescription();
+    public Item(boolean canBeHeld, ItemDescription itemDescription) {
+        super(canBeHeld);
+        this.itemDescription = itemDescription.cloneDescription();
+    }
+
+    public Item(Item item, String originalID) {
+        super(item, originalID);
+        this.itemDescription = item.getItemDescription().cloneDescription();
         this.itemHolder = item.itemHolder;
         this.isHeld = item.isHeld;
     }
@@ -27,13 +35,18 @@ public class Item extends GameObject {
         return itemDescription;
     }
 
-    @JsonIgnore
-    public int getId() {
-        return this.hashCode();
+    public void setItemDescription(ItemDescription itemDescription) {
+        this.itemDescription = itemDescription.cloneDescription();
     }
 
-    public Item cloneItem() {
-        return new Item(this);
+    /* NOTE Cloning items is only allowed for Host because of original reference to objectID */
+    @Override
+    public Item cloneObject() {
+        if(NetworkManager.getInstance().isHost()) {
+            // TODO Send HostMessage to clients, containing the newly created object
+            return new Item(this, String.valueOf(hashCode()));
+        }
+        return null;
     }
 
     @Override

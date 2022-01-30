@@ -24,10 +24,10 @@ public class RoomDirectionSerializer extends StdSerializer<HashMap<Direction, Ro
     public void serialize(HashMap<Direction, Room> value,
                           JsonGenerator gen,
                           SerializerProvider provider) throws IOException {
-        HashMap<Direction, Integer> directions = new HashMap<>();
+        HashMap<String, Integer> directions = new HashMap<>();
         for (Map.Entry<Direction, Room> entry :
                 value.entrySet()) {
-            directions.put(entry.getKey(), entry.getValue().hashCode());
+            directions.put(entry.getKey().getDirName(), entry.getValue().hashCode());
         }
         gen.writeObject(directions);
     }

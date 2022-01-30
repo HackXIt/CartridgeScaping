@@ -2,7 +2,7 @@ package fhtw.cartridgeScaping.gameplay.text;
 
 import java.io.Serializable;
 
-public class Description implements Serializable {
+public abstract class Description<T extends Description> implements Serializable {
     protected String name;
     protected String shortDescription;
     protected String longDescription;
@@ -70,9 +70,7 @@ public class Description implements Serializable {
         this.detailedDescription = detailedDescription;
     }
 
-    public Description cloneDescription() {
-        return new Description(this);
-    }
+    public abstract T cloneDescription();
 
     @Override
     public String toString() {

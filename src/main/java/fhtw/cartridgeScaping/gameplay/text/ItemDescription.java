@@ -1,6 +1,9 @@
 package fhtw.cartridgeScaping.gameplay.text;
 
-public class ItemDescription extends Description{
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public class ItemDescription extends Description<ItemDescription>{
     private String placedDescription; // NOTE Description of item placed in room
     private String inventoryDescription; // NOTE Description of item inside inventory
 
@@ -19,12 +22,14 @@ public class ItemDescription extends Description{
         super(name, shortDescription, longDescription, detailedDescription);
     }
 
-    public ItemDescription(String name,
-                           String shortDescription,
-                           String longDescription,
-                           String detailedDescription,
-                           String placedDescription,
-                           String inventoryDescription) {
+    @JsonCreator
+    public ItemDescription(
+            @JsonProperty("name") String name,
+            @JsonProperty("shortDescription") String shortDescription,
+            @JsonProperty("longDescription") String longDescription,
+            @JsonProperty("detailedDescription") String detailedDescription,
+            @JsonProperty("placedDescription") String placedDescription,
+            @JsonProperty("inventoryDescription") String inventoryDescription) {
         super(name, shortDescription, longDescription, detailedDescription);
         this.placedDescription = placedDescription;
         this.inventoryDescription = inventoryDescription;
@@ -53,7 +58,7 @@ public class ItemDescription extends Description{
     }
 
     @Override
-    public Description cloneDescription() {
+    public ItemDescription cloneDescription() {
         return new ItemDescription(this);
     }
 

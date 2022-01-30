@@ -1,5 +1,9 @@
 package fhtw.cartridgeScaping.gameplay.rooms;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import fhtw.cartridgeScaping.controller.ViewManager;
 import fhtw.cartridgeScaping.gameplay.GameObject;
@@ -9,12 +13,14 @@ import fhtw.cartridgeScaping.gameplay.text.DoorDescription;
 import fhtw.cartridgeScaping.gameplay.text.RoomDescription;
 import fhtw.cartridgeScaping.gameplay.util.Direction;
 import fhtw.cartridgeScaping.json.RoomDirectionSerializer;
+import fhtw.cartridgeScaping.json.PairDeserializer;
 import fhtw.cartridgeScaping.json.RoomObjectSerializer;
+import fhtw.cartridgeScaping.networking.NetworkManager;
 import javafx.util.Pair;
 
 import java.util.HashMap;
 
-public class Room extends GameObject {
+public class Room extends GameObject<Room> {
     private RoomDescription roomDescription;
     @JsonSerialize(using = RoomObjectSerializer.class)
     private HashMap<Integer, Door> doors;
@@ -22,16 +28,19 @@ public class Room extends GameObject {
     private HashMap<Direction, Room> directions;
     @JsonSerialize(using = RoomObjectSerializer.class)
     private HashMap<Integer, Item> items;
+    @JsonIgnore
     private final HashMap<Integer, Player> players;
+    @JsonDeserialize(using = PairDeserializer.class)
     private Pair<Integer, Integer> location;
-    private boolean hasDoors = false;
-    private boolean hasItems = false;
+    private boolean hasDoors;
+    private boolean hasItems;
 
 //    NOTE Constructors ----------------------------------------
 
-    public Room(RoomDescription roomDescription) {
-        this.canBeHeld = false; // Always false for rooms.
-        this.roomDescription = roomDescription;
+    @JsonCreator
+    public Room(@JsonProperty("roomDescription") RoomDescription roomDescription) {
+        super(false); // Rooms can never be held.
+        this.roomDescription = roomDescription.cloneDescription();
         this.directions = new HashMap<>();
         this.doors = new HashMap<>();
         this.items = new HashMap<>();
@@ -61,11 +70,12 @@ public class Room extends GameObject {
         this.hasItems = true;
     }
 
-    public Room(Room room) {
-        this.roomDescription = room.getRoomDescription();
+    public Room(Room room, String originalID) {
+        super(room, originalID);
+        this.roomDescription = room.getRoomDescription().cloneDescription();
         this.directions = room.getDirections();
-        this.items = room.hasItems() ? room.getItems() : null;
-        this.doors = room.hasDoors() ? room.getDoors() : null;
+        this.items = room.hasItems() ? room.getItems() : new HashMap<>();
+        this.doors = room.hasDoors() ? room.getDoors() : new HashMap<>();
         this.hasDoors = room.hasDoors();
         this.hasItems = room.hasItems();
         this.players = new HashMap<>();
@@ -86,12 +96,9 @@ public class Room extends GameObject {
     }
 
     public void setDoors(HashMap<Integer, Door> doors) {
-        this.doors = doors;
-    }
-
-    public HashMap<Integer, Door> copyDoors() {
-        // TODO Implement deepCopy for copyDoors()
-        return new HashMap<>(doors);
+        if(doors != null) {
+            this.doors = doors;
+        }
     }
 
     public HashMap<Direction, Room> getDirections() {
@@ -99,12 +106,9 @@ public class Room extends GameObject {
     }
 
     public void setDirections(HashMap<Direction, Room> directions) {
-        this.directions = directions;
-    }
-
-    public HashMap<Direction, Room> copyDirections() {
-        // TODO Implement deepCopy for copyDirections()
-        return new HashMap<>(directions);
+        if(directions != null) {
+            this.directions = directions;
+        }
     }
 
     public HashMap<Integer, Item> getItems() {
@@ -112,7 +116,9 @@ public class Room extends GameObject {
     }
 
     public void setItems(HashMap<Integer, Item> items) {
-        this.items = items;
+        if(items != null) {
+            this.items = items;
+        }
     }
 
     public Pair<Integer, Integer> getLocation() {
@@ -121,11 +127,6 @@ public class Room extends GameObject {
 
     public void setLocation(Pair<Integer, Integer> location) {
         this.location = location;
-    }
-
-    public HashMap<Integer, GameObject> copyItems() {
-        // TODO Implement deepCopy for copyItems()
-        return new HashMap<>(items);
     }
 
     public boolean hasDoors() {
@@ -319,6 +320,8 @@ public class Room extends GameObject {
         return true;
     }
 
+
+
     @Override
     public String toString() {
         /**
@@ -359,5 +362,14 @@ public class Room extends GameObject {
     @Override
     public String getName() {
         return roomDescription.getName();
+    }
+
+    /* NOTE Cloning rooms is only allowed for Host because of original reference to objectID */
+    @Override
+    public Room cloneObject() {
+        if(NetworkManager.getInstance().isHost()) {
+            return new Room(this, String.valueOf(hashCode()));
+        }
+        return null;
     }
 }

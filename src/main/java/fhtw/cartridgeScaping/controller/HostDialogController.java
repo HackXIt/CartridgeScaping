@@ -1,6 +1,7 @@
 package fhtw.cartridgeScaping.controller;
 
 import fhtw.cartridgeScaping.cartridge.CartridgeController;
+import fhtw.cartridgeScaping.cartridge.CartridgeLoader;
 import fhtw.cartridgeScaping.gameplay.GameManager;
 import fhtw.cartridgeScaping.networking.NetworkManager;
 import fhtw.cartridgeScaping.networking.NetworkFactory;
@@ -16,16 +17,17 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 
 import java.io.File;
+import java.io.Serializable;
 import java.net.Inet4Address;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 
 public class HostDialogController
         extends CartridgeController
         implements DialogController, Initializable {
     private final SimpleStringProperty hostPort = new SimpleStringProperty();
-
     @FXML
     private TextField fieldHostPort;
     @FXML
@@ -58,6 +60,7 @@ public class HostDialogController
                     NetworkManager.getInstance().getPort())
             );
             NetworkManager.getInstance().connection().startConnection();
+            GameManager.getInstance().admitCartridge(this.model);
             this.switchView("Failed to load & switch view to WaitingRoom.",
                     "Successfully loaded & switched view to WaitingRoom",
                     View.Waiting);
@@ -92,13 +95,12 @@ public class HostDialogController
         fileChooser.setInitialDirectory(new File("./"));
         File file = fileChooser.showOpenDialog(ViewManager.getInstance().getPrimaryStage());
         if (file != null) {
+            statusText.setVisible(true);
             if(this.loadCartridge(file.toPath())) {
                 GameManager.getInstance().handleLoadSuccess(statusText::setText);
             } else {
                 GameManager.getInstance().handleLoadError(statusText::setText);
             }
-
-//            GameManager.getInstance().admitCartridge(this.getModel());
         }
     }
 

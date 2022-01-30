@@ -1,5 +1,6 @@
 package fhtw.cartridgeScaping.gameplay;
 
+import fhtw.cartridgeScaping.cartridge.Cartridge;
 import fhtw.cartridgeScaping.cartridge.CartridgeModel;
 import fhtw.cartridgeScaping.controller.ViewManager;
 
@@ -59,5 +60,9 @@ public class GameManager {
 
     public void admitCartridge(CartridgeModel model) {
         this.model = model;
+    }
+
+    public Cartridge getGame() {
+        return model.getCartridge();
     }
 }

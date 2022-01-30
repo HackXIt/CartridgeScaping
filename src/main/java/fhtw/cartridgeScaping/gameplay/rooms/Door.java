@@ -6,9 +6,12 @@ import fhtw.cartridgeScaping.gameplay.text.DoorDescription;
 import fhtw.cartridgeScaping.gameplay.util.Keyable;
 import fhtw.cartridgeScaping.gameplay.util.Lockable;
 import fhtw.cartridgeScaping.json.DoorSerializer;
+import fhtw.cartridgeScaping.networking.NetworkManager;
+
+import java.net.Inet4Address;
 
 @JsonSerialize(using = DoorSerializer.class)
-public class Door extends GameObject implements Lockable {
+public class Door extends GameObject<Door> implements Lockable {
     protected DoorDescription doorDescription;
     protected Room roomSource;
     protected Room roomDestination;
@@ -18,6 +21,7 @@ public class Door extends GameObject implements Lockable {
     // TODO Fix constructors in Door
 
     public Door(DoorDescription doorDescription) {
+        super(false); // NOTE Doors can never be held
         this.doorDescription = doorDescription;
     }
 
@@ -32,8 +36,23 @@ public class Door extends GameObject implements Lockable {
         this.isOpen = opened;
     }
 
+    public Door(Door door, String originalID) {
+        super(door, originalID);
+        this.doorDescription = door.getDoorDescription().cloneDescription();
+        this.roomSource = door.getRoomSource();
+        this.roomDestination = door.getRoomDestination();
+    }
+
     public Room getRoomSource() {
         return roomSource;
+    }
+
+    public void setRoomSource(Room roomSource) {
+        this.roomSource = roomSource;
+    }
+
+    public void setRoomDestination(Room roomDestination) {
+        this.roomDestination = roomDestination;
     }
 
     public Room getRoomDestination() {
@@ -100,6 +119,15 @@ public class Door extends GameObject implements Lockable {
             // TODO RoomMessage with notification that door is already closed.
             return false;
         }
+    }
+
+    /* NOTE Cloning doors is only allowed for Host because of original reference to objectID */
+    @Override
+    public Door cloneObject() {
+        if(NetworkManager.getInstance().isHost()) {
+            return new Door(this, String.valueOf(hashCode()));
+        }
+        return null;
     }
 
     @Override

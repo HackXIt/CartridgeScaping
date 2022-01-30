@@ -1,6 +1,9 @@
 package fhtw.cartridgeScaping.gameplay.text;
 
-public class RoomDescription extends Description{
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public class RoomDescription extends Description<RoomDescription>{
 
     public RoomDescription(String name) {
         super(name);
@@ -10,7 +13,11 @@ public class RoomDescription extends Description{
         super(name, shortDescription);
     }
 
-    public RoomDescription(String name, String shortDescription, String longDescription) {
+    @JsonCreator
+    public RoomDescription(
+            @JsonProperty("name") String name,
+            @JsonProperty("shortDescription") String shortDescription,
+            @JsonProperty("longDescription") String longDescription) {
         super(name, shortDescription, longDescription);
     }
 
@@ -19,7 +26,7 @@ public class RoomDescription extends Description{
     }
 
     @Override
-    public Description cloneDescription() {
+    public RoomDescription cloneDescription() {
         return new RoomDescription(this);
     }
 

@@ -1,0 +1,171 @@
+{
+  "filename" : "test-cartridge.json",
+  "gameTitle" : "Test Cartridge",
+  "gameImage" : null,
+  "spawn" : {
+    "key" : 0,
+    "value" : 0
+  },
+  "map" : {
+    "40191541" : {
+      "key" : 1,
+      "value" : 2
+    },
+    "42102625" : {
+      "key" : 0,
+      "value" : 0
+    },
+    "1651667865" : {
+      "key" : 0,
+      "value" : 1
+    },
+    "1301987508" : {
+      "key" : 1,
+      "value" : 0
+    },
+    "319670866" : {
+      "key" : 1,
+      "value" : 1
+    }
+  },
+  "items" : {
+    "765826899" : {
+      "objectImage" : null,
+      "itemDescription" : {
+        "name" : "A test-kit",
+        "shortDescription" : "A corona test-kit.",
+        "longDescription" : "A test-kit for PCR testing against the corona disease.",
+        "detailedDescription" : "The expiration date on the test-kit is not overdue and the kit is ready to use.",
+        "placedDescription" : "A test-kit is laying packaged on the floor.",
+        "inventoryDescription" : "You're holding a packaged corona test-kit."
+      },
+      "name" : "A test-kit",
+      "canBeHeld" : true
+    }
+  },
+  "rooms" : {
+    "40191541" : {
+      "objectImage" : null,
+      "roomDescription" : {
+        "name" : "The exit",
+        "shortDescription" : "The room that leads outside.",
+        "longDescription" : "Feel free to roam the world, once you go through the exit.",
+        "detailedDescription" : null
+      },
+      "doors" : [ 1961595039 ],
+      "directions" : { },
+      "items" : [ ],
+      "players" : { },
+      "location" : {
+        "key" : 1,
+        "value" : 2
+      },
+      "name" : "The exit",
+      "canBeHeld" : false
+    },
+    "42102625" : {
+      "objectImage" : null,
+      "roomDescription" : {
+        "name" : "Starting room",
+        "shortDescription" : "A room to start.",
+        "longDescription" : "It is rough to start, but this room definitely is a start.",
+        "detailedDescription" : null
+      },
+      "doors" : [ ],
+      "directions" : {
+        "EAST" : 1301987508,
+        "NORTH" : 1651667865
+      },
+      "items" : [ 765826899 ],
+      "players" : { },
+      "location" : {
+        "key" : 0,
+        "value" : 0
+      },
+      "name" : "Starting room",
+      "canBeHeld" : false
+    },
+    "1651667865" : {
+      "objectImage" : null,
+      "roomDescription" : {
+        "name" : "Room A",
+        "shortDescription" : "Another Room called A.",
+        "longDescription" : "Just another room, let's not be creative and assign it the letter A.",
+        "detailedDescription" : null
+      },
+      "doors" : [ ],
+      "directions" : {
+        "SOUTH" : 42102625
+      },
+      "items" : [ ],
+      "players" : { },
+      "location" : {
+        "key" : 0,
+        "value" : 1
+      },
+      "name" : "Room A",
+      "canBeHeld" : false
+    },
+    "1301987508" : {
+      "objectImage" : null,
+      "roomDescription" : {
+        "name" : "Room B",
+        "shortDescription" : "Another Room called B.",
+        "longDescription" : "Just another room, let's not be creative and assign it the letter B.",
+        "detailedDescription" : null
+      },
+      "doors" : [ ],
+      "directions" : {
+        "WEST" : 42102625,
+        "NORTH" : 319670866
+      },
+      "items" : [ ],
+      "players" : { },
+      "location" : {
+        "key" : 1,
+        "value" : 0
+      },
+      "name" : "Room B",
+      "canBeHeld" : false
+    },
+    "319670866" : {
+      "objectImage" : null,
+      "roomDescription" : {
+        "name" : "Room C",
+        "shortDescription" : "Another Room called C.",
+        "longDescription" : "Just another room, let's not be creative and assign it the letter C.",
+        "detailedDescription" : null
+      },
+      "doors" : [ 1961595039 ],
+      "directions" : {
+        "SOUTH" : 1301987508
+      },
+      "items" : [ ],
+      "players" : { },
+      "location" : {
+        "key" : 1,
+        "value" : 1
+      },
+      "name" : "Room C",
+      "canBeHeld" : false
+    }
+  },
+  "doors" : {
+    "1961595039" : {
+      "doorDescription" : {
+        "name" : "Steel door",
+        "shortDescription" : "A steel door blocks your way.",
+        "longDescription" : "Blocking your way is a chunky steel door, irresistable to force.",
+        "detailedDescription" : null,
+        "insideDescription" : "The steel door is locked from the other side.",
+        "outsideDescription" : "The steel door is locked.",
+        "inside" : false
+      },
+      "source" : 319670866,
+      "destination" : 40191541,
+      "isLocked" : true,
+      "isOpen" : false
+    }
+  },
+  "secrets" : { }
+}

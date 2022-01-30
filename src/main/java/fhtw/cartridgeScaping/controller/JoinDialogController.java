@@ -1,6 +1,10 @@
 package fhtw.cartridgeScaping.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import fhtw.cartridgeScaping.cartridge.Cartridge;
 import fhtw.cartridgeScaping.cartridge.CartridgeController;
+import fhtw.cartridgeScaping.gameplay.GameManager;
+import fhtw.cartridgeScaping.json.Json;
 import fhtw.cartridgeScaping.networking.NetworkFactory;
 import fhtw.cartridgeScaping.networking.NetworkManager;
 import fhtw.cartridgeScaping.util.View;
@@ -10,10 +14,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
+import java.io.IOException;
+import java.io.Serializable;
 import java.net.Inet4Address;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 
 public class JoinDialogController
         extends CartridgeController

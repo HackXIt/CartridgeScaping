@@ -7,14 +7,14 @@ import fhtw.cartridgeScaping.gameplay.util.Lockable;
 public class Key extends Item implements Keyable {
     private Lockable lock;
 
-    public Key(ItemDescription itemDesc, Lockable lock) {
-        super(itemDesc);
+    public Key(boolean canBeHeld, Lockable lock) {
+        super(canBeHeld);
         this.lock = lock;
     }
 
-    public Key(Key key) {
-        super(key);
-        this.lock = (Lockable) key.getKey();
+    public Key(boolean canBeHeld, ItemDescription itemDescription, Lockable lock) {
+        super(canBeHeld, itemDescription);
+        this.lock = lock;
     }
 
     @Override

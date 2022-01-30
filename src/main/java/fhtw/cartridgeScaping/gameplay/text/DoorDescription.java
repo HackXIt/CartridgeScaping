@@ -1,8 +1,10 @@
 package fhtw.cartridgeScaping.gameplay.text;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import fhtw.cartridgeScaping.gameplay.rooms.Door;
 
-public class DoorDescription extends Description{
+public class DoorDescription extends Description<DoorDescription>{
     private String insideDescription;
     private String outsideDescription;
 
@@ -20,14 +22,27 @@ public class DoorDescription extends Description{
         super(name, shortDescription, longDescription);
     }
 
-    public DoorDescription(String name, String shortDescription, String longDescription, String insideDescription, String outsideDescription) {
+    @JsonCreator
+    public DoorDescription(
+            @JsonProperty("name") String name,
+            @JsonProperty("shortDescription") String shortDescription,
+            @JsonProperty("longDescription") String longDescription,
+            @JsonProperty("insideDescription") String insideDescription,
+            @JsonProperty("outsideDescription") String outsideDescription) {
         super(name, shortDescription, longDescription);
         this.insideDescription = insideDescription;
         this.outsideDescription = outsideDescription;
     }
 
-    public DoorDescription(Description description) {
-        super(description);
+    public DoorDescription(DoorDescription doorDescription) {
+        super(doorDescription);
+        this.insideDescription = doorDescription.getInsideDescription();
+        this.outsideDescription = doorDescription.getOutsideDescription();
+    }
+
+    @Override
+    public DoorDescription cloneDescription() {
+        return new DoorDescription(this);
     }
 
     public DoorDescription(Description description, String insideDescription, String outsideDescription) {

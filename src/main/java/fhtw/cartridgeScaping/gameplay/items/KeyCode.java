@@ -13,14 +13,14 @@ import fhtw.cartridgeScaping.gameplay.util.Lockable;
 public class KeyCode extends Item implements Keyable {
     private int code;
 
-    public KeyCode(ItemDescription itemDesc, int code) {
-        super(itemDesc);
+    public KeyCode(boolean canBeHeld, int code) {
+        super(canBeHeld);
         this.code = code;
     }
 
-    public KeyCode(KeyCode item) {
-        super(item);
-        this.code = (Integer) item.getKey();
+    public KeyCode(boolean canBeHeld, ItemDescription itemDescription, int code) {
+        super(canBeHeld, itemDescription);
+        this.code = code;
     }
 
     @Override

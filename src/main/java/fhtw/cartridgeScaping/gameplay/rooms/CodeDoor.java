@@ -6,9 +6,9 @@ import fhtw.cartridgeScaping.gameplay.util.Lockable;
 
 // TODO Refactor this class - as mentioned in KeyCode
 public final class CodeDoor extends Door implements Lockable {
-    private int code;
+    private final int code;
     private int unlockAttempts = 0;
-    private int maxAttempts = 3;
+    private final int maxAttempts = 3;
 
     public CodeDoor(DoorDescription doorDescription, int code) {
         super(doorDescription);

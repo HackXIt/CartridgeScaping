@@ -1,70 +1,175 @@
 {
-  "gameInformation": {
-    "filename": "test-cartridge.json",
-    "gameTitle": "Test Cartridge",
-    "gameImage": "https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459_960_720.png"
-    "spawnX": 0,
-    "spawnY": 0
+  "filename" : "test-cartridge.json",
+  "gameTitle" : "Test Cartridge",
+  "spawn" : {
+    "X" : 0,
+    "Y" : 0
   },
-  "rooms": [
-    {
-      "uniqueIdentifier": "startingRoom",
-      "roomDescription": {
-        "name": "Starting room",
-        "shortDescription": "A room to start.",
-        "longDescription": "It is rough to start, but this room definitly is a start."
-      },
-      "directions": {
-        "north": "roomA",
-        "east": "roomB"
-      },
-      "doors": {},
-      "items": ["test-kit"]
+  "map" : {
+    "771105389" : {
+      "X" : 1,
+      "Y" : 2
     },
-    {
-      "uniqueIdentifier": "roomA",
-      "roomDescription": {
-        "name": "Room A",
-        "shortDescription": "Another Room called A.",
-        "longDescription": "Just another room, let's not be creative and assign it the letter A."
-      },
-      "directions": {
-        "south": "startingRoom"
-      },
-      "doors": {},
-      "items": {}
+    "85415531" : {
+      "X" : 0,
+      "Y" : 1
     },
-    {
-      "uniqueIdentifier": "roomB",
-      "roomDescription": {
-        "name": "Room B",
-        "shortDescription": "Another Room called B.",
-        "longDescription": "Just another room, let's not be creative and assign it the letter B."
-      },
-      "directions": {
-        "west": "startingRoom"
-      }
-      "doors": {},
-      "items": {}
+    "768185844" : {
+      "X" : 0,
+      "Y" : 0
+    },
+    "1689730682" : {
+      "X" : 1,
+      "Y" : 0
+    },
+    "87060781" : {
+      "X" : 1,
+      "Y" : 1
+    },
+    "size" : {
+      "sizeX" : 1,
+      "sizeY" : 2
     }
-  ],
-  "items": [
-    {
-      "uniqueIdentifier": "test-kit",
-      "itemDescription": {
-        "name": "A test-kit",
-        "shortDescription": "A corona test-kit.",
-        "longDescription": "A test-kit for PCR testing against the corona disease.",
-        "placedDescription": "A test-kit is laying packaged on the floor.",
-        "inventoryDescription": "You're holding a packaged corona test-kit."
+  },
+  "rooms" : {
+    "771105389" : {
+      "roomDescription" : {
+        "name" : "The exit",
+        "shortDescription" : "The room that leads outside.",
+        "longDescription" : "Feel free to roam the world, once you go through the exit.",
+        "detailedDescription" : null
       },
-      "canBeHeld": true,
-      "objectImage": "https://www.land-oberoesterreich.gv.at/files/ooe2015/contentbilder/lp/pr_allesgurgelt_testkit.png"
+      "objectTypeReference" : "fhtw.cartridgeScaping.gameplay.rooms.Room",
+      "originalID" : null,
+      "doors" : [ 579294521 ],
+      "directions" : { },
+      "items" : [ ],
+      "location" : {
+        "key" : 1,
+        "value" : 2
+      },
+      "name" : "The exit",
+      "canBeHeld" : false
+    },
+    "85415531" : {
+      "roomDescription" : {
+        "name" : "Room A",
+        "shortDescription" : "Another Room called A.",
+        "longDescription" : "Just another room, let's not be creative and assign it the letter A.",
+        "detailedDescription" : null
+      },
+      "objectTypeReference" : "fhtw.cartridgeScaping.gameplay.rooms.Room",
+      "originalID" : null,
+      "doors" : [ ],
+      "directions" : {
+        "south" : 768185844
+      },
+      "items" : [ ],
+      "location" : {
+        "key" : 0,
+        "value" : 1
+      },
+      "name" : "Room A",
+      "canBeHeld" : false
+    },
+    "768185844" : {
+      "roomDescription" : {
+        "name" : "Starting room",
+        "shortDescription" : "A room to start.",
+        "longDescription" : "It is rough to start, but this room definitely is a start.",
+        "detailedDescription" : null
+      },
+      "objectTypeReference" : "fhtw.cartridgeScaping.gameplay.rooms.Room",
+      "originalID" : null,
+      "doors" : [ ],
+      "directions" : {
+        "east" : 1689730682,
+        "north" : 85415531
+      },
+      "items" : [ 709133385 ],
+      "location" : {
+        "key" : 0,
+        "value" : 0
+      },
+      "name" : "Starting room",
+      "canBeHeld" : false
+    },
+    "1689730682" : {
+      "roomDescription" : {
+        "name" : "Room B",
+        "shortDescription" : "Another Room called B.",
+        "longDescription" : "Just another room, let's not be creative and assign it the letter B.",
+        "detailedDescription" : null
+      },
+      "objectTypeReference" : "fhtw.cartridgeScaping.gameplay.rooms.Room",
+      "originalID" : null,
+      "doors" : [ ],
+      "directions" : {
+        "north" : 87060781,
+        "west" : 768185844
+      },
+      "items" : [ ],
+      "location" : {
+        "key" : 1,
+        "value" : 0
+      },
+      "name" : "Room B",
+      "canBeHeld" : false
+    },
+    "87060781" : {
+      "roomDescription" : {
+        "name" : "Room C",
+        "shortDescription" : "Another Room called C.",
+        "longDescription" : "Just another room, let's not be creative and assign it the letter C.",
+        "detailedDescription" : null
+      },
+      "objectTypeReference" : "fhtw.cartridgeScaping.gameplay.rooms.Room",
+      "originalID" : null,
+      "doors" : [ 579294521 ],
+      "directions" : {
+        "south" : 1689730682
+      },
+      "items" : [ ],
+      "location" : {
+        "key" : 1,
+        "value" : 1
+      },
+      "name" : "Room C",
+      "canBeHeld" : false
     }
-  ],
-  "map": {
-    "0:0": "startingRoom",
-    "0:1": "roomA",
-    "1:0": "roomB"
-  }
+  },
+  "doors" : {
+    "579294521" : {
+      "doorDescription" : {
+        "name" : "Steel door",
+        "shortDescription" : "A steel door blocks your way.",
+        "longDescription" : "Blocking your way is a chunky steel door, irresistible to force.",
+        "insideDescription" : "The steel door is locked from the other side.",
+        "outsideDescription" : "The steel door is locked.",
+        "detailedDescription" : null,
+        "inside" : false
+      },
+      "source" : 87060781,
+      "destination" : 771105389,
+      "isLocked" : true,
+      "isOpen" : false
+    }
+  },
+  "items" : {
+    "709133385" : {
+      "objectTypeReference" : "fhtw.cartridgeScaping.gameplay.items.Item",
+      "originalID" : null,
+      "itemDescription" : {
+        "name" : "A test-kit",
+        "shortDescription" : "A corona test-kit.",
+        "longDescription" : "A test-kit for PCR testing against the corona disease.",
+        "detailedDescription" : "The expiration date on the test-kit is not overdue and the kit is ready to use.",
+        "placedDescription" : "A test-kit is laying packaged on the floor.",
+        "inventoryDescription" : "You're holding a packaged corona test-kit."
+      },
+      "name" : "A test-kit",
+      "canBeHeld" : true
+    }
+  },
+  "secrets" : { }
 }

@@ -1,7 +1,11 @@
 package fhtw.cartridgeScaping.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import fhtw.cartridgeScaping.cartridge.Cartridge;
 import fhtw.cartridgeScaping.gameplay.GameManager;
 import fhtw.cartridgeScaping.gameplay.Player;
+import fhtw.cartridgeScaping.json.Json;
 import fhtw.cartridgeScaping.messages.ChatMessage;
 import fhtw.cartridgeScaping.messages.ErrorMessage;
 import fhtw.cartridgeScaping.messages.LocalMessage;
@@ -17,9 +21,12 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 
+import java.io.IOException;
+import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 
 /**
  * INFO Header of WaitingRoomController.java
@@ -124,8 +131,9 @@ public class WaitingRoomController
     }
 
     @Override
-    public void consumeDialog() {
+    public void consumeDialog() throws UnsupportedOperationException {
         // TODO Implement Dialog handling for game settings.
+        throw new UnsupportedOperationException("Consuming game settings not implemented.");
     }
 
     @Override
@@ -145,6 +153,15 @@ public class WaitingRoomController
         hostStartButton.setVisible(NetworkManager.getInstance().isHost());
         chatArea.setFocusTraversable(false);
         inputField.requestFocus();
+        if(GameManager.getInstance().getGame() != null) {
+            gameTitle.setVisible(true);
+            gameTitle.setText(GameManager.getInstance().getGame().getGameTitle());
+            cartridgeBoxImage.setVisible(true);
+            cartridgeBoxImage.setImage(GameManager.getInstance().getGame().getGameImage());
+            if(!NetworkManager.getInstance().isHost()) {
+
+            }
+        }
     }
 
     public void onToolbarToggle() {

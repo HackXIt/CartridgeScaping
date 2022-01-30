@@ -5,7 +5,7 @@ import fhtw.cartridgeScaping.gameplay.util.Keyable;
 import fhtw.cartridgeScaping.gameplay.util.Lockable;
 
 public class LockDoor extends Door implements Lockable {
-    private Keyable keyable;
+    private final Keyable keyable;
 
     public LockDoor(DoorDescription doorDescription, Keyable keyable) {
         super(doorDescription);

@@ -9,15 +9,22 @@ import java.nio.file.Path;
 
 public class CartridgeLoader {
     private File file;
-    private JsonNode node;
+    private JsonNode cartridgeJson;
 
     public CartridgeLoader(Path path) {
         file = path.toFile();
     }
 
     public Cartridge load() throws IOException {
-        node = Json.getInstance().getObjectMapper().readTree(file);
-        Cartridge cart = new Cartridge();
-        return cart;
+        cartridgeJson = Json.getInstance().getObjectMapper().readTree(file);
+        return Json.getInstance().fromJson(cartridgeJson, Cartridge.class);
+    }
+
+    public File getFile() {
+        return file;
+    }
+
+    public JsonNode getCartridgeJson() {
+        return cartridgeJson;
     }
 }
