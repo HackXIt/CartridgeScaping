@@ -11,6 +11,10 @@ public enum Direction {
     private final String dirName;
     private final String dirDesc;
 
+    public Direction getOpposite() {
+        return Direction.getOpposite(this.dirName);
+    }
+
     private static String[] possibleDirections = {"north", "east", "south", "west"};
 
     Direction(int dx, int dy, String dirName, String dirDesc) {
@@ -34,6 +38,16 @@ public enum Direction {
             case "east" -> EAST;
             case "south" -> SOUTH;
             case "west" -> WEST;
+            default -> throw new IllegalStateException("Unexpected value");
+        };
+    }
+
+    public static Direction getOpposite(String direction) throws IllegalStateException{
+        return switch (direction) {
+            case "north" -> SOUTH;
+            case "east" -> WEST;
+            case "south" -> NORTH;
+            case "west" -> EAST;
             default -> throw new IllegalStateException("Unexpected value");
         };
     }

@@ -1,6 +1,7 @@
 module CartridgeScaping {
     requires javafx.controls;
     requires javafx.fxml;
+    requires com.fasterxml.jackson.databind;
 
     // Main Package
     opens fhtw.cartridgeScaping to javafx.fxml;
@@ -41,4 +42,6 @@ module CartridgeScaping {
     exports fhtw.cartridgeScaping.gameplay.util;
     exports fhtw.cartridgeScaping.messages;
     opens fhtw.cartridgeScaping.messages to javafx.fxml;
+    exports fhtw.cartridgeScaping.json;
+    opens fhtw.cartridgeScaping.json to javafx.fxml;
 }

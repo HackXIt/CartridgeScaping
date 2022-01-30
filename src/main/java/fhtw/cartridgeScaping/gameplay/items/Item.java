@@ -1,7 +1,7 @@
 package fhtw.cartridgeScaping.gameplay.items;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import fhtw.cartridgeScaping.gameplay.GameObject;
-import fhtw.cartridgeScaping.gameplay.rooms.Room;
 import fhtw.cartridgeScaping.gameplay.text.ItemDescription;
 
 public class Item extends GameObject {
@@ -18,24 +18,18 @@ public class Item extends GameObject {
         this.isHeld = item.isHeld;
     }
 
-    public String getName() {
-        return itemDescription.getName();
-    }
-
-    public String getRoomDesc() {
-        return itemDescription.getRoomDesc();
+    @JsonIgnore
+    public String getPlacedDescription() {
+        return itemDescription.getPlacedDescription();
     }
 
     public ItemDescription getItemDescription() {
         return itemDescription;
     }
 
+    @JsonIgnore
     public int getId() {
         return this.hashCode();
-    }
-
-    public boolean isHeld() {
-        return isHeld;
     }
 
     public Item cloneItem() {
@@ -45,7 +39,7 @@ public class Item extends GameObject {
     @Override
     public String toString() {
         StringBuilder strBuilder = new StringBuilder(itemDescription.toString());
-        strBuilder.append(isHeld() ? itemDescription.getInventoryDescription() : itemDescription.getRoomDesc());
+        strBuilder.append(isHeld() ? itemDescription.getInventoryDescription() : itemDescription.getPlacedDescription());
         return strBuilder.toString();
     }
 
@@ -54,13 +48,9 @@ public class Item extends GameObject {
         return toString();
     }
 
-    public void dropItem(Room room) {
-        if(isHeld) {
-            room.addItem(this);
-            itemHolder.dropItem(this);
-            itemHolder = null;
-            isHeld = false;
-        }
+    @Override
+    public String getName() {
+        return itemDescription.getName();
     }
 
     @Override

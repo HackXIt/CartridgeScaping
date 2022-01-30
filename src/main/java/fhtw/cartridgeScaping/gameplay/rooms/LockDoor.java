@@ -7,8 +7,8 @@ import fhtw.cartridgeScaping.gameplay.util.Lockable;
 public class LockDoor extends Door implements Lockable {
     private Keyable keyable;
 
-    public LockDoor(DoorDescription doorDescription, Room roomDestination, Room roomSource, Keyable keyable) {
-        super(doorDescription, roomDestination, roomSource);
+    public LockDoor(DoorDescription doorDescription, Keyable keyable) {
+        super(doorDescription);
         this.keyable = keyable;
         isLocked = true;
     }

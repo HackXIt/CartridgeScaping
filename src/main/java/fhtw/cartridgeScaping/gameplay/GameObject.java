@@ -1,11 +1,13 @@
 package fhtw.cartridgeScaping.gameplay;
 
-import fhtw.cartridgeScaping.gameplay.items.Item;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import fhtw.cartridgeScaping.gameplay.util.Holdable;
 import fhtw.cartridgeScaping.gameplay.util.Inspectable;
 import fhtw.cartridgeScaping.gameplay.util.Lookable;
 import javafx.scene.image.Image;
 
-public abstract class GameObject implements Lookable, Inspectable {
+public abstract class GameObject implements Lookable, Inspectable, Holdable {
     protected Player itemHolder = null;
     protected boolean isHeld = false;
     protected boolean canBeHeld;
@@ -23,9 +25,14 @@ public abstract class GameObject implements Lookable, Inspectable {
 
     public abstract String inspect();
 
+    public abstract String getName();
+
+    @JsonIgnore
     public boolean isHeld() {
         return isHeld;
     }
+
+    @JsonProperty("canBeHeld")
     public boolean canBeHeld() {
         return canBeHeld;
     }
@@ -37,7 +44,7 @@ public abstract class GameObject implements Lookable, Inspectable {
     public void pickup() {
         if(canBeHeld) {
             if(!isHeld) {
-                Player.getInstance().getCurrentRoom().removeItem((Item) this);
+                Player.getInstance().getCurrentRoom().removeItem(this);
                 Player.getInstance().addItem(this);
                 itemHolder = Player.getInstance();
                 isHeld = true;
@@ -46,11 +53,13 @@ public abstract class GameObject implements Lookable, Inspectable {
     }
 
     public void drop() {
-        if(isHeld) {
-            Player.getInstance().getCurrentRoom().addItem((Item) this);
-            itemHolder.dropItem((Item) this);
-            itemHolder = null;
-            isHeld = false;
+        if(canBeHeld) {
+            if (isHeld) {
+                Player.getInstance().getCurrentRoom().addItem(this);
+                itemHolder.dropObject(this);
+                itemHolder = null;
+                isHeld = false;
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 package fhtw.cartridgeScaping.gameplay.rooms;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import fhtw.cartridgeScaping.controller.ViewManager;
 import fhtw.cartridgeScaping.gameplay.GameObject;
 import fhtw.cartridgeScaping.gameplay.Player;
@@ -7,22 +8,29 @@ import fhtw.cartridgeScaping.gameplay.items.Item;
 import fhtw.cartridgeScaping.gameplay.text.DoorDescription;
 import fhtw.cartridgeScaping.gameplay.text.RoomDescription;
 import fhtw.cartridgeScaping.gameplay.util.Direction;
+import fhtw.cartridgeScaping.json.RoomDirectionSerializer;
+import fhtw.cartridgeScaping.json.RoomObjectSerializer;
+import javafx.util.Pair;
 
 import java.util.HashMap;
 
 public class Room extends GameObject {
     private RoomDescription roomDescription;
-    private HashMap<Direction, Room> directions;
+    @JsonSerialize(using = RoomObjectSerializer.class)
     private HashMap<Integer, Door> doors;
+    @JsonSerialize(using = RoomDirectionSerializer.class)
+    private HashMap<Direction, Room> directions;
+    @JsonSerialize(using = RoomObjectSerializer.class)
     private HashMap<Integer, Item> items;
     private final HashMap<Integer, Player> players;
-
+    private Pair<Integer, Integer> location;
     private boolean hasDoors = false;
     private boolean hasItems = false;
 
 //    NOTE Constructors ----------------------------------------
 
     public Room(RoomDescription roomDescription) {
+        this.canBeHeld = false; // Always false for rooms.
         this.roomDescription = roomDescription;
         this.directions = new HashMap<>();
         this.doors = new HashMap<>();
@@ -107,7 +115,15 @@ public class Room extends GameObject {
         this.items = items;
     }
 
-    public HashMap<Integer, Item> copyItems() {
+    public Pair<Integer, Integer> getLocation() {
+        return location;
+    }
+
+    public void setLocation(Pair<Integer, Integer> location) {
+        this.location = location;
+    }
+
+    public HashMap<Integer, GameObject> copyItems() {
         // TODO Implement deepCopy for copyItems()
         return new HashMap<>(items);
     }
@@ -126,11 +142,21 @@ public class Room extends GameObject {
 
     //    NOTE Utility Methods ----------------------------------------
 
-    public boolean addItem(Item item) {
+    /* FIXME ALL Utility Methods of Room really need to reworked or checked!
+    The implementation of the Room utility methods needs to be thoroughly checked,
+    because there's a lot that can go wrong.
+    This was one of the earliest classes, even before GameObject class existed,
+    and the methods implemented here to manipulate the objects in the room,
+    were generally implemented too early and may contain errors!
+     */
+
+    public boolean addItem(GameObject object) {
         try {
-            items.put(item.hashCode(), item);
+            items.put(object.hashCode(), (Item) object);
             // TODO RoomMessage upon successfully executing addItem
-            System.out.printf("Item '%s' was dropped in '%s'.", item.getName(), roomDescription.getName());
+            ViewManager.getInstance().devLog(String.format(
+                    "Object '%s' was dropped in '%s'.", object.getName(), roomDescription.getName()
+            ));
             hasItems = true;
             return true;
         } catch (Exception e) {
@@ -140,12 +166,12 @@ public class Room extends GameObject {
         }
     }
 
-    public boolean removeItem(Item item) {
+    public boolean removeItem(GameObject object) {
         try {
-            items.remove(item.hashCode());
+            items.remove(object.hashCode());
             // TODO RoomMessage upon successfully executing removeItem
             ViewManager.getInstance().devLog(
-                    String.format("%s was removed from %s.", item.getName(), roomDescription.getName()));
+                    String.format("%s was removed from %s.", object.getName(), roomDescription.getName()));
             if(items.isEmpty()) {
                 hasItems = false;
             }
@@ -164,7 +190,7 @@ public class Room extends GameObject {
             // TODO RoomMessage upon player entering room (Prints arrival of player to other players
             // TODO PlayerMessage upon player entering room (Prints room description to Player)
             ViewManager.getInstance().devLog(
-                    String.format("Player '%s' entered '%s'.",
+                    String.format("'%s' entered '%s'.",
                             player.getName(), roomDescription.getName()));
             return true;
         } catch (Exception e) {
@@ -182,7 +208,7 @@ public class Room extends GameObject {
             // TODO RoomMessage upon player leaving room (Prints departure of player to other players)
             // TODO PlayerMessage upon player leaving room (Prints leave message to Player)
             ViewManager.getInstance().devLog(String.format(
-                    "Player '%s' has left '%s'.",
+                    "'%s' has left '%s'.",
                     player.getName(), roomDescription.getName()
             ));
             return true;
@@ -199,13 +225,13 @@ public class Room extends GameObject {
         // FIXME Adding doors to Room currently doesn't edit Door object (Necessary for inside/outside)
         if(door != null && !doors.containsKey(door.hashCode())) {
             doors.put(door.hashCode(), door);
-            System.out.printf("Door '%s' was added to '%s'.",
+            System.out.printf("'%s' was added to '%s'.\n",
                     door.getDoorDescription().getName(),
                     roomDescription.getName());
             hasDoors = true;
             return true;
         } else {
-            System.err.printf("Door '%s' already exists or object was 'null'.", door.getDoorDescription().getName());
+            System.err.printf("'%s' already exists or object was 'null'.", door.getDoorDescription().getName());
             return false;
         }
     }
@@ -213,7 +239,7 @@ public class Room extends GameObject {
     public boolean removeDoor(Door door) {
         if(door != null && doors.containsKey(door.hashCode())) {
             doors.remove(door.hashCode());
-            System.out.printf("Door '%s' was removed from '%s'.",
+            System.out.printf("'%s' was removed from '%s'.\n",
                     door.getDoorDescription().getName(),
                     roomDescription.getName());
             if(doors.isEmpty()) {
@@ -221,46 +247,76 @@ public class Room extends GameObject {
             }
             return true;
         } else {
-            System.err.printf("Door '%s' not in room or object was 'null'.", door.getDoorDescription().getName());
+            System.err.printf("'%s' not in room or object was 'null'.", door.getDoorDescription().getName());
             return false;
         }
     }
 
-    // FIXME Currently adding directions doesn't consider adding the opposite direction to the target room
+    // DONE Currently adding directions doesn't consider adding the opposite direction to the target room
     public boolean addDirection(Direction direction, Room target) {
-        if(direction != null && target != null) {
-            if(!directions.containsKey(direction)) {
-                directions.put(direction, target);
-                System.out.printf("Added '%s' leading to '%s' to Room '%s'.",
-                        direction.getDirName(),
-                        target.getRoomDescription().getName(),
-                        roomDescription.getName());
-                return true;
-            } else {
-                System.err.printf("Direction '%s' already exists in '%s'.",
-                        direction.getDirName(),
-                        roomDescription.getName());
-                return false;
-            }
-        } else {
-            System.err.println("Direction or Target object is 'null'.");
+        if(direction == null || target == null) {
+            ViewManager.getInstance().errorLog(
+                    "Given Direction or Target object is 'null'.",
+                    new NullPointerException("Direction or Target object is 'null'.")
+            );
             return false;
         }
+        if(target.getDirections().containsKey(direction.getOpposite())) {
+            ViewManager.getInstance().errorLog(String.format(
+                    "Cannot add '%s' to %s - The opposite direction '%s' already exists in %s.",
+                    direction.getDirName(),
+                    this.getName(),
+                    direction.getOpposite().getDirName(),
+                    target.getName()
+            ), new IllegalArgumentException("Cannot add same direction to room twice."));
+            return false;
+        }
+        if(directions.containsKey(direction)) {
+            ViewManager.getInstance().errorLog(String.format(
+                    "Cannot add '%s' to %s - The direction '%s' already exists in %s.",
+                    direction.getDirName(),
+                    this.getName(),
+                    direction.getDirName(),
+                    this.getName()
+            ), new IllegalArgumentException("Cannot add same direction to room twice."));
+            return false;
+        }
+        directions.put(direction, target);
+        target.getDirections().put(direction.getOpposite(), this);
+        ViewManager.getInstance().devLog(String.format(
+                "Added '%s' to Room '%s', which leads to '%s'.",
+                direction.getDirName(),
+                this.getName(),
+                target.getName()
+        ));
+        return true;
     }
 
-    // FIXME Currently removing directions doesn't consider removing the opposite direction from target room
+    // DONE Currently removing directions doesn't consider removing the opposite direction from target room
     public boolean removeDirection(Direction direction) {
-        if(direction != null && directions.containsKey(direction)) {
-            directions.remove(direction);
-            System.out.printf("Direction '%s' removed from '%s'.",
-                    direction.getDirName(),
-                    roomDescription.getName());
-            return true;
-        } else {
-            System.err.printf("Direction doesn't exist in '%s' or object is null.",
-                    roomDescription.getName());
+        if(direction == null) {
+            ViewManager.getInstance().errorLog(
+                    "Given Direction is null.",
+                    new NullPointerException("Direction is null."));
             return false;
         }
+        if(!directions.containsKey(direction)) {
+            ViewManager.getInstance().errorLog(String.format(
+                    "The direction '%s' doesn't exist in '%s'.",
+                    direction.getDirName(),
+                    this.getName()
+            ), new IllegalArgumentException("Direction doesn't exist in room."));
+            return false;
+        }
+        // NOTE No need to check target room, since the existence of the direction proves existence of opposite
+        directions.get(direction).getDirections().remove(direction.getOpposite()); // Remove opposite from target room
+        directions.remove(direction); // Remove direction from this room
+        ViewManager.getInstance().devLog(String.format(
+                "Direction '%s' removed from '%s'.",
+                direction.getDirName(),
+                this.getName()
+        ));
+        return true;
     }
 
     @Override
@@ -275,8 +331,8 @@ public class Room extends GameObject {
          */
         StringBuilder strBuilder = new StringBuilder();
         strBuilder.append(roomDescription.toString());
-        items.forEach((k,v) -> {
-            strBuilder.append(v.getRoomDesc());
+        items.forEach((k, v) -> {
+            strBuilder.append(v.getPlacedDescription());
         });
         doors.forEach((k,v) -> {
             DoorDescription doorDesc = v.getDoorDescription();
@@ -298,5 +354,10 @@ public class Room extends GameObject {
     @Override
     public String inspect() {
         return null;
+    }
+
+    @Override
+    public String getName() {
+        return roomDescription.getName();
     }
 }

@@ -1,0 +1,70 @@
+{
+  "gameInformation": {
+    "filename": "test-cartridge.json",
+    "gameTitle": "Test Cartridge",
+    "gameImage": "https://cdn.pixabay.com/photo/2013/07/12/17/47/test-pattern-152459_960_720.png"
+    "spawnX": 0,
+    "spawnY": 0
+  },
+  "rooms": [
+    {
+      "uniqueIdentifier": "startingRoom",
+      "roomDescription": {
+        "name": "Starting room",
+        "shortDescription": "A room to start.",
+        "longDescription": "It is rough to start, but this room definitly is a start."
+      },
+      "directions": {
+        "north": "roomA",
+        "east": "roomB"
+      },
+      "doors": {},
+      "items": ["test-kit"]
+    },
+    {
+      "uniqueIdentifier": "roomA",
+      "roomDescription": {
+        "name": "Room A",
+        "shortDescription": "Another Room called A.",
+        "longDescription": "Just another room, let's not be creative and assign it the letter A."
+      },
+      "directions": {
+        "south": "startingRoom"
+      },
+      "doors": {},
+      "items": {}
+    },
+    {
+      "uniqueIdentifier": "roomB",
+      "roomDescription": {
+        "name": "Room B",
+        "shortDescription": "Another Room called B.",
+        "longDescription": "Just another room, let's not be creative and assign it the letter B."
+      },
+      "directions": {
+        "west": "startingRoom"
+      }
+      "doors": {},
+      "items": {}
+    }
+  ],
+  "items": [
+    {
+      "uniqueIdentifier": "test-kit",
+      "itemDescription": {
+        "name": "A test-kit",
+        "shortDescription": "A corona test-kit.",
+        "longDescription": "A test-kit for PCR testing against the corona disease.",
+        "placedDescription": "A test-kit is laying packaged on the floor.",
+        "inventoryDescription": "You're holding a packaged corona test-kit."
+      },
+      "canBeHeld": true,
+      "objectImage": "https://www.land-oberoesterreich.gv.at/files/ooe2015/contentbilder/lp/pr_allesgurgelt_testkit.png"
+    }
+  ],
+  "map": {
+    "0:0": "startingRoom",
+    "0:1": "roomA",
+    "1:0": "roomB"
+  }
+}

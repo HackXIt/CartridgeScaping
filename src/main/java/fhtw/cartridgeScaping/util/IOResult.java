@@ -28,12 +28,12 @@ public class IOResult<T> {
         this.ok = false;
     }
 
-//    INFO Constructor with all attributes currently not needed
-//    public IOResult(boolean ok, T data, Exception exception) {
-//        this.ok = ok;
-//        this.data = data;
-//        this.exception = exception;
-//    }
+// INFO IOResult Constructor with all members is only required for testing!
+    public IOResult(boolean ok, T data, Exception exception) {
+        this.ok = ok;
+        this.data = data;
+        this.exception = exception;
+    }
 
     public boolean isOk() {
         return ok;

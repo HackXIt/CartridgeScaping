@@ -1,46 +1,53 @@
 package fhtw.cartridgeScaping.gameplay.rooms;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import fhtw.cartridgeScaping.gameplay.GameObject;
 import fhtw.cartridgeScaping.gameplay.text.DoorDescription;
 import fhtw.cartridgeScaping.gameplay.util.Keyable;
 import fhtw.cartridgeScaping.gameplay.util.Lockable;
+import fhtw.cartridgeScaping.json.DoorSerializer;
 
+@JsonSerialize(using = DoorSerializer.class)
 public class Door extends GameObject implements Lockable {
     protected DoorDescription doorDescription;
-    protected Room roomDestination;
     protected Room roomSource;
+    protected Room roomDestination;
     protected boolean isLocked = false;
     protected boolean isOpen = false;
 
     // TODO Fix constructors in Door
 
-    public Door(DoorDescription doorDescription, Room roomDestination, Room roomSource) {
+    public Door(DoorDescription doorDescription) {
         this.doorDescription = doorDescription;
-        this.roomDestination = roomDestination;
-        this.roomSource = roomSource;
     }
 
-    public Door(DoorDescription doorDescription, Room roomDestination, Room roomSource, boolean locked) {
-        this.doorDescription = doorDescription;
-        this.roomDestination = roomDestination;
-        this.roomSource = roomSource;
+    public Door(DoorDescription doorDescription, boolean locked) {
+        this(doorDescription);
         this.isLocked = locked;
     }
 
-    public Room getRoomDestination() {
-        return roomDestination;
-    }
-
-    public void setRoomDestination(Room roomDestination) {
-        this.roomDestination = roomDestination;
+    public Door(DoorDescription doorDescription, boolean locked, boolean opened) {
+        this(doorDescription);
+        this.isLocked = locked;
+        this.isOpen = opened;
     }
 
     public Room getRoomSource() {
         return roomSource;
     }
 
-    public void setRoomSource(Room roomSource) {
-        this.roomSource = roomSource;
+    public Room getRoomDestination() {
+        return roomDestination;
+    }
+
+    public void setRooms(Room source, Room destination) throws NullPointerException {
+        if(source == null || destination == null) {
+            throw new NullPointerException("Cannot set source or destination of door to null.");
+        }
+        source.addDoor(this);
+        destination.addDoor(this);
+        roomSource = source;
+        roomDestination = destination;
     }
 
     public DoorDescription getDoorDescription() {
@@ -49,6 +56,14 @@ public class Door extends GameObject implements Lockable {
 
     public void setDoorDescription(DoorDescription doorDescription) {
         this.doorDescription = doorDescription;
+    }
+
+    public boolean isLocked() {
+        return isLocked;
+    }
+
+    public boolean isOpen() {
+        return isOpen;
     }
 
     public boolean attemptUnlock(Keyable keyable) {
@@ -95,5 +110,10 @@ public class Door extends GameObject implements Lockable {
     @Override
     public String inspect() {
         return doorDescription.getDetailedDescription();
+    }
+
+    @Override
+    public String getName() {
+        return doorDescription.getName();
     }
 }

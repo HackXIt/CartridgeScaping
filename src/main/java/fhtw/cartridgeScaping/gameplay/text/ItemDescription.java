@@ -1,7 +1,7 @@
 package fhtw.cartridgeScaping.gameplay.text;
 
 public class ItemDescription extends Description{
-    private String roomDesc; // NOTE Description of item placed in room
+    private String placedDescription; // NOTE Description of item placed in room
     private String inventoryDescription; // NOTE Description of item inside inventory
 
     public ItemDescription(String name) {
@@ -23,25 +23,25 @@ public class ItemDescription extends Description{
                            String shortDescription,
                            String longDescription,
                            String detailedDescription,
-                           String roomDesc,
+                           String placedDescription,
                            String inventoryDescription) {
-        this(name, shortDescription, longDescription, detailedDescription);
-        this.roomDesc = roomDesc;
+        super(name, shortDescription, longDescription, detailedDescription);
+        this.placedDescription = placedDescription;
         this.inventoryDescription = inventoryDescription;
     }
 
     public ItemDescription(ItemDescription itemDescription) {
         super(itemDescription);
-        this.roomDesc = itemDescription.getRoomDesc();
+        this.placedDescription = itemDescription.getPlacedDescription();
         this.inventoryDescription = itemDescription.getInventoryDescription();
     }
 
-    public String getRoomDesc() {
-        return roomDesc;
+    public String getPlacedDescription() {
+        return placedDescription;
     }
 
-    public void setRoomDesc(String roomDesc) {
-        this.roomDesc = roomDesc;
+    public void setPlacedDescription(String placedDescription) {
+        this.placedDescription = placedDescription;
     }
 
     public String getInventoryDescription() {

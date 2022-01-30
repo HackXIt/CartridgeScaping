@@ -10,8 +10,8 @@ public final class CodeDoor extends Door implements Lockable {
     private int unlockAttempts = 0;
     private int maxAttempts = 3;
 
-    public CodeDoor(DoorDescription doorDescription, Room roomDestination, Room roomSource, int code) {
-        super(doorDescription, roomDestination, roomSource);
+    public CodeDoor(DoorDescription doorDescription, int code) {
+        super(doorDescription);
         this.code = code;
         isLocked = true;
     }

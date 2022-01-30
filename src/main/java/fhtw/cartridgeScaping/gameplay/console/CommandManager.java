@@ -55,8 +55,8 @@ public class CommandManager {
         possibleBasicInteractions.put("help", this::printHelp);
         possibleBasicInteractions.put("exit", this::exit);
         possibleBasicInteractions.put("look", Player.getInstance()::look);
-        possibleAdvancedInteractions.put("take", Player.getInstance()::pickupItem);
-        possibleAdvancedInteractions.put("drop", Player.getInstance()::dropItem);
+        possibleAdvancedInteractions.put("take", Player.getInstance()::pickupObject);
+        possibleAdvancedInteractions.put("drop", Player.getInstance()::dropObject);
         possibleDynamicInteractions.put("look <object>", Player.getInstance()::lookObject);
 
         // NOTE This will add commands which are always available (like exit or help)

@@ -6,18 +6,25 @@ import fhtw.cartridgeScaping.gameplay.items.Item;
 import fhtw.cartridgeScaping.gameplay.rooms.Room;
 import fhtw.cartridgeScaping.gameplay.text.PlayerDescription;
 import fhtw.cartridgeScaping.gameplay.util.Direction;
+import fhtw.cartridgeScaping.gameplay.util.Holdable;
 import fhtw.cartridgeScaping.gameplay.util.Inspectable;
 import fhtw.cartridgeScaping.gameplay.util.Lookable;
 
 import java.io.Serializable;
 import java.util.HashMap;
 
+/* FIXME The inventory needs to be reworked
+Using GameObject for inventory might not be a very good idea.
+I don't want players to accidentally end up with Doors or Rooms inside their pockets.
+Using Holdable would be the better approach design-wise.
+ */
+
 public class Player implements Lookable, Inspectable, Serializable {
     private static Player singleton_instance;
     private final PlayerDescription playerDescription = new PlayerDescription();
     private final int currentRoomId = 0;
     private transient Room currentRoom;
-    private transient final HashMap<Integer, Item> inventory = new HashMap<>();
+    private transient final HashMap<Integer, GameObject> inventory = new HashMap<>();
     private transient final CommandManager commandManager = new CommandManager();
 
     private Player() {
@@ -57,7 +64,7 @@ public class Player implements Lookable, Inspectable, Serializable {
         return playerDescription.getDetailedDescription();
     }
 
-    public HashMap<Integer, Item> getInventory() {
+    public HashMap<Integer, GameObject> getInventory() {
         return inventory;
     }
 
@@ -73,19 +80,21 @@ public class Player implements Lookable, Inspectable, Serializable {
         inventory.put(item.hashCode(), (Item) item);
     }
 
-    public void pickupItem(Item item) {
-        if(!inventory.containsKey(item.hashCode())) {
-            item.pickup();
+    public void pickupObject(Holdable object) {
+        // TODO Add text-response for picking up an object
+        if(!inventory.containsKey(object.hashCode())) {
+            object.pickup();
         } else {
-            // TODO PlayerMessage notifying the item is already in their possession.
+            // TODO PlayerMessage notifying the object is already in their possession.
         }
     }
 
-    public void dropItem(Item item) {
-        if(inventory.containsKey(item.hashCode())) {
-            item.drop();
+    public void dropObject(Holdable object) {
+        // TODO Add text-response for dropping an object
+        if(inventory.containsKey(object.hashCode())) {
+            object.drop();
         } else {
-            // TODO PlayerMessage notifying that the item isn't in their possession.
+            // TODO PlayerMessage notifying that the object isn't in their possession.
         }
     }
 
@@ -110,19 +119,22 @@ public class Player implements Lookable, Inspectable, Serializable {
         ViewManager.getInstance().getCurrentOutputArea().appendText(currentRoom.lookAt());
     }
 
-    public void lookObject(GameObject object) {
+    public void lookObject(Lookable object) {
         ViewManager.getInstance().devLog(
-                String.format("%s looks at %s.", getName(), object.getString())
+                String.format("%s looks at %s.", getName(), object.getName())
         );
         // DONE Implement lookObject in Player
         // TODO Send LocalMessage upon looking at object
         // TODO Send PlayerMessage upon looking at Player
+        ViewManager.getInstance().getCurrentOutputArea().appendText(
+                String.format("You look at %s.", object.getName())
+        );
         ViewManager.getInstance().getCurrentOutputArea().appendText(object.toString());
     }
 
     @Override
     public String inspect() {
-        return getDetailedDescription();
+        return playerDescription.getDetailedDescription();
     }
 
     @Override
