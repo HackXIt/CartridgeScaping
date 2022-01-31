@@ -27,7 +27,9 @@ public class Cartridge {
     private int sizeX;
     private int sizeY;
     @JsonSerialize(using = CartridgeMapSerializer.class)
-    private HashMap<Room, Pair<Integer, Integer>> map;
+    private HashMap<Pair<Integer, Integer>, Room> map;
+    @JsonIgnore
+    private HashMap<String, Integer> objects;
     private HashMap<Integer, Room> rooms;
     private HashMap<Integer, Door> doors;
     private HashMap<Integer, Item> items;
@@ -41,6 +43,7 @@ public class Cartridge {
         rooms = new HashMap<>();
         doors = new HashMap<>();
         secrets = new HashMap<>();
+        objects = new HashMap<>();
         objectTypeReferences = new HashMap<>();
         originalIdReferences = new HashMap<>();
     }
@@ -114,6 +117,7 @@ public class Cartridge {
 //        if(originalIdReferences.containsKey(object.getOriginalID())) {
 //            throw new IllegalArgumentException("Original object already exists, cannot add object twice.");
 //        }
+        objects.put(object.getName(), object.hashCode());
         originalIdReferences.put(object.getOriginalID(), object.hashCode());
         objectTypeReferences.put(object.hashCode(), object.getObjectTypeReference());
     }
@@ -135,8 +139,10 @@ public class Cartridge {
             throw new IllegalArgumentException("Room must be within size of map.");
         }
         addGameObject(room);
-        room.setLocation(new Pair<>(x, y));
-        map.put(room, room.getLocation());
+        if(room.getLocation() == null) {
+            room.setLocation(new Pair<>(x, y));
+        }
+        map.put(room.getLocation(), room);
         rooms.put(room.hashCode(), room);
     }
 
@@ -174,8 +180,12 @@ public class Cartridge {
         this.spawn = spawn;
     }
 
-    public HashMap<Room, Pair<Integer, Integer>> getMap() {
+    public HashMap<Pair<Integer, Integer>, Room> getMap() {
         return map;
+    }
+
+    public HashMap<String, Integer> getObjects() {
+        return objects;
     }
 
     public HashMap<Integer, Item> getItems() {

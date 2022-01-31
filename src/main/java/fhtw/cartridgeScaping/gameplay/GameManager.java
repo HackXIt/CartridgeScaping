@@ -55,7 +55,8 @@ public class GameManager {
     }
 
     public void startGame() {
-        // TODO Implement start game
+        Cartridge cart = getGame();
+        Player.getInstance().setCurrentRoom(cart.getMap().get(cart.getSpawn()));
     }
 
     public void admitCartridge(CartridgeModel model) {

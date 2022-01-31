@@ -10,31 +10,35 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Map;
 
-public class CartridgeMapSerializer extends StdSerializer<HashMap<Room, Pair<Integer, Integer>>> {
+public class CartridgeMapSerializer extends StdSerializer<HashMap<Pair<Integer, Integer>, Room>> {
 
     public CartridgeMapSerializer() {
         this(null);
     }
 
-    public CartridgeMapSerializer(Class<HashMap<Room, Pair<Integer, Integer>>> t) {
+    public CartridgeMapSerializer(Class<HashMap<Pair<Integer, Integer>, Room>> t) {
         super(t);
     }
 
     @Override
-    public void serialize(HashMap<Room, Pair<Integer, Integer>> value,
+    public void serialize(HashMap<Pair<Integer, Integer>, Room> value,
                           JsonGenerator gen,
                           SerializerProvider provider) throws IOException {
         HashMap<Integer, Pair<Integer, Integer>> map = new HashMap<>();
         gen.writeStartObject();
         // Create new map based on IDs
-        for (Room room :
-                value.keySet()) {
-            gen.writeObjectFieldStart(String.valueOf(room.hashCode()));
-            gen.writeNumberField("X", value.get(room).getKey());
-            gen.writeNumberField("Y", value.get(room).getValue());
+        for (Map.Entry<Pair<Integer, Integer>, Room> entry :
+                value.entrySet()) {
+            int x = entry.getKey().getKey();
+            int y = entry.getKey().getValue();
+            int hash = entry.getValue().hashCode();
+            gen.writeObjectFieldStart(String.valueOf(entry.getValue().hashCode()));
+            gen.writeNumberField("X", x);
+            gen.writeNumberField("Y", y);
             gen.writeEndObject(); // for room-id
-            map.put(room.hashCode(), value.get(room));
+            map.put(hash, entry.getKey());
         }
         // Find map size based on rooms
         int sizeX = Collections.max(map.values(), Comparator.comparing(Pair::getKey)).getKey();

@@ -21,21 +21,7 @@ public class AdvancedCommand<T> extends Command{
     }
 
     @Override
-    public Runnable getAction() throws UnsupportedOperationException{
-        if(action == null) {
-            // NOTE This is an actual unsupported operation, you can't do getAction with Consumer
-            throw new UnsupportedOperationException();
-        } else {
-            return action;
-        }
-    }
-
-    @Override
     public void execute() {
-        if(commandText.hasArgument()) {
-            consumer.accept(staticConsumable);
-        } else {
-            action.run();
-        }
+        consumer.accept(staticConsumable);
     }
 }

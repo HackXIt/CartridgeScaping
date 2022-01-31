@@ -22,7 +22,7 @@ Using Holdable would be the better approach design-wise.
 public class Player implements Lookable, Inspectable, Serializable {
     private static Player singleton_instance;
     private final PlayerDescription playerDescription;
-    private final int currentRoomId = 0;
+    private int currentRoomId = 0;
     private transient Room currentRoom;
     private transient final HashMap<Integer, GameObject> inventory;
     private transient final CommandManager commandManager;
@@ -72,6 +72,11 @@ public class Player implements Lookable, Inspectable, Serializable {
 
     public Room getCurrentRoom() {
         return currentRoom;
+    }
+
+    public void setCurrentRoom(Room currentRoom) {
+        this.currentRoomId = Integer.parseInt(currentRoom.getOriginalID());
+        this.currentRoom = currentRoom;
     }
 
     public CommandManager getCommandManager() {

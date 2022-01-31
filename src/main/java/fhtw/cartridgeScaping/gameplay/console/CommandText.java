@@ -1,6 +1,8 @@
 package fhtw.cartridgeScaping.gameplay.console;
 
 import fhtw.cartridgeScaping.controller.ViewManager;
+import fhtw.cartridgeScaping.gameplay.Player;
+import javafx.util.Pair;
 
 public record CommandText(String name, String argument, boolean hasArgument) {
 
@@ -27,20 +29,7 @@ public record CommandText(String name, String argument, boolean hasArgument) {
     }
 
     static CommandText createCommandText(String command) {
-        // TODO Implement CommandText with multiple arguments
-        String arg = "";
-        String name;
-        if (command.contains(" ")) {
-            String[] tmp = command.split(" ", 2); // Separates first word from rest of string
-            name = tmp[0]; // Sets name to first word
-            if (tmp[1].contains(" ")) { // Check if rest of argument is a single word
-                arg = tmp[1].split(" ")[0]; // Accept only first argument, ignoring the rest
-            } else {
-                arg = tmp[1];
-            }
-        } else {
-            name = command;
-        }
-        return new CommandText(name, arg, !arg.isEmpty());
+        Pair<String, String> splitCommand = Player.getInstance().getCommandManager().splitCommand(command);
+        return new CommandText(splitCommand.getKey(), splitCommand.getValue(), !splitCommand.getValue().isEmpty());
     }
 }

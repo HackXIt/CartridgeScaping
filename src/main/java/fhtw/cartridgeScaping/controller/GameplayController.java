@@ -1,8 +1,11 @@
 package fhtw.cartridgeScaping.controller;
 
+import fhtw.cartridgeScaping.gameplay.GameManager;
 import fhtw.cartridgeScaping.gameplay.Player;
+import fhtw.cartridgeScaping.gameplay.console.CMD;
 import fhtw.cartridgeScaping.gameplay.console.Command;
 import fhtw.cartridgeScaping.model.GameplayModel;
+import fhtw.cartridgeScaping.networking.NetworkManager;
 import fhtw.cartridgeScaping.util.View;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -53,6 +56,7 @@ public class GameplayController extends Controller implements Initializable {
     //    NOTE Controls for gameplayView.fxml ----
     public void onQuitGameplay() {
         // TODO RoomMessage to notify that player has left the game.
+        NetworkManager.getInstance().connection().closeConnection();
         this.switchView(
                 "Failed to load & switch view to Main.",
                 "Successfully loaded & switched view to Main.",
@@ -69,7 +73,7 @@ public class GameplayController extends Controller implements Initializable {
 
     public void onInput() {
         String input = inputField.getText();
-        Command cmd = Player.getInstance().getCommandManager().parseInput(input);
+        CMD cmd = Player.getInstance().getCommandManager().parseInput(input);
         if(cmd != null) {
             cmd.execute();
         }
@@ -84,5 +88,6 @@ public class GameplayController extends Controller implements Initializable {
         ViewManager.getInstance().setCurrentInputField(inputField);
         outputArea.setFocusTraversable(false);
         inputField.requestFocus();
+        Player.getInstance().look();
     }
 }
