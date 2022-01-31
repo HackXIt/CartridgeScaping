@@ -153,14 +153,11 @@ public class WaitingRoomController
         hostStartButton.setVisible(NetworkManager.getInstance().isHost());
         chatArea.setFocusTraversable(false);
         inputField.requestFocus();
-        if(GameManager.getInstance().getGame() != null) {
+        if(NetworkManager.getInstance().isHost() && GameManager.getInstance().getGame() != null) {
             gameTitle.setVisible(true);
             gameTitle.setText(GameManager.getInstance().getGame().getGameTitle());
             cartridgeBoxImage.setVisible(true);
             cartridgeBoxImage.setImage(GameManager.getInstance().getGame().getGameImage());
-            if(!NetworkManager.getInstance().isHost()) {
-
-            }
         }
     }
 

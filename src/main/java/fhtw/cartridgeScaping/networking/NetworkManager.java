@@ -62,7 +62,7 @@ public class NetworkManager {
 
     public void callback(Serializable data) {
         ViewManager.getInstance().devLog("Callback triggered!");
-        ViewManager.getInstance().devLog(String.format("%s", data));
+        ViewManager.getInstance().devLog(String.format("%s", data.toString()));
         currentCallback.accept(data);
         // TODO Also implement this in multithreading (tasks and whatnot)
     }
